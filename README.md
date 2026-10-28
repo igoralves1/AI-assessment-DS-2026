@@ -46,7 +46,7 @@ The survey is **annual**: each wave maps the state of the art across universitie
 
 ## Questionnaire structure
 
-174 questions in 13 parts, stored as 485 data columns. The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
+174 questions in 13 parts, stored as 482 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
 
 | Part | Content | Filled by |
 |---|---|---|
