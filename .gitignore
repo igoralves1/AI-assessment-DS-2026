@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.venv/
+.DS_Store
+*.tmp
+# Collected answers and personal data: never commit (public repository)
+data/
+analysis/output/
+analysis/synthetic_responses.csv
+.env
+.env.*
+!.env.example

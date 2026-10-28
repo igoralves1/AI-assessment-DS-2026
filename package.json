@@ -1,0 +1,24 @@
+{
+  "name": "ai-assessment-ds-2026",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI readiness assessment of dental school departments and courses (Canada, USA, Brazil, China, India)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server/index.js",
+    "codebook": "node scripts/build-codebook.mjs",
+    "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf AI-Readiness-Questionnaire-Dental-Schools-2026.docx >/dev/null"
+  },
+  "dependencies": {
+    "vue": "^3.5.44",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "docx": "^9.15.0",
+    "vite": "^6.4.5"
+  }
+}
