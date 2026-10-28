@@ -4,6 +4,10 @@
 import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION } from '../questionnaire/questionnaire.js'
 import { QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { COUNTRY_CONTEXT } from '../questionnaire/countries.js'
+import { REFERENCE_GROUPS } from '../questionnaire/references.js'
+
+const refCount = REFERENCE_GROUPS.reduce((n, g) => n + g.items.length, 0)
+const host = (url) => new URL(url).hostname.replace(/^www\./, '')
 
 const colCount = QUESTION_COLUMNS.filter((c) => !c.pii).length
 const itemCount = SECTIONS.reduce((n, s) => n + s.questions.length, 0)
@@ -88,6 +92,12 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
             <td>{{ s.questions.length }}</td>
             <td>{{ s.filledBy === 'team' ? 'Research team' : 'Respondent' }}</td>
           </tr>
+          <tr>
+            <td class="mono">—</td>
+            <td><a href="#references" @click.prevent="goTo('references')">References</a></td>
+            <td>{{ refCount }}</td>
+            <td>Sources</td>
+          </tr>
         </tbody>
       </table>
       <h3>Scored domains</h3>
@@ -131,6 +141,29 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
         </details>
       </div>
     </section>
+
+    <section id="references" class="card refs">
+      <h2>References</h2>
+      <p class="muted">Documents, organizations, universities and studies on technology in dentistry and public health that informed this survey. Open an item to read a short summary. Links were checked on 28 October 2026.</p>
+      <nav class="ref-toc" aria-label="Reference groups">
+        <a v-for="g in REFERENCE_GROUPS" :key="g.id" :href="'#ref-' + g.id" @click.prevent="goTo('ref-' + g.id)">{{ g.title }}</a>
+      </nav>
+      <div v-for="g in REFERENCE_GROUPS" :id="'ref-' + g.id" :key="g.id" class="ref-group">
+        <h3>{{ g.title }}</h3>
+        <p v-if="g.note" class="muted">{{ g.note }}</p>
+        <details v-for="r in g.items" :key="r.url" class="ref">
+          <summary>
+            <span class="ref-title">{{ r.title }}</span>
+            <span class="ref-meta">{{ r.source }}<template v-if="r.year"> · {{ r.year }}</template><template v-if="r.code"> · {{ r.code }}</template></span>
+          </summary>
+          <p>{{ r.summary }}</p>
+          <p class="ref-links">
+            <a :href="r.url" target="_blank" rel="noopener">Open source ({{ host(r.url) }}) ↗</a>
+            <a v-for="l in r.links || []" :key="l.url" :href="l.url" target="_blank" rel="noopener">{{ l.label }} ↗</a>
+          </p>
+        </details>
+      </div>
+    </section>
   </article>
 </template>
 
@@ -165,6 +198,19 @@ summary { cursor: pointer; color: var(--accent); font-weight: 600; padding: 4px 
 .anchors li { display: flex; gap: 8px; padding: 2px 0; }
 .lvl { font-weight: 700; color: var(--accent); min-width: 1.2em; }
 .opts { margin: 4px 0; padding-left: 18px; }
+.refs h3 { margin: 22px 0 6px; color: var(--accent); }
+.ref-toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+.ref-toc a { font-size: .85rem; background: var(--accent-soft); color: var(--text); text-decoration: none; border-radius: 6px; padding: 4px 10px; }
+details.ref { margin: 0; border-top: 1px solid var(--border); padding: 4px 0; }
+details.ref summary { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; color: var(--text); font-weight: 400; list-style: none; }
+details.ref summary::-webkit-details-marker { display: none; }
+.ref-title { font-weight: 600; }
+.ref-title::before { content: '▸ '; color: var(--accent); }
+details.ref[open] .ref-title::before { content: '▾ '; }
+.ref-meta { font-size: .82rem; color: var(--muted); padding-left: 1.1em; }
+details.ref > p { margin: 4px 0 8px 1.1em; }
+.ref-links { display: flex; flex-wrap: wrap; gap: 14px; font-size: .88rem; }
+.ref-links a { color: var(--accent); }
 @media (max-width: 600px) {
   .facts { grid-template-columns: repeat(2, 1fr); }
   .q-meta, details { margin-left: 0; }
@@ -174,6 +220,7 @@ summary { cursor: pointer; color: var(--accent); font-weight: 600; padding: 4px 
 @media print {
   .q-actions, .topbar, .demo-banner, .footer { display: none; }
   details { display: block; }
+  details.ref > p { display: block; }
   .card { break-inside: auto; border: 0; }
 }
 </style>

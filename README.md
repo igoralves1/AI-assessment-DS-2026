@@ -6,6 +6,7 @@ This is the survey of **ICARB-D — International Consortium for AI, Robotics, a
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
+- **References** (PAHO/WHO documents, dental associations, universities, studies, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
 - Questionnaire (Word): [docs/ICARB-D-Annual-Survey-Dental-Schools.docx](docs/ICARB-D-Annual-Survey-Dental-Schools.docx)
 - Questionnaire (PDF): [docs/ICARB-D-Annual-Survey-Dental-Schools.pdf](docs/ICARB-D-Annual-Survey-Dental-Schools.pdf)
 - Codebook (one line per data column): [docs/codebook.csv](docs/codebook.csv)
