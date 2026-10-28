@@ -28,6 +28,7 @@ jobs:
         env:
           # Set this repository variable to the storage-server URL to leave demo mode.
           VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_ADMIN_CODE_HASH: ${{ vars.VITE_ADMIN_CODE_HASH }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

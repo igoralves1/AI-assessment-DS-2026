@@ -8,7 +8,8 @@ import { storage, downloadText } from '../storage/index.js'
 
 const intake = SECTIONS.find((s) => s.filledBy === 'team')
 const token = ref('')
-const authed = ref(storage.mode === 'local')
+const authed = ref(false)
+const ADMIN_KEY = 'ai-ds-2026-admin'
 const error = ref('')
 const busy = ref(false)
 const answers = reactive({})
@@ -29,6 +30,7 @@ async function login() {
   try {
     await storage.adminLogin(token.value)
     authed.value = true
+    try { sessionStorage.setItem(ADMIN_KEY, token.value) } catch { /* ignore */ }
     refresh()
   } catch (e) {
     error.value = e.message
@@ -42,7 +44,11 @@ async function refresh() {
     error.value = e.message
   }
 }
-if (authed.value) refresh()
+// Stay signed in after a page reload in the same tab.
+try {
+  const saved = sessionStorage.getItem(ADMIN_KEY)
+  if (saved) { token.value = saved; login() }
+} catch { /* storage unavailable */ }
 
 async function issue() {
   error.value = ''
@@ -98,7 +104,7 @@ async function exportFile(kind) {
     <h1>Research team</h1>
 
     <form v-if="!authed" class="card narrow" @submit.prevent="login">
-      <label class="field"><span>Admin token</span>
+      <label class="field"><span>Admin code</span>
         <input class="input" type="password" v-model="token" autocomplete="current-password" />
       </label>
       <button class="btn primary">Sign in</button>

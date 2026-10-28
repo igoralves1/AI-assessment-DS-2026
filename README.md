@@ -2,7 +2,7 @@
 
 **Course-level mapping of artificial intelligence (AI) readiness in dental education in Canada, the United States, Brazil, China and India.**
 
-This repository holds the questionnaire, the data-collection website and the analysis code for a multinational cross-sectional study. The study measures how far AI has been integrated into dental education **department by department and course by course**, then consolidates the results by school and by country.
+This is the first study of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). This repository holds the questionnaire, the data-collection website and the analysis code for a multinational cross-sectional study. The study measures how far AI has been integrated into dental education **department by department and course by course**, then consolidates the results by school and by country.
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - Questionnaire (Word): [docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx](docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx)
@@ -89,7 +89,8 @@ Research team                         Respondent (department head / course direc
 
 - Codes have the format `XXX-XXX`, using 31 characters with no look-alikes (no 0/O, 1/I/L): about 887 million combinations.
 - The login is rate-limited (20 attempts per 10 minutes per IP address) to prevent guessing.
-- The research-team page is at `#/admin` and needs the admin token in server mode.
+- The research-team page is at `#/admin` and asks for the **admin code**. In demo mode the site checks the code against the SHA-256 hash in `src/config.js` (the code itself is never committed). This only deters casual visitors, since demo data stays in each visitor's own browser. In server mode the storage server checks it, so start the server with `ADMIN_TOKEN` set to the same code. To change the code, set the repository variable `VITE_ADMIN_CODE_HASH` to `echo -n 'NEW-CODE' | shasum -a 256`.
+- The ICARB-D form page can open the questionnaire with the code already filled in: `#/?code=XXX-XXX`.
 
 ## Data storage
 

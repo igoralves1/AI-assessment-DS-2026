@@ -1,11 +1,12 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { storage } from '../storage/index.js'
 import { normalizeCode, isValidCode } from '../lib/code.js'
 import { setSession } from '../session.js'
 
 const router = useRouter()
+const route = useRoute()
 const code = ref('')
 const error = ref('')
 const busy = ref(false)
@@ -31,6 +32,14 @@ async function enter() {
     busy.value = false
   }
 }
+
+// Links from the ICARB-D site arrive as #/?code=XXX-XXX
+onMounted(() => {
+  if (route.query.code) {
+    code.value = normalizeCode(route.query.code)
+    enter()
+  }
+})
 </script>
 
 <template>

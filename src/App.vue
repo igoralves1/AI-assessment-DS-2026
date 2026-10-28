@@ -1,5 +1,6 @@
 <script setup>
 import { storage } from './storage/index.js'
+import { CONSORTIUM_URL } from './config.js'
 </script>
 
 <template>
@@ -9,9 +10,10 @@ import { storage } from './storage/index.js'
         <span class="logo" aria-hidden="true">AI</span>
         <span>
           <strong>AI Readiness in Dental Schools</strong>
-          <small>Canada · USA · Brazil · China · India — 2026</small>
+          <small>An ICARB-D study · Canada · USA · Brazil · China · India — 2026</small>
         </span>
       </router-link>
+      <a class="consortium" :href="CONSORTIUM_URL">ICARB-D</a>
     </div>
   </header>
   <div v-if="storage.mode === 'local'" class="demo-banner">

@@ -4,6 +4,7 @@ import { toCsv } from '../lib/csv.js'
 import { generateCode, normalizeCode } from '../lib/code.js'
 import { RESPONSE_COLUMNS, ACCESS_COLUMNS, QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { missingIntake, newRecordRows, applyAnswers, publicRecord } from '../lib/records.js'
+import { ADMIN_CODE_HASH } from '../config.js'
 
 const KEY = 'ai-assessment-ds-2026'
 
@@ -23,7 +24,12 @@ const randomInt = (n) => {
 export function localStorageBackend() {
   return {
     mode: 'local',
-    async adminLogin() {},
+    async adminLogin(code) {
+      const bytes = new TextEncoder().encode(String(code).trim().toUpperCase())
+      const digest = await crypto.subtle.digest('SHA-256', bytes)
+      const hex = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('')
+      if (hex !== ADMIN_CODE_HASH) throw new Error('Invalid admin code.')
+    },
     async createCode(intake) {
       const missing = missingIntake(intake)
       if (missing.length) throw new Error(`Missing required fields: ${missing.join(', ')}`)
