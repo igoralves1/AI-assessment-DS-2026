@@ -2,7 +2,7 @@
 
 **An annual, course-level survey of the maturity of artificial intelligence, health informatics, robotics and bioinformatics in dental schools in Canada, the United States, Brazil, China and India.**
 
-This is the survey of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium's main goal is to be a central point of collaboration for universities and dentists and to build a free, open AI model for dentistry through joint work. This repository holds the questionnaire, the data-collection website and the analysis code.
+This is the survey of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium is an international hub that connects universities and dentists to strengthen initiatives in these fields; its main goal is to build a free dental AI model, through joint collaborative work, that can be used across every field of dentistry. This repository holds the questionnaire, the data-collection website and the analysis code.
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
