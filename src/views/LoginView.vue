@@ -44,8 +44,8 @@ onMounted(() => {
 
 <template>
   <section class="login">
-    <h1>AI readiness of dental school departments and courses</h1>
-    <p class="lead">Enter the access code you received from the research team.</p>
+    <h1>Annual survey of dental school departments and courses</h1>
+    <p class="lead">AI, health informatics, robotics and bioinformatics. Enter the access code you received from the research team.</p>
     <form class="code-form" @submit.prevent="enter">
       <label for="code" class="sr-only">Access code</label>
       <input id="code" class="code-input" :value="code" @input="onInput" placeholder="XXX-XXX"

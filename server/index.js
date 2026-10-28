@@ -137,7 +137,7 @@ async function handle(req, res) {
 
   if (req.method === 'GET' && p === '/api/admin/codes') {
     const list = [...responses.values()].map((r) => ({
-      code: r.code, status: r.status, created_at: r.created_at, updated_at: r.updated_at,
+      code: r.code, wave: r.A15, status: r.status, created_at: r.created_at, updated_at: r.updated_at,
       country: r.A01, institution: r.A03, department: r.A06, course: r.A07,
       contact: access.get(r.code)?.A10 || '',
     }))

@@ -12,7 +12,8 @@ const authed = ref(false)
 const ADMIN_KEY = 'ai-ds-2026-admin'
 const error = ref('')
 const busy = ref(false)
-const answers = reactive({})
+const thisYear = String(new Date().getFullYear())
+const answers = reactive({ A15: thisYear })
 const issued = ref(null)
 const codes = ref([])
 const copied = ref(false)
@@ -62,6 +63,7 @@ async function issue() {
     const code = await storage.createCode({ ...answers })
     issued.value = { code, institution: answers.A03, department: answers.A06, name: answers.A10 }
     for (const k of Object.keys(answers)) delete answers[k]
+    answers.A15 = thisYear
     copied.value = false
     refresh()
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -136,10 +138,11 @@ async function exportFile(kind) {
         <p>{{ counts.issued }} issued · {{ counts.started }} in progress · {{ counts.submitted }} submitted</p>
         <div class="table-scroll">
           <table class="codes">
-            <thead><tr><th>Code</th><th>Status</th><th>Country</th><th>Institution</th><th>Department / course</th><th>Contact</th><th>Last saved</th></tr></thead>
+            <thead><tr><th>Code</th><th>Year</th><th>Status</th><th>Country</th><th>Institution</th><th>Department / course</th><th>Contact</th><th>Last saved</th></tr></thead>
             <tbody>
               <tr v-for="c in codes" :key="c.code">
                 <td class="mono">{{ c.code }}</td>
+                <td>{{ c.wave }}</td>
                 <td><span class="badge" :class="c.status">{{ c.status.replace('_', ' ') }}</span></td>
                 <td>{{ countryName(c.country) }}</td>
                 <td>{{ c.institution }}</td>
@@ -147,7 +150,7 @@ async function exportFile(kind) {
                 <td>{{ c.contact }}</td>
                 <td>{{ c.updated_at ? new Date(c.updated_at).toLocaleString() : '' }}</td>
               </tr>
-              <tr v-if="!codes.length"><td colspan="7" class="muted">No codes issued yet.</td></tr>
+              <tr v-if="!codes.length"><td colspan="8" class="muted">No codes issued yet.</td></tr>
             </tbody>
           </table>
         </div>

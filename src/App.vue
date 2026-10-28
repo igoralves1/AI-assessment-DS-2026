@@ -9,8 +9,8 @@ import { CONSORTIUM_URL } from './config.js'
       <router-link to="/" class="brand">
         <span class="logo" aria-hidden="true">AI</span>
         <span>
-          <strong>AI Readiness in Dental Schools</strong>
-          <small>An ICARB-D study · Canada · USA · Brazil · China · India — 2026</small>
+          <strong>ICARB-D Annual Survey of Dental Schools</strong>
+          <small>AI · Health informatics · Robotics · Bioinformatics</small>
         </span>
       </router-link>
       <a class="consortium" :href="CONSORTIUM_URL">ICARB-D</a>

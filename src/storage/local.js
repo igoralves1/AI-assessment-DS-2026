@@ -44,7 +44,7 @@ export function localStorageBackend() {
     async listCodes() {
       const db = read()
       return Object.values(db.responses).map((r) => ({
-        code: r.code, status: r.status, created_at: r.created_at, updated_at: r.updated_at,
+        code: r.code, wave: r.A15, status: r.status, created_at: r.created_at, updated_at: r.updated_at,
         country: r.A01, institution: r.A03, department: r.A06, course: r.A07, contact: db.access[r.code]?.A10 || '',
       }))
     },

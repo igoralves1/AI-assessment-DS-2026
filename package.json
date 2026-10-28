@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "codebook": "node scripts/build-codebook.mjs",
-    "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf AI-Readiness-Questionnaire-Dental-Schools-2026.docx >/dev/null"
+    "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf ICARB-D-Annual-Survey-Dental-Schools.docx >/dev/null"
   },
   "dependencies": {
     "vue": "^3.5.44",

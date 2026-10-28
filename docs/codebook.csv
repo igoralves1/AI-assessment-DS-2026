@@ -22,6 +22,8 @@ A12,A12,A,,text,Interviewer,,true
 A13,A13,A,,single,Language,en=English | fr=French | pt=Portuguese | zh=Chinese | hi=Hindi | es=Spanish | 99=Other,false
 A13_other,A13,A,,text,Language — other (text),,false
 A14,A14,A,,single,Consent,1=Yes | 0=No,false
+A15,A15,A,,number,Survey year (wave),,false
+A16,A16,A,,text,Previous code,,false
 B01,B01,B,,number,Enrollment (students),,false
 B02,B02,B,,number,Faculty headcount (faculty),,false
 B03,B03,B,,number,Faculty FTE (FTE),,false
@@ -36,14 +38,18 @@ B07__y5,B07,B,,binary,Program years: Year 5,1=selected | 0=not selected,false
 B07__y6,B07,B,,binary,Program years: Year 6 or later / internship,1=selected | 0=not selected,false
 B07__grad,B07,B,,binary,Program years: Graduate / residency year,1=selected | 0=not selected,false
 B08,B08,B,,single,Course format,1=Didactic (lectures/seminars) | 2=Preclinical / laboratory | 3=Clinical | 4=Mixed | 5=Research,false
-B09,B09,B,,number,AI courses in department (courses),,false
-B10,B10,B,,single,Respondent AI experience,1=None | 2=Less than 1 year | 3=1–3 years | 4=More than 3 years,false
+B09__ai,B09,B,,binary,Domains addressed: Artificial intelligence,1=selected | 0=not selected,false
+B09__hin,B09,B,,binary,"Domains addressed: Health informatics (EHR, imaging systems, teledentistry, data)",1=selected | 0=not selected,false
+B09__rob,B09,B,,binary,"Domains addressed: Robotics and digital dentistry (CAD/CAM, simulators, robots, navigation)",1=selected | 0=not selected,false
+B09__bio,B09,B,,binary,Domains addressed: Bioinformatics and omics,1=selected | 0=not selected,false
+B09__none,B09,B,,binary,Domains addressed: None of these,1=selected | 0=not selected,false
+B10,B10,B,,single,Respondent experience,1=None | 2=Less than 1 year | 3=1–3 years | 4=More than 3 years,false
 B11,B11,B,,scale,Respondent AI literacy,"1=Basic: I know general concepts only | 2=Intermediate: I can interpret AI outputs and their limitations | 3=Advanced: I can critically appraise AI studies and select tools | 4=Expert: I develop, train or validate AI models",false
 C01,C01,C,INF,scale,Computing hardware,"1=None | 2=Only individual faculty members' personal equipment | 3=Shared equipment, insufficient for demand | 4=Dedicated high-performance computing, regularly updated and accessible to students | -1=Don't know / N/A",false
 C02,C02,C,,number,GPU workstations (units),,false
 C03,C03,C,INF,scale,Cloud computing,"1=No access | 2=Individual/ad hoc access paid by faculty | 3=Institutional access on request, limited quota | 4=Routine institutional access with support | -1=Don't know / N/A",false
 C04,C04,C,,number,Student devices ratio (students per computer),,false
-C05,C05,C,INF,scale,Dedicated digital/AI space,1=None | 2=Shared general computer room | 3=Dedicated digital dentistry lab without AI focus | 4=Dedicated AI/digital dentistry lab with staff and scheduled student access | -1=Don't know / N/A,false
+C05,C05,C,INF,scale,Dedicated digital space,1=None | 2=Shared general computer room | 3=Dedicated digital dentistry lab without AI focus | 4=Dedicated AI/digital dentistry lab with staff and scheduled student access | -1=Don't know / N/A,false
 C06__python,C06,C,,binary,Software licences: Python / Jupyter / Google Colab,1=selected | 0=not selected,false
 C06__r,C06,C,,binary,Software licences: R / RStudio,1=selected | 0=not selected,false
 C06__matlab,C06,C,,binary,Software licences: MATLAB,1=selected | 0=not selected,false
@@ -64,66 +70,65 @@ C07__lms_ai,C07,C,,binary,AI-enabled equipment: Learning management system with 
 C07__tutor,C07,C,,binary,AI-enabled equipment: AI tutor / chatbot for students,1=selected | 0=not selected,false
 C07__none,C07,C,,binary,AI-enabled equipment: None,1=selected | 0=not selected,false
 C07_other,C07,C,,text,AI-enabled equipment — other (text),,false
-C08_1_name,C08,C,,text,Clinical/educational AI tools #1: Tool / product name,,false
-C08_1_task,C08,C,,single,Clinical/educational AI tools #1: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_1_reg,C08,C,,single,Clinical/educational AI tools #1: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_1_mode,C08,C,,single,Clinical/educational AI tools #1: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_1_graded,C08,C,,single,Clinical/educational AI tools #1: Part of graded work?,1=Yes | 0=No,false
-C08_1_since,C08,C,,number,Clinical/educational AI tools #1: Year introduced,,false
-C08_2_name,C08,C,,text,Clinical/educational AI tools #2: Tool / product name,,false
-C08_2_task,C08,C,,single,Clinical/educational AI tools #2: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_2_reg,C08,C,,single,Clinical/educational AI tools #2: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_2_mode,C08,C,,single,Clinical/educational AI tools #2: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_2_graded,C08,C,,single,Clinical/educational AI tools #2: Part of graded work?,1=Yes | 0=No,false
-C08_2_since,C08,C,,number,Clinical/educational AI tools #2: Year introduced,,false
-C08_3_name,C08,C,,text,Clinical/educational AI tools #3: Tool / product name,,false
-C08_3_task,C08,C,,single,Clinical/educational AI tools #3: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_3_reg,C08,C,,single,Clinical/educational AI tools #3: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_3_mode,C08,C,,single,Clinical/educational AI tools #3: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_3_graded,C08,C,,single,Clinical/educational AI tools #3: Part of graded work?,1=Yes | 0=No,false
-C08_3_since,C08,C,,number,Clinical/educational AI tools #3: Year introduced,,false
-C08_4_name,C08,C,,text,Clinical/educational AI tools #4: Tool / product name,,false
-C08_4_task,C08,C,,single,Clinical/educational AI tools #4: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_4_reg,C08,C,,single,Clinical/educational AI tools #4: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_4_mode,C08,C,,single,Clinical/educational AI tools #4: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_4_graded,C08,C,,single,Clinical/educational AI tools #4: Part of graded work?,1=Yes | 0=No,false
-C08_4_since,C08,C,,number,Clinical/educational AI tools #4: Year introduced,,false
-C08_5_name,C08,C,,text,Clinical/educational AI tools #5: Tool / product name,,false
-C08_5_task,C08,C,,single,Clinical/educational AI tools #5: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_5_reg,C08,C,,single,Clinical/educational AI tools #5: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_5_mode,C08,C,,single,Clinical/educational AI tools #5: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_5_graded,C08,C,,single,Clinical/educational AI tools #5: Part of graded work?,1=Yes | 0=No,false
-C08_5_since,C08,C,,number,Clinical/educational AI tools #5: Year introduced,,false
-C08_6_name,C08,C,,text,Clinical/educational AI tools #6: Tool / product name,,false
-C08_6_task,C08,C,,single,Clinical/educational AI tools #6: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
-C08_6_reg,C08,C,,single,Clinical/educational AI tools #6: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA)  | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
-C08_6_mode,C08,C,,single,Clinical/educational AI tools #6: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
-C08_6_graded,C08,C,,single,Clinical/educational AI tools #6: Part of graded work?,1=Yes | 0=No,false
-C08_6_since,C08,C,,number,Clinical/educational AI tools #6: Year introduced,,false
+C08_1_name,C08,C,,text,AI tools used by students #1: Tool / product name,,false
+C08_1_task,C08,C,,single,AI tools used by students #1: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_1_reg,C08,C,,single,AI tools used by students #1: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_1_mode,C08,C,,single,AI tools used by students #1: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_1_graded,C08,C,,single,AI tools used by students #1: Part of graded work?,1=Yes | 0=No,false
+C08_1_since,C08,C,,number,AI tools used by students #1: Year introduced,,false
+C08_2_name,C08,C,,text,AI tools used by students #2: Tool / product name,,false
+C08_2_task,C08,C,,single,AI tools used by students #2: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_2_reg,C08,C,,single,AI tools used by students #2: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_2_mode,C08,C,,single,AI tools used by students #2: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_2_graded,C08,C,,single,AI tools used by students #2: Part of graded work?,1=Yes | 0=No,false
+C08_2_since,C08,C,,number,AI tools used by students #2: Year introduced,,false
+C08_3_name,C08,C,,text,AI tools used by students #3: Tool / product name,,false
+C08_3_task,C08,C,,single,AI tools used by students #3: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_3_reg,C08,C,,single,AI tools used by students #3: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_3_mode,C08,C,,single,AI tools used by students #3: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_3_graded,C08,C,,single,AI tools used by students #3: Part of graded work?,1=Yes | 0=No,false
+C08_3_since,C08,C,,number,AI tools used by students #3: Year introduced,,false
+C08_4_name,C08,C,,text,AI tools used by students #4: Tool / product name,,false
+C08_4_task,C08,C,,single,AI tools used by students #4: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_4_reg,C08,C,,single,AI tools used by students #4: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_4_mode,C08,C,,single,AI tools used by students #4: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_4_graded,C08,C,,single,AI tools used by students #4: Part of graded work?,1=Yes | 0=No,false
+C08_4_since,C08,C,,number,AI tools used by students #4: Year introduced,,false
+C08_5_name,C08,C,,text,AI tools used by students #5: Tool / product name,,false
+C08_5_task,C08,C,,single,AI tools used by students #5: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_5_reg,C08,C,,single,AI tools used by students #5: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_5_mode,C08,C,,single,AI tools used by students #5: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_5_graded,C08,C,,single,AI tools used by students #5: Part of graded work?,1=Yes | 0=No,false
+C08_5_since,C08,C,,number,AI tools used by students #5: Year introduced,,false
+C08_6_name,C08,C,,text,AI tools used by students #6: Tool / product name,,false
+C08_6_task,C08,C,,single,AI tools used by students #6: Main task,"caries=Caries detection on radiographs | perio=Periodontal bone-loss assessment | periapical=Periapical lesion detection | cbct=CBCT segmentation / 3D analysis | ceph=Cephalometric landmarking / orthodontic analysis | implant=Implant planning / guided surgery | cad=CAD/CAM restoration design | ios=Intraoral-scan analysis / smile design | lesion=Oral mucosal lesion / oral cancer screening | charting=Charting, clinical notes, ambient scribe | patient=Patient communication / education | admin=Scheduling, billing, administration | sim=Preclinical simulation feedback / preparation grading | llm=General-purpose LLM / chatbot | other=Other",false
+C08_6_reg,C08,C,,single,AI tools used by students #6: Regulatory status,"1=Cleared/approved by the national regulator for this use | 2=Foreign approval only (e.g., CE, FDA) | 3=Commercial, not cleared | 4=Research / in-house prototype | -1=Don't know",false
+C08_6_mode,C08,C,,single,AI tools used by students #6: Student use,1=Students observe faculty use | 2=Preclinical / simulation only | 3=Students operate under supervision on patients | 4=Students operate independently in patient care,false
+C08_6_graded,C08,C,,single,AI tools used by students #6: Part of graded work?,1=Yes | 0=No,false
+C08_6_since,C08,C,,number,AI tools used by students #6: Year introduced,,false
 C09,C09,C,INF,scale,Number of AI tools,1=No AI tool is used | 2=1 AI tool used | 3=2–3 AI tools used | 4=4 or more AI tools used and integrated into graded coursework | -1=Don't know / N/A,false
-C10,C10,C,,text,EHR / imaging systems,,false
-C11,C11,C,DAT,scale,De-identified dataset,1=No dataset accessible | 2=Dataset in planning or pilot stage | 3=Dataset exists but access is restricted and scale is limited | 4=Dataset exists with clear access protocols and is used in the course | -1=Don't know / N/A,false
-C12__periapical,C12,C,,binary,Dataset modalities: Periapical / bitewing radiographs,1=selected | 0=not selected,false
-C12__panoramic,C12,C,,binary,Dataset modalities: Panoramic radiographs,1=selected | 0=not selected,false
-C12__ceph,C12,C,,binary,Dataset modalities: Cephalometric radiographs,1=selected | 0=not selected,false
-C12__cbct,C12,C,,binary,Dataset modalities: CBCT,1=selected | 0=not selected,false
-C12__ios,C12,C,,binary,Dataset modalities: Intraoral scans (3D),1=selected | 0=not selected,false
-C12__photos,C12,C,,binary,Dataset modalities: Clinical photographs,1=selected | 0=not selected,false
-C12__histology,C12,C,,binary,Dataset modalities: Histopathology images,1=selected | 0=not selected,false
-C12__records,C12,C,,binary,Dataset modalities: Structured treatment / EHR records,1=selected | 0=not selected,false
-C12__notes,C12,C,,binary,Dataset modalities: Free-text clinical notes,1=selected | 0=not selected,false
-C12__none,C12,C,,binary,Dataset modalities: No dataset,1=selected | 0=not selected,false
-C13,C13,C,,number,Dataset size (images/records),,false
-C14,C14,C,DAT,scale,Annotation capacity,"1=No capacity | 2=Ad hoc annotation by individual researchers | 3=Annotation protocol exists, limited calibration | 4=Calibrated annotators with documented protocol and agreement statistics | -1=Don't know / N/A",false
-C15,C15,C,DAT,scale,Data quality,1=No measures applied | 2=Ad hoc checks only | 3=Some measures exist but are not comprehensive | 4=Systematic quality assurance with documented protocols | -1=Don't know / N/A,false
-C16,C16,C,DAT,scale,Data representativeness,1=Never assessed | 2=Discussed informally | 3=Assessed for some projects | 4=Systematically assessed and reported | -1=Don't know / N/A,false
-C17,C17,C,DAT,scale,Privacy and security,"1=No systems | 2=Basic password protection only | 3=Systems exist but are inconsistent | 4=Comprehensive systems with encryption, audit trails and a named person responsible | -1=Don't know / N/A",false
-C18,C18,C,DAT,scale,De-identification,"1=No procedures | 2=Informal practice only | 3=Written procedures, inconsistently applied | 4=Written procedures, routinely applied and audited | -1=Don't know / N/A",false
-C19,C19,C,DAT,scale,Secure research environment,1=Not available | 2=Planned | 3=Available on request with delays | 4=Available and routinely used | -1=Don't know / N/A,false
-C20,C20,C,INF,scale,Connectivity and IT support,1=Neither reliable connectivity nor AI-specific support | 2=Basic IT support exists but does not cover AI tools | 3=Partial support (software installation only) | 4=Dedicated AI / educational-technology support assigned to the department/course | -1=Don't know / N/A,false
-C21,C21,C,INF,scale,Interoperability,1=No interoperability | 2=Some standards under development | 3=Standards exist but implementation is inconsistent | 4=Well-established standards enabling seamless integration | -1=Don't know / N/A,false
-C22,C22,C,INF,scale,Cybersecurity,1=None | 2=Basic institutional measures only | 3=Measures exist but not specific to AI tools | 4=AI-specific security review before adoption and periodic audit | -1=Don't know / N/A,false
-C23,C23,C,INF,scale,Equitable student access,1=No — access depends on personal devices/subscriptions | 2=Limited institutional access | 3=Access during scheduled sessions only | 4=Equal access during and outside class hours | -1=Don't know / N/A,false
+C10,C10,C,DAT,scale,De-identified dataset,1=No dataset accessible | 2=Dataset in planning or pilot stage | 3=Dataset exists but access is restricted and scale is limited | 4=Dataset exists with clear access protocols and is used in the course | -1=Don't know / N/A,false
+C11__periapical,C11,C,,binary,Dataset modalities: Periapical / bitewing radiographs,1=selected | 0=not selected,false
+C11__panoramic,C11,C,,binary,Dataset modalities: Panoramic radiographs,1=selected | 0=not selected,false
+C11__ceph,C11,C,,binary,Dataset modalities: Cephalometric radiographs,1=selected | 0=not selected,false
+C11__cbct,C11,C,,binary,Dataset modalities: CBCT,1=selected | 0=not selected,false
+C11__ios,C11,C,,binary,Dataset modalities: Intraoral scans (3D),1=selected | 0=not selected,false
+C11__photos,C11,C,,binary,Dataset modalities: Clinical photographs,1=selected | 0=not selected,false
+C11__histology,C11,C,,binary,Dataset modalities: Histopathology images,1=selected | 0=not selected,false
+C11__records,C11,C,,binary,Dataset modalities: Structured treatment / EHR records,1=selected | 0=not selected,false
+C11__notes,C11,C,,binary,Dataset modalities: Free-text clinical notes,1=selected | 0=not selected,false
+C11__none,C11,C,,binary,Dataset modalities: No dataset,1=selected | 0=not selected,false
+C12,C12,C,,number,Dataset size (images/records),,false
+C13,C13,C,DAT,scale,Annotation capacity,"1=No capacity | 2=Ad hoc annotation by individual researchers | 3=Annotation protocol exists, limited calibration | 4=Calibrated annotators with documented protocol and agreement statistics | -1=Don't know / N/A",false
+C14,C14,C,DAT,scale,Data quality,1=No measures applied | 2=Ad hoc checks only | 3=Some measures exist but are not comprehensive | 4=Systematic quality assurance with documented protocols | -1=Don't know / N/A,false
+C15,C15,C,DAT,scale,Data representativeness,1=Never assessed | 2=Discussed informally | 3=Assessed for some projects | 4=Systematically assessed and reported | -1=Don't know / N/A,false
+C16,C16,C,DAT,scale,Privacy and security,"1=No systems | 2=Basic password protection only | 3=Systems exist but are inconsistent | 4=Comprehensive systems with encryption, audit trails and a named person responsible | -1=Don't know / N/A",false
+C17,C17,C,DAT,scale,De-identification,"1=No procedures | 2=Informal practice only | 3=Written procedures, inconsistently applied | 4=Written procedures, routinely applied and audited | -1=Don't know / N/A",false
+C18,C18,C,DAT,scale,Secure research environment,1=Not available | 2=Planned | 3=Available on request with delays | 4=Available and routinely used | -1=Don't know / N/A,false
+C19,C19,C,INF,scale,Connectivity and IT support,1=Neither reliable connectivity nor specific support | 2=Basic IT support exists but does not cover these tools | 3=Partial support (software installation only) | 4=Dedicated educational-technology support assigned to the department/course | -1=Don't know / N/A,false
+C20,C20,C,INF,scale,Interoperability,1=No interoperability | 2=Some standards under development | 3=Standards exist but implementation is inconsistent | 4=Well-established standards enabling seamless integration | -1=Don't know / N/A,false
+C21,C21,C,INF,scale,Cybersecurity,1=None | 2=Basic institutional measures only | 3=Measures exist but not specific to these tools | 4=Specific security review before adoption and periodic audit | -1=Don't know / N/A,false
+C22,C22,C,INF,scale,Equitable student access,1=No — access depends on personal devices/subscriptions | 2=Limited institutional access | 3=Access during scheduled sessions only | 4=Equal access during and outside class hours | -1=Don't know / N/A,false
 D01,D01,D,HUM,scale,Faculty able to teach AI,1=0% | 2=1–10% | 3=11–25% | 4=More than 25% | -1=Don't know / N/A,false
 D02,D02,D,,number,Faculty teaching AI (n) (faculty),,false
 D03,D03,D,,number,Faculty with formal AI degree (faculty),,false
@@ -142,15 +147,15 @@ D09__degree,D09,D,,binary,Training formats: Sponsored degree programs,1=selected
 D09__none,D09,D,,binary,Training formats: None,1=selected | 0=not selected,false
 D09_other,D09,D,,text,Training formats — other (text),,false
 D10_1_name,D10,D,,text,Interdisciplinary partners #1: Partner unit,,false
-D10_1_type,D10,D,,single,Interdisciplinary partners #1: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
+D10_1_type,D10,D,,single,Interdisciplinary partners #1: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / biology / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
 D10_2_name,D10,D,,text,Interdisciplinary partners #2: Partner unit,,false
-D10_2_type,D10,D,,single,Interdisciplinary partners #2: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
+D10_2_type,D10,D,,single,Interdisciplinary partners #2: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / biology / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
 D10_3_name,D10,D,,text,Interdisciplinary partners #3: Partner unit,,false
-D10_3_type,D10,D,,single,Interdisciplinary partners #3: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
+D10_3_type,D10,D,,single,Interdisciplinary partners #3: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / biology / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
 D11,D11,D,HUM,scale,Partnership depth,1=No partners | 2=Informal individual collaboration only | 3=Formal project-based collaboration | 4=Long-term institutional partnership with joint funding or appointments | -1=Don't know / N/A,false
 D12,D12,D,HUM,scale,Technical staff,"1=No access | 2=Shared across the school, high demand | 3=Adequate access for most needs | 4=Dedicated technical staff embedded in the department/course | -1=Don't know / N/A",false
 D13,D13,D,,number,Technical staff FTE (FTE),,false
-D14,D14,D,HUM,scale,AI hiring,"1=Not planned | 2=Discussed, no approved position | 3=Position approved or recruitment underway | 4=AI expertise already recruited and further positions planned | -1=Don't know / N/A",false
+D14,D14,D,HUM,scale,Hiring plans,"1=Not planned | 2=Discussed, no approved position | 3=Position approved or recruitment underway | 4=Expertise already recruited and further positions planned | -1=Don't know / N/A",false
 D15,D15,D,HUM,scale,Faculty openness,1=Mostly resistant | 2=Mixed / indifferent | 3=Mostly supportive | 4=Strongly supportive with active champions | -1=Don't know / N/A,false
 D16__time,D16,D,,binary,Faculty competency barriers: Lack of faculty time,1=selected | 0=not selected,false
 D16__funding,D16,D,,binary,Faculty competency barriers: Lack of funding for training,1=selected | 0=not selected,false
@@ -257,115 +262,231 @@ F06_incident,F06,F,,grid,Generative AI safeguards: Process to report misuse or A
 F06_training,F06,F,,grid,Generative AI safeguards: Staff and students trained on limitations and bias of generative AI,2=Yes | 1=Partial | 0=No,false
 F07,F07,F,,single,Faculty GenAI use,1=Never | 2=Occasionally | 3=Monthly | 4=Weekly or more | -1=Don't know,false
 F08,F08,F,,single,AI-detection software,"1=Yes, routinely | 2=Yes, occasionally | 0=No | -1=Don't know",false
-G01,G01,G,GOV,scale,Written AI plan,"1=None | 2=Informal consensus, not documented | 3=Draft document under discussion | 4=Formal strategic plan, regularly reviewed | -1=Don't know / N/A",false
-G02,G02,G,GOV,scale,Leadership commitment,"1=No commitment shown | 2=Initial interest, no concrete actions | 3=Some commitment, inconsistent or limited in scope | 4=Strong commitment with ongoing initiatives and resources | -1=Don't know / N/A",false
-G03,G03,G,GOV,scale,Oversight structure,"1=None | 2=Informal responsibility | 3=Committee or person named, limited mandate | 4=Formal committee with mandate, reporting line and regular meetings | -1=Don't know / N/A",false
-G04,G04,G,GOV,scale,AI ethics teaching,1=None | 2=Brief mention only | 3=1 dedicated session | 4=Systematic integration with case-based discussion and assessment | -1=Don't know / N/A,false
-G05__bias,G05,G,,binary,Ethics topics: Algorithmic bias and equity,1=selected | 0=not selected,false
-G05__privacy,G05,G,,binary,Ethics topics: Privacy and data protection,1=selected | 0=not selected,false
-G05__consent,G05,G,,binary,Ethics topics: Informed consent for AI use with patients,1=selected | 0=not selected,false
-G05__accountability,G05,G,,binary,Ethics topics: Professional accountability / liability,1=selected | 0=not selected,false
-G05__transparency,G05,G,,binary,Ethics topics: Transparency and explainability,1=selected | 0=not selected,false
-G05__automation,G05,G,,binary,Ethics topics: Automation bias / over-reliance,1=selected | 0=not selected,false
-G05__ip,G05,G,,binary,Ethics topics: Intellectual property and authorship,1=selected | 0=not selected,false
-G05__environment,G05,G,,binary,Ethics topics: Environmental impact of AI,1=selected | 0=not selected,false
-G05__integrity,G05,G,,binary,Ethics topics: Academic integrity,1=selected | 0=not selected,false
-G05__none,G05,G,,binary,Ethics topics: None,1=selected | 0=not selected,false
-G06,G06,G,GOV,scale,Bias teaching,1=Not taught | 2=Mentioned informally | 3=1 dedicated session | 4=Hands-on exercises with real or simulated subgroup analyses | -1=Don't know / N/A,false
-G07,G07,G,GOV,scale,Ethical guidelines available,"1=None available | 2=Some documents exist but are incomplete | 3=Guidelines exist but need dissemination | 4=Comprehensive, well-implemented guidelines available | -1=Don't know / N/A",false
-G08__who_ethics,G08,G,,binary,Guidance documents used: WHO — Ethics and governance of AI for health (2021) and guidance on large multi-modal models (2024/2025),1=selected | 0=not selected,false
-G08__unesco_genai,G08,G,,binary,Guidance documents used: UNESCO — Guidance for generative AI in education and research (2023),1=selected | 0=not selected,false
-G08__iadr_itu_core,G08,G,,binary,"Guidance documents used: IADR / ITU-WHO Focus Group — Core curriculum for oral and dental AI (Schwendicke et al., 2023)",1=selected | 0=not selected,false
-G08__ai_reporting,G08,G,,binary,"Guidance documents used: AI reporting guidelines (CONSORT-AI, SPIRIT-AI, TRIPOD+AI, STARD-AI, CLAIM, dental AI checklist)",1=selected | 0=not selected,false
-G08__paho_toolkits,G08,G,,binary,"Guidance documents used: PAHO/WHO AI toolkits (Readiness Assessment, AI-GUARD, Bias-free AI, Prompt design)",1=selected | 0=not selected,false
-G08__ada_standards,G08,G,,binary,"Guidance documents used: ADA Technical Report 1109, ANSI/ADA Standard 1110-1:2025, ADA White Paper 1106",1=selected | 0=not selected,false
-G08__coda,G08,G,,binary,Guidance documents used: CODA accreditation standards (AI/technology-related elements),1=selected | 0=not selected,false
-G08__hipaa,G08,G,,binary,Guidance documents used: HIPAA privacy and security rules applied to AI tools,1=selected | 0=not selected,false
-G08__fda_ai,G08,G,,binary,Guidance documents used: FDA guidance on AI-enabled device software functions,1=selected | 0=not selected,false
-G08__adea,G08,G,,binary,Guidance documents used: ADEA guidance or competencies relating to AI,1=selected | 0=not selected,false
-G08__cda,G08,G,,binary,Guidance documents used: Canadian Dental Association position statements / guidance on AI,1=selected | 0=not selected,false
-G08__cdac,G08,G,,binary,Guidance documents used: CDAC accreditation standards (technology-related elements),1=selected | 0=not selected,false
-G08__pipeda,G08,G,,binary,"Guidance documents used: PIPEDA / provincial health-privacy laws (PHIPA, Quebec Law 25)",1=selected | 0=not selected,false
-G08__hc_mlmd,G08,G,,binary,Guidance documents used: Health Canada guidance for machine-learning-enabled medical devices,1=selected | 0=not selected,false
-G08__cfo,G08,G,,binary,Guidance documents used: CFO resolutions / guidance on digital dentistry and AI,1=selected | 0=not selected,false
-G08__lgpd,G08,G,,binary,Guidance documents used: LGPD (Lei 13.709/2018) — health data protection,1=selected | 0=not selected,false
-G08__anvisa_samd,G08,G,,binary,Guidance documents used: ANVISA RDC 657/2022 — Software as a Medical Device,1=selected | 0=not selected,false
-G08__dcn_odonto,G08,G,,binary,Guidance documents used: DCN Odontologia (Resolução CNE/CES 3/2021),1=selected | 0=not selected,false
-G08__pl2338,G08,G,,binary,Guidance documents used: PL 2338/2023 — Brazilian AI regulatory bill,1=selected | 0=not selected,false
-G08__conep,G08,G,,binary,"Guidance documents used: CNS/CONEP research-ethics resolutions (466/2012, 510/2016)",1=selected | 0=not selected,false
-G08__pipl,G08,G,,binary,Guidance documents used: Personal Information Protection Law (2021) / Data Security Law (2021),1=selected | 0=not selected,false
-G08__nmpa_ai,G08,G,,binary,Guidance documents used: NMPA guidelines for registration review of AI medical device software,1=selected | 0=not selected,false
-G08__cn_genai,G08,G,,binary,Guidance documents used: Interim Measures for the Management of Generative AI Services (2023),1=selected | 0=not selected,false
-G08__nhc_ai,G08,G,,binary,Guidance documents used: National Health Commission guidance on AI application scenarios in health care,1=selected | 0=not selected,false
-G08__csa,G08,G,,binary,Guidance documents used: Chinese Stomatological Association expert consensus / guidance on AI,1=selected | 0=not selected,false
-G08__moe_ai,G08,G,,binary,Guidance documents used: Ministry of Education guidance on AI in higher education,1=selected | 0=not selected,false
-G08__dci_ndc,G08,G,,binary,Guidance documents used: Dental Council of India regulations / National Dental Commission Act 2023,1=selected | 0=not selected,false
-G08__icmr_ai,G08,G,,binary,Guidance documents used: ICMR Ethical Guidelines for Application of AI in Biomedical Research and Healthcare (2023),1=selected | 0=not selected,false
-G08__dpdp,G08,G,,binary,Guidance documents used: Digital Personal Data Protection Act 2023 and Rules,1=selected | 0=not selected,false
-G08__cdsco,G08,G,,binary,Guidance documents used: CDSCO Medical Devices Rules 2017 — software as a medical device,1=selected | 0=not selected,false
-G08__abdm,G08,G,,binary,Guidance documents used: Ayushman Bharat Digital Mission (ABDM) health-data standards,1=selected | 0=not selected,false
-G08__ida,G08,G,,binary,Guidance documents used: Indian Dental Association guidance on AI,1=selected | 0=not selected,false
-G08__none,G08,G,,binary,Guidance documents used: None of these,1=selected | 0=not selected,false
-G09,G09,G,GOV,scale,Regulatory guidance incorporated,1=Not incorporated | 2=Aware but not incorporated | 3=Discussed in faculty meetings | 4=Incorporated into teaching and clinical protocols | -1=Don't know / N/A,false
-G10,G10,G,GOV,scale,Patient consent for AI,"1=Never | 2=Occasionally, at clinician discretion | 3=Required by policy but inconsistently applied | 4=Required by policy, documented in the record | -1=Don't know / N/A",false
-G11_ownership,G11,G,,grid,AI tool governance (AI-GUARD): Defined owner / responsible authority for each AI tool,2=Yes | 1=Partial | 0=No,false
-G11_vendor_docs,G11,G,,grid,"AI tool governance (AI-GUARD): Vendor documentation or model card reviewed (intended use, training data, limitations)",2=Yes | 1=Partial | 0=No,false
-G11_validation,G11,G,,grid,AI tool governance (AI-GUARD): Independent / external validation evidence reviewed,2=Yes | 1=Partial | 0=No,false
-G11_regulatory,G11,G,,grid,AI tool governance (AI-GUARD): Regulatory clearance verified for the intended use,2=Yes | 1=Partial | 0=No,false
-G11_subgroup,G11,G,,grid,AI tool governance (AI-GUARD): Performance across patient subgroups evaluated,2=Yes | 1=Partial | 0=No,false
-G11_human_review,G11,G,,grid,AI tool governance (AI-GUARD): Human review required before acting on AI output,2=Yes | 1=Partial | 0=No,false
-G11_override,G11,G,,grid,AI tool governance (AI-GUARD): Clinician override possible and logged,2=Yes | 1=Partial | 0=No,false
-G11_incident,G11,G,,grid,AI tool governance (AI-GUARD): Incident / error reporting process defined,2=Yes | 1=Partial | 0=No,false
-G11_updates,G11,G,,grid,AI tool governance (AI-GUARD): Update / version-change notification procedure defined,2=Yes | 1=Partial | 0=No,false
-G11_monitoring,G11,G,,grid,AI tool governance (AI-GUARD): Ongoing performance monitoring (drift) planned,2=Yes | 1=Partial | 0=No,false
-G12,G12,G,GOV,scale,Stakeholder involvement,"1=Not involved | 2=Limited, non-systematic involvement | 3=Involvement exists but inconsistent | 4=Well-established processes for systematic stakeholder input | -1=Don't know / N/A",false
-H01_1_name,H01,H,,text,Pilot projects #1: Project,,false
-H01_1_area,H01,H,,single,Pilot projects #1: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
-H01_2_name,H01,H,,text,Pilot projects #2: Project,,false
-H01_2_area,H01,H,,single,Pilot projects #2: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
-H01_3_name,H01,H,,text,Pilot projects #3: Project,,false
-H01_3_area,H01,H,,single,Pilot projects #3: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
-H02,H02,H,IMP,scale,Pilot maturity,"1=No pilot projects | 2=Initial pilots with limited outcomes | 3=Pilots ongoing, outcomes not yet assessed | 4=Pilots with positive, documented outcomes | -1=Don't know / N/A",false
-H03,H03,H,IMP,scale,Scalability,"1=No potential | 2=Limited potential; substantial effort required | 3=Some potential, requires significant resources and coordination | 4=High potential with a clear pathway | -1=Don't know / N/A",false
-H04,H04,H,IMP,scale,Workflow integration,1=Not integrated | 2=Used outside routine workflow | 3=Partly integrated | 4=Fully integrated in routine workflow | -1=Don't know / N/A,false
-H05,H05,H,IMP,scale,Performance metrics,1=No metrics | 2=Limited metrics | 3=Metrics exist but need refinement | 4=Comprehensive metrics with regular review | -1=Don't know / N/A,false
-H06,H06,H,IMP,scale,Evaluation framework,1=Not evaluated | 2=Student satisfaction only | 3=Learning outcomes measured | 4=Learning and clinical/behavioural outcomes measured | -1=Don't know / N/A,false
-H07,H07,H,IMP,scale,Feedback mechanisms,"1=None | 2=Informal feedback only | 3=Formal collection, inconsistent follow-up | 4=Formal collection with documented actions | -1=Don't know / N/A",false
-H08,H08,H,IMP,scale,Continuous improvement,1=No mechanisms | 2=Limited mechanisms | 3=Mechanisms exist but need better integration | 4=Comprehensive feedback loops | -1=Don't know / N/A,false
-H09,H09,H,IMP,scale,Cost-benefit evaluation,1=Never | 2=Informal estimate | 3=Formal evaluation for some initiatives | 4=Formal evaluation for all major initiatives | -1=Don't know / N/A,false
-H10,H10,H,IMP,scale,Financial sustainability,"1=No plans | 2=Initial discussions only | 3=Plans exist but incomplete | 4=Comprehensive, well-developed plans | -1=Don't know / N/A",false
-H11_1_name,H11,H,,text,Funding sources #1: Funding source,,false
-H11_1_type,H11,H,,single,Funding sources #1: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
-H11_2_name,H11,H,,text,Funding sources #2: Funding source,,false
-H11_2_type,H11,H,,single,Funding sources #2: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
-H11_3_name,H11,H,,text,Funding sources #3: Funding source,,false
-H11_3_type,H11,H,,single,Funding sources #3: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
-H12,H12,H,IMP,scale,Funding adequacy,"1=No funding | 2=Limited funding with significant gaps | 3=Funding available but inconsistent or insufficient | 4=Sufficient, reliable funding | -1=Don't know / N/A",false
-H13,H13,H,,single,Annual AI budget,"0=None | 1=Less than 5,000 | 2=5,000 – 25,000 | 3=25,001 – 100,000 | 4=More than 100,000 | -1=Don't know",false
-H14,H14,H,,number,AI grants (3 y) (grants),,false
-I01,I01,I,,scale,Overall maturity,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic curriculum integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
-I02__funding,I02,I,,binary,Primary barriers: Lack of funding,1=selected | 0=not selected,false
-I02__expertise,I02,I,,binary,Primary barriers: Lack of faculty expertise,1=selected | 0=not selected,false
-I02__time,I02,I,,binary,Primary barriers: Lack of time in the curriculum,1=selected | 0=not selected,false
-I02__leadership,I02,I,,binary,Primary barriers: Lack of leadership support,1=selected | 0=not selected,false
-I02__tools,I02,I,,binary,Primary barriers: Lack of clinical AI tools / infrastructure,1=selected | 0=not selected,false
-I02__ethics_legal,I02,I,,binary,Primary barriers: Ethical / legal uncertainty,1=selected | 0=not selected,false
-I02__students,I02,I,,binary,Primary barriers: Lack of student interest or preparedness,1=selected | 0=not selected,false
-I02__data,I02,I,,binary,Primary barriers: Lack of data access,1=selected | 0=not selected,false
-I02__accreditation,I02,I,,binary,Primary barriers: Accreditation / curriculum rules leave no room,1=selected | 0=not selected,false
-I02__language,I02,I,,binary,Primary barriers: Language barriers (tools/materials not in local language),1=selected | 0=not selected,false
-I02_other,I02,I,,text,Primary barriers — other (text),,false
-I03__champions,I03,I,,binary,Facilitators: Faculty champions,1=selected | 0=not selected,false
-I03__leadership,I03,I,,binary,Facilitators: Leadership support,1=selected | 0=not selected,false
-I03__funding,I03,I,,binary,Facilitators: Dedicated funding,1=selected | 0=not selected,false
-I03__partners,I03,I,,binary,Facilitators: Interdisciplinary partners,1=selected | 0=not selected,false
-I03__industry,I03,I,,binary,Facilitators: Industry partnerships,1=selected | 0=not selected,false
-I03__students,I03,I,,binary,Facilitators: Student demand,1=selected | 0=not selected,false
-I03__accreditation,I03,I,,binary,Facilitators: Accreditation / national guidelines,1=selected | 0=not selected,false
-I03__network,I03,I,,binary,Facilitators: National or international networks,1=selected | 0=not selected,false
-I03_other,I03,I,,text,Facilitators — other (text),,false
-I04,I04,I,,textarea,Most important need,,false
-I05,I05,I,,textarea,Innovative practice,,false
-I06,I06,I,,textarea,Vision 2030,,false
-I07,I07,I,,scale,Confidence in answers,1=Low | 2=Moderate | 3=High | 4=Very high (checked with records),false
-I08,I08,I,,single,Follow-up interview,1=Yes | 0=No,false
+G01,G01,G,HIN,scale,Electronic health record,"1=Paper records | 2=Electronic scheduling/billing only; clinical notes on paper | 3=Electronic clinical records, mostly free text | 4=Integrated electronic record with structured data, imaging and decision support | -1=Don't know / N/A",false
+G02,G02,G,,text,EHR system name,,false
+G03__icd,G03,G,,binary,Coding and terminologies: ICD-10 / ICD-11,1=selected | 0=not selected,false
+G03__snodent,G03,G,,binary,Coding and terminologies: SNODENT / SNOMED CT,1=selected | 0=not selected,false
+G03__procedure,G03,G,,binary,"Coding and terminologies: Procedure codes (CDT, TUSS or national equivalent)",1=selected | 0=not selected,false
+G03__none,G03,G,,binary,Coding and terminologies: Free text only / none,1=selected | 0=not selected,false
+G03_other,G03,G,,text,Coding and terminologies — other (text),,false
+G04,G04,G,HIN,scale,Digital imaging archive,1=Film or images not archived centrally | 2=Digital images stored per device or computer | 3=Central archive (PACS) for some modalities | 4=Enterprise PACS integrated with the health record via DICOM | -1=Don't know / N/A,false
+G05,G05,G,HIN,scale,Teledentistry,1=None | 2=Ad hoc use by individuals | 3=Structured program in some services | 4=Routine teledentistry with student involvement | -1=Don't know / N/A,false
+G06,G06,G,HIN,scale,Data analytics,1=Never | 2=Occasional manual reports | 3=Regular reports for some indicators | 4=Routine dashboards used for clinical and teaching quality decisions | -1=Don't know / N/A,false
+G07,G07,G,HIN,scale,Research access to clinical data,1=Not possible | 2=Ad hoc extracts by IT | 3=Formal request process | 4=Curated research data warehouse with governance | -1=Don't know / N/A,false
+G08,G08,G,HIN,scale,Public-health informatics / GIS,1=Never | 2=Occasionally | 3=In some projects or courses | 4=Routinely | -1=Don't know / N/A,false
+G09_ehr,G09,G,,number,Health informatics hours by topic: Electronic records and documentation quality (hours per term),,false
+G09_standards,G09,G,,number,"Health informatics hours by topic: Coding, terminologies and interoperability standards (hours per term)",,false
+G09_tele,G09,G,,number,Health informatics hours by topic: Teledentistry and digital communication (hours per term),,false
+G09_analytics,G09,G,,number,"Health informatics hours by topic: Data analytics, epidemiology and GIS (hours per term)",,false
+G09_privacy,G09,G,,number,"Health informatics hours by topic: Privacy, cybersecurity and data protection law (hours per term)",,false
+G10,G10,G,HIN,scale,Informatics teaching depth,1=None | 2=Mentioned in lectures | 3=Dedicated module | 4=Dedicated course with practical assessment | -1=Don't know / N/A,false
+G11,G11,G,,number,Faculty with informatics training (faculty),,false
+G12,G12,G,HIN,scale,Clinical informatics staff,1=None | 2=Central university IT only | 3=Shared clinical informatics staff | 4=Dedicated clinical informatics team for the school | -1=Don't know / N/A,false
+H01_robot_implant,H01,H,,number,Equipment inventory: Robot-assisted implant surgery systems (units available),,false
+H01_robot_other,H01,H,,number,"Equipment inventory: Other surgical, endodontic or automated robotic systems (units available)",,false
+H01_navigation,H01,H,,number,Equipment inventory: Dynamic navigation systems for guided surgery (units available),,false
+H01_haptic,H01,H,,number,Equipment inventory: Haptic or virtual-reality dental simulators (units available),,false
+H01_phantom,H01,H,,number,Equipment inventory: Conventional simulation units (phantom heads) (units available),,false
+H01_ios,H01,H,,number,Equipment inventory: Intraoral scanners (units available),,false
+H01_cbct,H01,H,,number,Equipment inventory: CBCT units (units available),,false
+H01_milling,H01,H,,number,Equipment inventory: Chairside or lab milling units (CAD/CAM) (units available),,false
+H01_printer,H01,H,,number,Equipment inventory: 3D printers (units available),,false
+H01_xr,H01,H,,number,Equipment inventory: Augmented/virtual-reality headsets (units available),,false
+H02,H02,H,,single,Equipment age,1=Less than 3 years | 2=3–5 years | 3=6–10 years | 4=More than 10 years | -1=Don't know,false
+H03,H03,H,ROB,scale,Student access to robotics,1=No access | 2=Demonstration only | 3=Supervised hands-on practice in preclinic | 4=Regular hands-on practice including supervised clinical cases | -1=Don't know / N/A,false
+H04,H04,H,ROB,scale,Digital workflow,1=Analog only | 2=Partial digital steps | 3=Full digital workflow in some clinics | 4=Full digital workflow routine across clinics and teaching | -1=Don't know / N/A,false
+H05_cadcam,H05,H,,number,"Robotics/digital hours by topic: Digital workflow, CAD/CAM and 3D printing (hours per term)",,false
+H05_simulation,H05,H,,number,Robotics/digital hours by topic: Haptic / virtual-reality simulation (hours per term),,false
+H05_robotic_surgery,H05,H,,number,"Robotics/digital hours by topic: Robot-assisted surgery (principles, demonstration, practice) (hours per term)",,false
+H05_navigation,H05,H,,number,Robotics/digital hours by topic: Navigation and guided surgery (hours per term),,false
+H05_engineering,H05,H,,number,"Robotics/digital hours by topic: Engineering, automation and maintenance basics (hours per term)",,false
+H06,H06,H,,number,Faculty trained in robotics (faculty),,false
+H07,H07,H,,number,Technical support FTE (FTE),,false
+H08,H08,H,ROB,scale,Maintenance and replacement,1=No plan | 2=Ad hoc repairs | 3=Service contracts for some equipment | 4=Full maintenance and replacement plan with budget | -1=Don't know / N/A,false
+H09,H09,H,ROB,scale,Safety and credentialing,"1=None | 2=Informal supervision | 3=Written protocol, not always applied | 4=Formal credentialing with documented training and supervision | -1=Don't know / N/A",false
+H10,H10,H,ROB,scale,Robotics research,1=None | 2=Individual projects | 3=Funded projects | 4=Established research group with engineering partners | -1=Don't know / N/A,false
+I01__wetlab,I01,I,,binary,Laboratory resources: Molecular biology laboratory,1=selected | 0=not selected,false
+I01__sequencer,I01,I,,binary,Laboratory resources: DNA/RNA sequencer in the department or school,1=selected | 0=not selected,false
+I01__core,I01,I,,binary,Laboratory resources: University sequencing / genomics core facility,1=selected | 0=not selected,false
+I01__biobank,I01,I,,binary,"Laboratory resources: Biobank of oral samples (saliva, plaque, tissue)",1=selected | 0=not selected,false
+I01__massspec,I01,I,,binary,Laboratory resources: Mass spectrometry (proteomics / metabolomics),1=selected | 0=not selected,false
+I01__hpc,I01,I,,binary,Laboratory resources: High-performance computing for bioinformatics,1=selected | 0=not selected,false
+I01__none,I01,I,,binary,Laboratory resources: None,1=selected | 0=not selected,false
+I01_other,I01,I,,text,Laboratory resources — other (text),,false
+I02,I02,I,BIO,scale,Biobank and sample governance,"1=None | 2=Samples collected per project only | 3=Biobank with consent protocol | 4=Biobank with linked clinical data, governance and use by several projects | -1=Don't know / N/A",false
+I03__microbiome,I03,I,,binary,Research areas: Oral microbiome,1=selected | 0=not selected,false
+I03__genomics,I03,I,,binary,Research areas: Host genomics / genetic association studies,1=selected | 0=not selected,false
+I03__transcriptomics,I03,I,,binary,Research areas: Transcriptomics,1=selected | 0=not selected,false
+I03__proteomics,I03,I,,binary,"Research areas: Proteomics / metabolomics (e.g., saliva)",1=selected | 0=not selected,false
+I03__epigenetics,I03,I,,binary,Research areas: Epigenetics,1=selected | 0=not selected,false
+I03__craniofacial,I03,I,,binary,Research areas: Craniofacial and developmental genetics,1=selected | 0=not selected,false
+I03__amr,I03,I,,binary,Research areas: Antimicrobial resistance,1=selected | 0=not selected,false
+I03__none,I03,I,,binary,Research areas: None,1=selected | 0=not selected,false
+I03_other,I03,I,,text,Research areas — other (text),,false
+I04__qiime,I04,I,,binary,Software and pipelines: QIIME 2 / mothur (microbiome),1=selected | 0=not selected,false
+I04__bioconductor,I04,I,,binary,Software and pipelines: R / Bioconductor,1=selected | 0=not selected,false
+I04__galaxy,I04,I,,binary,Software and pipelines: Galaxy,1=selected | 0=not selected,false
+I04__python,I04,I,,binary,"Software and pipelines: Python (Biopython, scikit-bio)",1=selected | 0=not selected,false
+I04__workflow,I04,I,,binary,"Software and pipelines: Workflow managers (Nextflow, Snakemake)",1=selected | 0=not selected,false
+I04__databases,I04,I,,binary,"Software and pipelines: Public databases (NCBI, HOMD, UniProt)",1=selected | 0=not selected,false
+I04__none,I04,I,,binary,Software and pipelines: None,1=selected | 0=not selected,false
+I04_other,I04,I,,text,Software and pipelines — other (text),,false
+I05,I05,I,,number,Faculty with bioinformatics expertise (faculty),,false
+I06,I06,I,BIO,scale,Bioinformatics support,1=None | 2=External collaborators only | 3=Shared university core facility | 4=Dedicated bioinformatician in the department | -1=Don't know / N/A,false
+I07_basics,I07,I,,number,Bioinformatics hours by topic: Molecular biology and genetics foundations for omics (hours per term),,false
+I07_microbiome,I07,I,,number,Bioinformatics hours by topic: Microbiome analysis (hours per term),,false
+I07_sequencing,I07,I,,number,Bioinformatics hours by topic: Sequencing data analysis (hours per term),,false
+I07_biostat,I07,I,,number,Bioinformatics hours by topic: Statistics for high-dimensional data (hours per term),,false
+I07_fair,I07,I,,number,Bioinformatics hours by topic: Data sharing and FAIR principles (hours per term),,false
+I08,I08,I,BIO,scale,Bioinformatics teaching depth,1=None | 2=Conceptual only | 3=Demonstrations | 4=Hands-on analysis of real data | -1=Don't know / N/A,false
+I09,I09,I,,number,Omics publications (3 y) (publications),,false
+I10,I10,I,BIO,scale,Data sharing (FAIR),1=Not shared | 2=Shared on request | 3=Sometimes deposited in public repositories | 4=Routinely deposited with FAIR metadata | -1=Don't know / N/A,false
+J01,J01,J,GOV,scale,Written plan,"1=None | 2=Informal consensus, not documented | 3=Draft document under discussion | 4=Formal strategic plan, regularly reviewed | -1=Don't know / N/A",false
+J02,J02,J,GOV,scale,Leadership commitment,"1=No commitment shown | 2=Initial interest, no concrete actions | 3=Some commitment, inconsistent or limited in scope | 4=Strong commitment with ongoing initiatives and resources | -1=Don't know / N/A",false
+J03,J03,J,GOV,scale,Oversight structure,"1=None | 2=Informal responsibility | 3=Committee or person named, limited mandate | 4=Formal committee with mandate, reporting line and regular meetings | -1=Don't know / N/A",false
+J04,J04,J,GOV,scale,AI ethics teaching,1=None | 2=Brief mention only | 3=1 dedicated session | 4=Systematic integration with case-based discussion and assessment | -1=Don't know / N/A,false
+J05__bias,J05,J,,binary,Ethics topics: Algorithmic bias and equity,1=selected | 0=not selected,false
+J05__privacy,J05,J,,binary,Ethics topics: Privacy and data protection,1=selected | 0=not selected,false
+J05__consent,J05,J,,binary,Ethics topics: Informed consent for technology use with patients,1=selected | 0=not selected,false
+J05__accountability,J05,J,,binary,Ethics topics: Professional accountability / liability,1=selected | 0=not selected,false
+J05__transparency,J05,J,,binary,Ethics topics: Transparency and explainability,1=selected | 0=not selected,false
+J05__automation,J05,J,,binary,Ethics topics: Automation bias / over-reliance,1=selected | 0=not selected,false
+J05__ip,J05,J,,binary,Ethics topics: Intellectual property and authorship,1=selected | 0=not selected,false
+J05__environment,J05,J,,binary,Ethics topics: Environmental impact of AI,1=selected | 0=not selected,false
+J05__integrity,J05,J,,binary,Ethics topics: Academic integrity,1=selected | 0=not selected,false
+J05__genetic,J05,J,,binary,Ethics topics: Genetic data and biobank ethics,1=selected | 0=not selected,false
+J05__none,J05,J,,binary,Ethics topics: None,1=selected | 0=not selected,false
+J06,J06,J,GOV,scale,Bias teaching,1=Not taught | 2=Mentioned informally | 3=1 dedicated session | 4=Hands-on exercises with real or simulated subgroup analyses | -1=Don't know / N/A,false
+J07,J07,J,GOV,scale,Ethical guidelines available,"1=None available | 2=Some documents exist but are incomplete | 3=Guidelines exist but need dissemination | 4=Comprehensive, well-implemented guidelines available | -1=Don't know / N/A",false
+J08__who_ethics,J08,J,,binary,Guidance documents used: WHO — Ethics and governance of AI for health (2021) and guidance on large multi-modal models (2024/2025),1=selected | 0=not selected,false
+J08__unesco_genai,J08,J,,binary,Guidance documents used: UNESCO — Guidance for generative AI in education and research (2023),1=selected | 0=not selected,false
+J08__iadr_itu_core,J08,J,,binary,"Guidance documents used: IADR / ITU-WHO Focus Group — Core curriculum for oral and dental AI (Schwendicke et al., 2023)",1=selected | 0=not selected,false
+J08__ai_reporting,J08,J,,binary,"Guidance documents used: AI reporting guidelines (CONSORT-AI, SPIRIT-AI, TRIPOD+AI, STARD-AI, CLAIM, dental AI checklist)",1=selected | 0=not selected,false
+J08__paho_toolkits,J08,J,,binary,"Guidance documents used: PAHO/WHO AI toolkits (Readiness Assessment, AI-GUARD, Bias-free AI, Prompt design)",1=selected | 0=not selected,false
+J08__ada_standards,J08,J,,binary,"Guidance documents used: ADA Technical Report 1109, ANSI/ADA Standard 1110-1:2025, ADA White Paper 1106",1=selected | 0=not selected,false
+J08__coda,J08,J,,binary,Guidance documents used: CODA accreditation standards (AI/technology-related elements),1=selected | 0=not selected,false
+J08__hipaa,J08,J,,binary,Guidance documents used: HIPAA privacy and security rules applied to AI tools,1=selected | 0=not selected,false
+J08__fda_ai,J08,J,,binary,Guidance documents used: FDA guidance on AI-enabled device software functions,1=selected | 0=not selected,false
+J08__adea,J08,J,,binary,Guidance documents used: ADEA guidance or competencies relating to AI,1=selected | 0=not selected,false
+J08__cda,J08,J,,binary,Guidance documents used: Canadian Dental Association position statements / guidance on AI,1=selected | 0=not selected,false
+J08__cdac,J08,J,,binary,Guidance documents used: CDAC accreditation standards (technology-related elements),1=selected | 0=not selected,false
+J08__pipeda,J08,J,,binary,"Guidance documents used: PIPEDA / provincial health-privacy laws (PHIPA, Quebec Law 25)",1=selected | 0=not selected,false
+J08__hc_mlmd,J08,J,,binary,Guidance documents used: Health Canada guidance for machine-learning-enabled medical devices,1=selected | 0=not selected,false
+J08__cfo,J08,J,,binary,Guidance documents used: CFO resolutions / guidance on digital dentistry and AI,1=selected | 0=not selected,false
+J08__lgpd,J08,J,,binary,Guidance documents used: LGPD (Lei 13.709/2018) — health data protection,1=selected | 0=not selected,false
+J08__anvisa_samd,J08,J,,binary,Guidance documents used: ANVISA RDC 657/2022 — Software as a Medical Device,1=selected | 0=not selected,false
+J08__dcn_odonto,J08,J,,binary,Guidance documents used: DCN Odontologia (Resolução CNE/CES 3/2021),1=selected | 0=not selected,false
+J08__pl2338,J08,J,,binary,Guidance documents used: PL 2338/2023 — Brazilian AI regulatory bill,1=selected | 0=not selected,false
+J08__conep,J08,J,,binary,"Guidance documents used: CNS/CONEP research-ethics resolutions (466/2012, 510/2016)",1=selected | 0=not selected,false
+J08__pipl,J08,J,,binary,Guidance documents used: Personal Information Protection Law (2021) / Data Security Law (2021),1=selected | 0=not selected,false
+J08__nmpa_ai,J08,J,,binary,Guidance documents used: NMPA guidelines for registration review of AI medical device software,1=selected | 0=not selected,false
+J08__cn_genai,J08,J,,binary,Guidance documents used: Interim Measures for the Management of Generative AI Services (2023),1=selected | 0=not selected,false
+J08__nhc_ai,J08,J,,binary,Guidance documents used: National Health Commission guidance on AI application scenarios in health care,1=selected | 0=not selected,false
+J08__csa,J08,J,,binary,Guidance documents used: Chinese Stomatological Association expert consensus / guidance on AI,1=selected | 0=not selected,false
+J08__moe_ai,J08,J,,binary,Guidance documents used: Ministry of Education guidance on AI in higher education,1=selected | 0=not selected,false
+J08__dci_ndc,J08,J,,binary,Guidance documents used: Dental Council of India regulations / National Dental Commission Act 2023,1=selected | 0=not selected,false
+J08__icmr_ai,J08,J,,binary,Guidance documents used: ICMR Ethical Guidelines for Application of AI in Biomedical Research and Healthcare (2023),1=selected | 0=not selected,false
+J08__dpdp,J08,J,,binary,Guidance documents used: Digital Personal Data Protection Act 2023 and Rules,1=selected | 0=not selected,false
+J08__cdsco,J08,J,,binary,Guidance documents used: CDSCO Medical Devices Rules 2017 — software as a medical device,1=selected | 0=not selected,false
+J08__abdm,J08,J,,binary,Guidance documents used: Ayushman Bharat Digital Mission (ABDM) health-data standards,1=selected | 0=not selected,false
+J08__ida,J08,J,,binary,Guidance documents used: Indian Dental Association guidance on AI,1=selected | 0=not selected,false
+J08__none,J08,J,,binary,Guidance documents used: None of these,1=selected | 0=not selected,false
+J09,J09,J,GOV,scale,Regulatory guidance incorporated,1=Not incorporated | 2=Aware but not incorporated | 3=Discussed in faculty meetings | 4=Incorporated into teaching and clinical protocols | -1=Don't know / N/A,false
+J10,J10,J,GOV,scale,Patient consent,"1=Never | 2=Occasionally, at clinician discretion | 3=Required by policy but inconsistently applied | 4=Required by policy, documented in the record | -1=Don't know / N/A",false
+J11_ownership,J11,J,,grid,AI tool governance (AI-GUARD): Defined owner / responsible authority for each AI tool,2=Yes | 1=Partial | 0=No,false
+J11_vendor_docs,J11,J,,grid,"AI tool governance (AI-GUARD): Vendor documentation or model card reviewed (intended use, training data, limitations)",2=Yes | 1=Partial | 0=No,false
+J11_validation,J11,J,,grid,AI tool governance (AI-GUARD): Independent / external validation evidence reviewed,2=Yes | 1=Partial | 0=No,false
+J11_regulatory,J11,J,,grid,AI tool governance (AI-GUARD): Regulatory clearance verified for the intended use,2=Yes | 1=Partial | 0=No,false
+J11_subgroup,J11,J,,grid,AI tool governance (AI-GUARD): Performance across patient subgroups evaluated,2=Yes | 1=Partial | 0=No,false
+J11_human_review,J11,J,,grid,AI tool governance (AI-GUARD): Human review required before acting on AI output,2=Yes | 1=Partial | 0=No,false
+J11_override,J11,J,,grid,AI tool governance (AI-GUARD): Clinician override possible and logged,2=Yes | 1=Partial | 0=No,false
+J11_incident,J11,J,,grid,AI tool governance (AI-GUARD): Incident / error reporting process defined,2=Yes | 1=Partial | 0=No,false
+J11_updates,J11,J,,grid,AI tool governance (AI-GUARD): Update / version-change notification procedure defined,2=Yes | 1=Partial | 0=No,false
+J11_monitoring,J11,J,,grid,AI tool governance (AI-GUARD): Ongoing performance monitoring (drift) planned,2=Yes | 1=Partial | 0=No,false
+J12,J12,J,GOV,scale,Stakeholder involvement,"1=Not involved | 2=Limited, non-systematic involvement | 3=Involvement exists but inconsistent | 4=Well-established processes for systematic stakeholder input | -1=Don't know / N/A",false
+K01_1_name,K01,K,,text,Pilot projects #1: Project,,false
+K01_1_domain,K01,K,,single,Pilot projects #1: Domain,1=AI | 2=Health informatics | 3=Robotics / digital dentistry | 4=Bioinformatics,false
+K01_1_area,K01,K,,single,Pilot projects #1: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
+K01_2_name,K01,K,,text,Pilot projects #2: Project,,false
+K01_2_domain,K01,K,,single,Pilot projects #2: Domain,1=AI | 2=Health informatics | 3=Robotics / digital dentistry | 4=Bioinformatics,false
+K01_2_area,K01,K,,single,Pilot projects #2: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
+K01_3_name,K01,K,,text,Pilot projects #3: Project,,false
+K01_3_domain,K01,K,,single,Pilot projects #3: Domain,1=AI | 2=Health informatics | 3=Robotics / digital dentistry | 4=Bioinformatics,false
+K01_3_area,K01,K,,single,Pilot projects #3: Area,1=Teaching / learning | 2=Assessment | 3=Clinical care | 4=Research | 5=Administration,false
+K02,K02,K,IMP,scale,Pilot maturity,"1=No pilot projects | 2=Initial pilots with limited outcomes | 3=Pilots ongoing, outcomes not yet assessed | 4=Pilots with positive, documented outcomes | -1=Don't know / N/A",false
+K03,K03,K,IMP,scale,Scalability,"1=No potential | 2=Limited potential; substantial effort required | 3=Some potential, requires significant resources and coordination | 4=High potential with a clear pathway | -1=Don't know / N/A",false
+K04,K04,K,IMP,scale,Workflow integration,1=Not integrated | 2=Used outside routine workflow | 3=Partly integrated | 4=Fully integrated in routine workflow | -1=Don't know / N/A,false
+K05,K05,K,IMP,scale,Performance metrics,1=No metrics | 2=Limited metrics | 3=Metrics exist but need refinement | 4=Comprehensive metrics with regular review | -1=Don't know / N/A,false
+K06,K06,K,IMP,scale,Evaluation framework,1=Not evaluated | 2=Student satisfaction only | 3=Learning outcomes measured | 4=Learning and clinical/behavioural outcomes measured | -1=Don't know / N/A,false
+K07,K07,K,IMP,scale,Feedback mechanisms,"1=None | 2=Informal feedback only | 3=Formal collection, inconsistent follow-up | 4=Formal collection with documented actions | -1=Don't know / N/A",false
+K08,K08,K,IMP,scale,Continuous improvement,1=No mechanisms | 2=Limited mechanisms | 3=Mechanisms exist but need better integration | 4=Comprehensive feedback loops | -1=Don't know / N/A,false
+K09,K09,K,IMP,scale,Cost-benefit evaluation,1=Never | 2=Informal estimate | 3=Formal evaluation for some initiatives | 4=Formal evaluation for all major initiatives | -1=Don't know / N/A,false
+K10,K10,K,IMP,scale,Financial sustainability,"1=No plans | 2=Initial discussions only | 3=Plans exist but incomplete | 4=Comprehensive, well-developed plans | -1=Don't know / N/A",false
+K11_1_name,K11,K,,text,Funding sources #1: Funding source,,false
+K11_1_type,K11,K,,single,Funding sources #1: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
+K11_2_name,K11,K,,text,Funding sources #2: Funding source,,false
+K11_2_type,K11,K,,single,Funding sources #2: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
+K11_3_name,K11,K,,text,Funding sources #3: Funding source,,false
+K11_3_type,K11,K,,single,Funding sources #3: Type,"1=Institutional budget | 2=National research agency (e.g., NIH, CIHR, CNPq/CAPES/FAPs, NSFC, ICMR/DST) | 3=Industry | 4=Philanthropy / foundation | 5=International agency | 6=Other",false
+K12,K12,K,IMP,scale,Funding adequacy,"1=No funding | 2=Limited funding with significant gaps | 3=Funding available but inconsistent or insufficient | 4=Sufficient, reliable funding | -1=Don't know / N/A",false
+K13,K13,K,,single,Annual budget,"0=None | 1=Less than 5,000 | 2=5,000 – 25,000 | 3=25,001 – 100,000 | 4=More than 100,000 | -1=Don't know",false
+K14,K14,K,,number,Grants (3 y) (grants),,false
+L01,L01,L,,single,Interest in ICARB-D projects,1=Not interested | 2=Would like more information | 3=Interested in participating | 4=Already involved,false
+L02__periapical,L02,L,,binary,Data that could be contributed: Periapical / bitewing radiographs,1=selected | 0=not selected,false
+L02__panoramic,L02,L,,binary,Data that could be contributed: Panoramic radiographs,1=selected | 0=not selected,false
+L02__cbct,L02,L,,binary,Data that could be contributed: CBCT,1=selected | 0=not selected,false
+L02__ios,L02,L,,binary,Data that could be contributed: Intraoral scans (3D),1=selected | 0=not selected,false
+L02__photos,L02,L,,binary,Data that could be contributed: Clinical photographs,1=selected | 0=not selected,false
+L02__records,L02,L,,binary,Data that could be contributed: Structured clinical records,1=selected | 0=not selected,false
+L02__histology,L02,L,,binary,Data that could be contributed: Histopathology images,1=selected | 0=not selected,false
+L02__omics,L02,L,,binary,Data that could be contributed: Omics / microbiome data,1=selected | 0=not selected,false
+L02__none,L02,L,,binary,Data that could be contributed: None,1=selected | 0=not selected,false
+L03,L03,L,,number,Images available for sharing (images/records),,false
+L04,L04,L,,scale,Ability to share data,1=Not possible | 2=Possible only with a new ethics approval | 3=Possible under existing approvals and data-sharing agreements | 4=Already sharing data with external partners | -1=Don't know / N/A,false
+L05__federated,L05,L,,binary,Preferred ways to collaborate: Federated learning (data stays at our institution),1=selected | 0=not selected,false
+L05__central,L05,L,,binary,Preferred ways to collaborate: Contributing de-identified data to a central repository,1=selected | 0=not selected,false
+L05__annotation,L05,L,,binary,Preferred ways to collaborate: Annotating / labelling images,1=selected | 0=not selected,false
+L05__validation,L05,L,,binary,Preferred ways to collaborate: Testing and validating models on our own data,1=selected | 0=not selected,false
+L05__teaching,L05,L,,binary,Preferred ways to collaborate: Sharing curricula and teaching materials,1=selected | 0=not selected,false
+L05__grants,L05,L,,binary,Preferred ways to collaborate: Joint grant applications and publications,1=selected | 0=not selected,false
+L05_other,L05,L,,text,Preferred ways to collaborate — other (text),,false
+L06__law,L06,L,,binary,Barriers to sharing: Privacy law / legal uncertainty,1=selected | 0=not selected,false
+L06__ethics,L06,L,,binary,Barriers to sharing: Ethics approval,1=selected | 0=not selected,false
+L06__policy,L06,L,,binary,Barriers to sharing: Institutional policy,1=selected | 0=not selected,false
+L06__technical,L06,L,,binary,Barriers to sharing: Technical capacity,1=selected | 0=not selected,false
+L06__quality,L06,L,,binary,Barriers to sharing: Data quality or lack of annotation,1=selected | 0=not selected,false
+L06__ip,L06,L,,binary,Barriers to sharing: Intellectual property concerns,1=selected | 0=not selected,false
+L06__time,L06,L,,binary,Barriers to sharing: Staff time,1=selected | 0=not selected,false
+L06__none,L06,L,,binary,Barriers to sharing: No major barriers,1=selected | 0=not selected,false
+L06_other,L06,L,,text,Barriers to sharing — other (text),,false
+L07,L07,L,,number,People available (people),,false
+L08,L08,L,,textarea,Project ideas,,false
+M01,M01,M,,scale,Overall maturity — AI,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M02,M02,M,,scale,Overall maturity — health informatics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M03,M03,M,,scale,Overall maturity — robotics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M04,M04,M,,scale,Overall maturity — bioinformatics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M05__funding,M05,M,,binary,Primary barriers: Lack of funding,1=selected | 0=not selected,false
+M05__expertise,M05,M,,binary,Primary barriers: Lack of faculty expertise,1=selected | 0=not selected,false
+M05__time,M05,M,,binary,Primary barriers: Lack of time in the curriculum,1=selected | 0=not selected,false
+M05__leadership,M05,M,,binary,Primary barriers: Lack of leadership support,1=selected | 0=not selected,false
+M05__equipment,M05,M,,binary,Primary barriers: Lack of equipment / infrastructure,1=selected | 0=not selected,false
+M05__ethics_legal,M05,M,,binary,Primary barriers: Ethical / legal uncertainty,1=selected | 0=not selected,false
+M05__students,M05,M,,binary,Primary barriers: Lack of student interest or preparedness,1=selected | 0=not selected,false
+M05__data,M05,M,,binary,Primary barriers: Lack of data access,1=selected | 0=not selected,false
+M05__accreditation,M05,M,,binary,Primary barriers: Accreditation / curriculum rules leave no room,1=selected | 0=not selected,false
+M05__language,M05,M,,binary,Primary barriers: Language barriers (tools/materials not in local language),1=selected | 0=not selected,false
+M05_other,M05,M,,text,Primary barriers — other (text),,false
+M06__champions,M06,M,,binary,Facilitators: Faculty champions,1=selected | 0=not selected,false
+M06__leadership,M06,M,,binary,Facilitators: Leadership support,1=selected | 0=not selected,false
+M06__funding,M06,M,,binary,Facilitators: Dedicated funding,1=selected | 0=not selected,false
+M06__partners,M06,M,,binary,Facilitators: Interdisciplinary partners,1=selected | 0=not selected,false
+M06__industry,M06,M,,binary,Facilitators: Industry partnerships,1=selected | 0=not selected,false
+M06__students,M06,M,,binary,Facilitators: Student demand,1=selected | 0=not selected,false
+M06__accreditation,M06,M,,binary,Facilitators: Accreditation / national guidelines,1=selected | 0=not selected,false
+M06__network,M06,M,,binary,Facilitators: National or international networks,1=selected | 0=not selected,false
+M06_other,M06,M,,text,Facilitators — other (text),,false
+M07,M07,M,,textarea,Most important need,,false
+M08,M08,M,,textarea,Innovative practice,,false
+M09,M09,M,,textarea,Vision 2030,,false
+M10,M10,M,,scale,Confidence in answers,1=Low | 2=Moderate | 3=High | 4=Very high (checked with records),false
+M11,M11,M,,single,Follow-up interview,1=Yes | 0=No,false

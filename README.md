@@ -1,66 +1,70 @@
-# AI Readiness in Dental Schools 2026
+# ICARB-D Annual Survey of Dental Schools
 
-**Course-level mapping of artificial intelligence (AI) readiness in dental education in Canada, the United States, Brazil, China and India.**
+**An annual, course-level survey of the maturity of artificial intelligence, health informatics, robotics and bioinformatics in dental schools in Canada, the United States, Brazil, China and India.**
 
-This is the first study of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). This repository holds the questionnaire, the data-collection website and the analysis code for a multinational cross-sectional study. The study measures how far AI has been integrated into dental education **department by department and course by course**, then consolidates the results by school and by country.
+This is the survey of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium's main goal is to be a central point of collaboration for universities and dentists and to build a free, open AI model for dentistry through joint work. This repository holds the questionnaire, the data-collection website and the analysis code.
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
-- Questionnaire (Word): [docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx](docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx)
-- Questionnaire (PDF): [docs/AI-Readiness-Questionnaire-Dental-Schools-2026.pdf](docs/AI-Readiness-Questionnaire-Dental-Schools-2026.pdf)
+- **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
+- Questionnaire (Word): [docs/ICARB-D-Annual-Survey-Dental-Schools.docx](docs/ICARB-D-Annual-Survey-Dental-Schools.docx)
+- Questionnaire (PDF): [docs/ICARB-D-Annual-Survey-Dental-Schools.pdf](docs/ICARB-D-Annual-Survey-Dental-Schools.pdf)
 - Codebook (one line per data column): [docs/codebook.csv](docs/codebook.csv)
 
 ## Proposed article title
 
-> **Course-Level Mapping of Artificial Intelligence Readiness in Dental Education: A Multinational Assessment of Infrastructure, Human Resources, Curriculum Hours and Governance in Canada, the United States, Brazil, China and India**
+> **Mapping the Digital Maturity of Dental Education: An Annual, Course-Level Survey of Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in Canada, the United States, Brazil, China and India**
 
 Alternatives:
 
-- *Which Course, Which Department? A Specificity-Preserving Readiness Assessment of Artificial Intelligence Integration in Dental Schools of the Americas and Asia*
-- *From Awareness to Implementation: Department-Level Maturity of Artificial Intelligence in Dental Education in Five Countries — A Cross-Sectional Study Using an Adapted PAHO/WHO Readiness Framework*
+- *Which Course, Which Department? Physical and Human Resources for Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in Dental Schools of the Americas and Asia — Baseline Results of the ICARB-D Annual Survey*
+- *From Awareness to Implementation: Department-Level Maturity of Digital Technologies in Dental Education in Five Countries — A Cross-Sectional Study Using an Adapted PAHO/WHO Readiness Framework*
 
-## Why this study
+## What the survey measures
 
-Most published work on AI in dental education surveys the **perceptions** of students or educators, usually at one institution (see [Related studies](#related-studies)). Few studies measure what schools actually **provide**: computing resources, AI tools students use, trained faculty, hours of AI teaching by topic (including programming and formal model development), governance and funding. No study has measured this at the level of named departments and courses across several countries. China and India, which together train a large share of the world's dentists, are underrepresented.
+The survey gives a comprehensive overview of the maturity of each department or course in four technology domains:
 
-## Objectives
+| Domain | What is pictured |
+|---|---|
+| Artificial intelligence | Computing, AI tools used by students, datasets, faculty able to teach AI, AI hours by 16 topics (incl. programming and model development), generative-AI policy |
+| Health informatics | Electronic records, imaging archives (PACS), coding, teledentistry, analytics, research data access, informatics teaching and staff |
+| Robotics and digital dentistry | Counts of robots, navigation systems, haptic/VR simulators, scanners, CBCT, milling units, 3D printers; student access, digital workflow, maintenance, teaching hours, trained faculty |
+| Bioinformatics and omics | Laboratories, sequencers, biobanks, HPC, pipelines, bioinformaticians, teaching hours, research areas, FAIR data sharing |
 
-1. Describe physical infrastructure: computing, AI-enabled equipment, software, datasets, connectivity, interoperability and cybersecurity.
-2. Describe human resources: faculty able to teach AI, AI researchers, faculty training, technical staff and interdisciplinary partners.
-3. Quantify AI teaching: dedicated undergraduate and graduate courses, **hours per term by format and by topic**, programming and model-development hours, assessment and materials.
-4. Assess generative-AI policy, governance, ethics, bias and regulatory alignment, with country-specific references.
-5. Assess implementation, monitoring, evaluation and financial sustainability.
-6. Build a maturity index per department, school and country.
+For every domain it captures **physical resources** (equipment, infrastructure, data) and **human resources** (faculty, technical staff, partners), plus teaching, governance, implementation and sustainability. It also maps each department's capacity to contribute to the consortium's open dental AI model.
+
+The survey is **annual**: each wave maps the state of the art across universities and courses, and linking waves shows how each department develops.
 
 ## Framework
 
-The questionnaire adapts four PAHO/WHO publications (with the Inter-American Development Bank):
-
 | Source | Used for |
 |---|---|
-| *AI in Public Health: Readiness Assessment Toolkit* (2024) | Domains, 1–4 maturity scale, analysis steps |
-| *AI-GUARD: AI Governance & Use Assessment for Responsible Deployment* (2026) | Yes/Partial/No governance checklist for AI tools (G11) and generative-AI safeguards (F06) |
-| *Bias-free AI in Health: Dos and don'ts* (2026) | Data representativeness (C16), subgroup-performance teaching (G06) |
-| *AI Prompt Design for Public Health* (2025) | Prompt-design and output-verification teaching (F04–F05) |
-
-It also references the IADR / ITU-WHO core curriculum for dental AI (Schwendicke et al., 2023).
+| PAHO/WHO–IDB *AI in Public Health: Readiness Assessment Toolkit* (2024) | Dimensions, 1–4 maturity scale, analysis steps |
+| PAHO/WHO–IDB *AI-GUARD* (2026) | Yes/Partial/No governance checklist for AI tools (J11) and generative-AI safeguards (F06) |
+| PAHO *Bias-free AI in Health* (2026) | Data representativeness (C15), subgroup-performance teaching (J06) |
+| PAHO *AI Prompt Design for Public Health* (2025) | Prompt-design and output-verification teaching (F04–F05) |
+| IADR / ITU-WHO core curriculum for dental AI (Schwendicke et al., 2023) | Curriculum alignment (E20) |
 
 ## Questionnaire structure
 
-About 120 items in 9 parts, stored as 364 data columns.
+174 questions in 13 parts, stored as 485 data columns. The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
 
 | Part | Content | Filled by |
 |---|---|---|
-| A | Department/course profile: country, institution, department, course, level, respondent role, consent | Research team |
-| B | Context: enrollment, faculty, academic calendar, course hours | Respondent |
-| C | Physical resources, infrastructure and data (23 items, including a table of up to 6 AI tools) | Respondent |
-| D | Human resources and expertise (16 items) | Respondent |
-| E | Curriculum and teaching: AI hours by format and by 16 topics, programming hours, undergraduate and graduate AI courses, assessment (24 items) | Respondent |
-| F | Generative AI in teaching and learning (8 items) | Respondent |
-| G | Governance, ethics, bias and regulation (12 items) | Respondent |
-| H | Implementation, monitoring, evaluation and sustainability (14 items) | Respondent |
-| I | Self-assessment and open response (8 items) | Respondent |
+| A | Profile: country, school, department, course, level, role, consent, **survey year**, previous year's code | Research team |
+| B | Context: enrollment, faculty, calendar, course hours, domains addressed | Respondent |
+| C | Physical resources: computing, software, AI tools used by students, datasets, data quality, privacy, connectivity | Respondent |
+| D | Human resources: faculty able to teach AI, researchers, training, partners, technical staff, barriers | Respondent |
+| E | AI curriculum: hours by format and 16 topics, programming hours, undergraduate and graduate courses, assessment | Respondent |
+| F | Generative AI: policy, permitted uses, prompt design, verification, safeguards | Respondent |
+| G | Health informatics: records, PACS, coding, teledentistry, analytics, teaching hours, staff | Respondent |
+| H | Robotics and digital dentistry: equipment counts, access, digital workflow, teaching hours, trained faculty, maintenance | Respondent |
+| I | Bioinformatics and omics: laboratories, biobank, pipelines, expertise, teaching hours, data sharing | Respondent |
+| J | Governance, ethics, bias, regulation, AI-GUARD checklist | Respondent |
+| K | Implementation, evaluation, sustainability, funding | Respondent |
+| L | Collaboration and the open dental AI model: interest, data that could be shared, preferred models (e.g., federated learning), barriers | Respondent |
+| M | Self-assessment of maturity in each of the four domains, barriers, facilitators, open comments | Respondent |
 
-Maturity items use a 1–4 anchored scale (1 = absent … 4 = established) plus "Don't know / Not applicable" (coded −1, treated as missing). Each one belongs to one of seven domains: Infrastructure (INF), Data (DAT), Human resources (HUM), Curriculum (CUR), Generative AI (GEN), Governance & ethics (GOV), Implementation & sustainability (IMP).
+Maturity items use a 1–4 anchored scale (1 = absent … 4 = established) plus "Don't know / Not applicable" (coded −1, treated as missing). Each one belongs to one of ten domains: Infrastructure (INF), Data (DAT), Human resources (HUM), AI curriculum (CUR), Generative AI (GEN), Health informatics (HIN), Robotics and digital dentistry (ROB), Bioinformatics (BIO), Governance & ethics (GOV), Implementation & sustainability (IMP).
 
 ### Country adaptation
 
@@ -82,7 +86,7 @@ Research team                         Respondent (department head / course direc
 ─────────────                         ──────────────────────────────────────────────
 1. Opens  #/admin, fills Part A  ──►  code issued, e.g.  K7P-3MX
 2. Sends code + website link     ──►  3. Opens the website, types the code (only field on the login page)
-                                      4. Answers Parts B–I (saved at every section change; can resume later)
+                                      4. Answers Parts B–M (saved at every section change; can resume later)
                                       5. Submits → form locked
                        data/responses.csv  ◄── one row per code, one column per item
 ```
@@ -91,6 +95,8 @@ Research team                         Respondent (department head / course direc
 - The login is rate-limited (20 attempts per 10 minutes per IP address) to prevent guessing.
 - The research-team page is at `#/admin` and asks for the **admin code**. In demo mode the site checks the code against the SHA-256 hash in `src/config.js` (the code itself is never committed). This only deters casual visitors, since demo data stays in each visitor's own browser. In server mode the storage server checks it, so start the server with `ADMIN_TOKEN` set to the same code. To change the code, set the repository variable `VITE_ADMIN_CODE_HASH` to `echo -n 'NEW-CODE' | shasum -a 256`.
 - The ICARB-D form page can open the questionnaire with the code already filled in: `#/?code=XXX-XXX`.
+- The public guide at `#/questions` lists every question, what it captures and how it is scored.
+- Each year the team issues a new code per department/course (item A15 = survey year) and records last year's code (A16) to link the waves.
 
 ## Data storage
 
@@ -104,7 +110,7 @@ Answers are kept in plain CSV files ("columns × rows"), ready for Python/R:
 
 The `data/` folder is in `.gitignore` because this repository is public.
 
-Column naming: `C01` (single value) · `C06__python` (multiple choice: 1 = selected, 0 = not) · `C08_2_task` (table row 2, field "task") · `G11_validation` (grid row) · `E03_programming` (hours for a topic) · `A08_other` (free text for "Other").
+Column naming: `C01` (single value) · `C06__python` (multiple choice: 1 = selected, 0 = not) · `C08_2_task` (table row 2, field "task") · `J11_validation` (grid row) · `E03_programming` (hours for a topic) · `H01_printer` (equipment count) · `A08_other` (free text for "Other").
 
 ### Storage modes
 
@@ -138,28 +144,30 @@ npm run docs       # docs/*.docx and *.pdf (needs LibreOffice for the PDF)
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install pandas numpy
-.venv/bin/python analysis/make_synthetic.py 150                          # fake data for testing
+.venv/bin/python analysis/make_synthetic.py 200                          # fake data for testing
 .venv/bin/python analysis/consolidate.py analysis/synthetic_responses.csv
 .venv/bin/python analysis/consolidate.py data/responses.csv              # real data
 ```
 
-`analysis/consolidate.py` applies the consolidation rules and writes to `analysis/output/`:
+`analysis/consolidate.py` writes to `analysis/output/`:
 
-1. **Course record**: each form is one record keyed by School × Department × Course.
-2. **Domain index**: mean of the domain's 1–4 items → 0–100 index `(mean − 1) / 3 × 100`. The AI-GUARD (G11) and safeguards (F06) indices score Yes = 2, Partial = 1, No = 0.
-3. **Department roll-up**: mean across its courses, with the number of contributing courses (n).
-4. **School roll-up**: department scores weighted by the number of courses each contributed.
-5. **Country summary**: mean of school scores.
-6. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
-7. **AI hours by topic** per year and country (`ai_hours_by_topic.csv`).
+1. **Course record**: each form is one record keyed by Survey year × School × Department × Course.
+2. **Domain index** (ten domains): mean of the domain's 1–4 items → 0–100 index `(mean − 1) / 3 × 100`. The AI-GUARD (J11) and safeguards (F06) indices score Yes = 2, Partial = 1, No = 0.
+3. **Hours per year** for AI, health informatics, robotics and bioinformatics, plus programming hours; **equipment units** and students per unit.
+4. **Department roll-up** per year, with the number of contributing courses (n).
+5. **School roll-up**: department scores weighted by the number of courses each contributed.
+6. **Country summary** per year.
+7. **Annual trends**: each department's overall index by survey year (`department_trends.csv`).
+8. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
+9. **Hours by topic** per year and country (`hours_by_topic.csv`).
 
 ## Methods checklist (before fieldwork)
 
 - [ ] Ethics approval (coordinating center plus local approvals, e.g., CONEP in Brazil)
 - [ ] Forward–backward translation: French (Quebec), Portuguese, Chinese
-- [ ] Content validity with an expert panel (I-CVI ≥ 0.78) and cognitive interviews in each country
+- [ ] Content validity with an expert panel per domain (I-CVI ≥ 0.78) and cognitive interviews in each country
 - [ ] Pilot with about 10 departments; reliability (Cronbach's α / ω per domain, test–retest subsample)
-- [ ] Sampling frame from national lists (ADEA/CODA, ACFD, e-MEC/ABENO, MOE/CSA, DCI/NDC)
+- [ ] Sampling frame from national lists (ADEA/CODA, ACFD, e-MEC/ABENO, MOE/CSA, DCI/NDC); invite the same departments every year
 - [ ] Report with STROBE and CHERRIES
 
 ## Related studies
@@ -183,8 +191,9 @@ Full references (with DOIs) are in the Word/PDF document, section 4. Citations m
 ## Repository layout
 
 ```
-src/questionnaire/   questionnaire.js (all items), countries.js (country adaptation), columns.js (CSV columns)
-src/views/           LoginView (code only), SurveyView (Parts B–I), AdminView (Part A, codes, exports)
+src/questionnaire/   questionnaire.js (all items + what each captures), countries.js, columns.js (CSV columns)
+src/views/           LoginView (code only), SurveyView (Parts B–M), AdminView (Part A, codes, exports),
+                     QuestionsView (public guide to every question)
 src/storage/         server.js (API) and local.js (browser demo) back-ends
 server/index.js      storage server writing data/*.csv
 analysis/            consolidate.py, make_synthetic.py

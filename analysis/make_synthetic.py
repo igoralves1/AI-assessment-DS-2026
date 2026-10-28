@@ -40,7 +40,8 @@ for i in range(n):
         if col["section"] and col["section"] != "A":
             r[col["name"]] = value(col)
     r.update(A01=c, A03=random.choice(schools[c]), A06=random.choice(departments),
-             A07=f"COURSE-{i:03d}", A08="1", B05="1" if c == "IN" else "2")
+             A07=f"COURSE-{i:03d}", A08="1", B05="1" if c == "IN" else "2",
+             A15=random.choice(["2026", "2027"]))
     rows.append(r)
 
 out = ROOT / "analysis" / "synthetic_responses.csv"

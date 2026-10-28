@@ -41,6 +41,7 @@ const profile = computed(() => [
   ['Department', record.value.A06],
   ['Course', record.value.A07],
   ['Level', optionLabel('A08', record.value.A08)],
+  ['Survey year', record.value.A15],
 ])
 
 onMounted(() => {

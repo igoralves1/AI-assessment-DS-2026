@@ -1,4 +1,4 @@
-// Builds docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx from the questionnaire definition.
+// Builds docs/ICARB-D-Annual-Survey-Dental-Schools.docx from the questionnaire definition.
 // PDF: npm run docs (converts with LibreOffice).
 import fs from 'node:fs'
 import {
@@ -56,6 +56,7 @@ function questionBlocks(q) {
       ...(meta ? [new TextRun({ text: `  [${meta}]`, italics: true, color: '6B7672', size: 18 })] : []),
     ],
   }))
+  out.push(p([new TextRun({ text: 'Captures: ', bold: true, size: 18, color: ACCENT }), new TextRun({ text: q.captures, size: 18, color: '4A5552' })], { indent: { left: 360 }, keepNext: true, spacing: { after: 60 } }))
   if (q.countryHint) out.push(p([new TextRun({ text: `Country adaptation: see table "Country context", row "${HINT_ROW[q.countryHint]}".`, italics: true, size: 18, color: '6B7672' })], { indent: { left: 360 } }))
   if (q.type === 'multi' && q.max) out.push(p([new TextRun({ text: `Select up to ${q.max}.`, italics: true, size: 18 })], { indent: { left: 360 } }))
 
@@ -88,7 +89,7 @@ function questionBlocks(q) {
       break
     }
     case 'hours':
-      out.push(table(['Topic / format', `Hours (${q.unit})`], q.rows.map((r) => [r.l, '']), [CONTENT_W - 2200, 2200]))
+      out.push(table(q.unit.startsWith('hours') ? ['Topic / format', `Hours (${q.unit})`] : ['Item', `Number (${q.unit})`], q.rows.map((r) => [r.l, '']), [CONTENT_W - 2200, 2200]))
       out.push(spacer())
       break
     case 'repeat': {
@@ -109,10 +110,12 @@ const children = []
 
 // Title page
 children.push(
-  new Paragraph({ spacing: { before: 2400, after: 200 }, children: [new TextRun({ text: 'AI READINESS ASSESSMENT', bold: true, size: 26, color: ACCENT })] }),
+  new Paragraph({ spacing: { before: 2400, after: 200 }, children: [new TextRun({ text: 'ICARB-D ANNUAL MATURITY SURVEY', bold: true, size: 26, color: ACCENT })] }),
   new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: 'Dental School Departments and Courses', bold: true, size: 48 })] }),
+  p([new TextRun({ text: 'Artificial intelligence · Health informatics · Robotics · Bioinformatics', size: 26, color: ACCENT })]),
+  new Paragraph({ children: [new TextRun({ text: '', size: 2 })] }),
   p([new TextRun({ text: 'Canada · United States · Brazil · China · India', size: 28 })]),
-  p([new TextRun({ text: `Department/course-specific questionnaire · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
+  p([new TextRun({ text: `Department/course-specific annual questionnaire · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
   new Paragraph({ spacing: { before: 600, after: 120 }, children: [new TextRun({ text: 'Proposed article title', bold: true })] }),
   p([new TextRun({ text: STUDY.titles[0], italics: true })]),
   p([new TextRun({ text: 'Built on the PAHO/WHO–IDB AI Readiness Assessment Toolkit (2024), AI-GUARD (2026), Bias-free AI in Health (2026) and AI Prompt Design for Public Health (2025).', size: 20, color: '6B7672' })], { spacing: { before: 600 } }),
@@ -139,7 +142,7 @@ children.push(table(['', ...COUNTRIES.map((c) => c.l)], ctxRows.map(([label, key
 children.push(spacer())
 
 children.push(h2('Readiness domains and scale'))
-children.push(p('Maturity items use a 1–4 anchored scale adapted from the PAHO/WHO toolkit (1 = absent, 2 = initial, 3 = developing, 4 = established), plus "Don\'t know / Not applicable" (coded −1 and treated as missing). Each 1–4 item belongs to one of seven domains:'))
+children.push(p('Maturity items use a 1–4 anchored scale adapted from the PAHO/WHO toolkit (1 = absent, 2 = initial, 3 = developing, 4 = established), plus "Don\'t know / Not applicable" (coded −1 and treated as missing). Each 1–4 item belongs to one of ten domains:'))
 Object.entries(DOMAINS).forEach(([k, v]) => children.push(bullet([new TextRun({ text: `${k} — `, bold: true }), new TextRun(v)])))
 children.push(new Paragraph({ children: [new PageBreak()] }))
 
@@ -147,6 +150,7 @@ children.push(new Paragraph({ children: [new PageBreak()] }))
 children.push(h1('2. Questionnaire'))
 for (const s of SECTIONS) {
   children.push(h2(s.title))
+  children.push(p([new TextRun({ text: 'What this part captures. ', bold: true }), new TextRun(s.purpose)]))
   if (s.intro) children.push(p([new TextRun({ text: s.intro, italics: true })]))
   for (const q of s.questions) children.push(...questionBlocks(q))
 }
@@ -173,7 +177,7 @@ REFERENCES.forEach((r, i) => children.push(new Paragraph({ spacing: { after: 80 
 
 const doc = new Document({
   creator: 'AI-assessment-DS-2026',
-  title: 'AI Readiness Assessment — Dental School Departments and Courses',
+  title: 'ICARB-D Annual Maturity Survey — Dental School Departments and Courses',
   styles: {
     default: { document: { run: { font: { ascii: 'Arial', hAnsi: 'Arial', cs: 'Arial', eastAsia: 'Heiti SC' }, size: 21 } } },
     paragraphStyles: [
@@ -184,12 +188,12 @@ const doc = new Document({
   numbering: { config: [{ reference: 'bullets', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 540, hanging: 270 } } } }] }] },
   sections: [{
     properties: { page: { size: { width: PAGE_W, height: 15840 }, margin: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN } } },
-    footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'AI Readiness in Dental Schools 2026 · page ', size: 16, color: '6B7672' }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '6B7672' })] })] }) },
+    footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'ICARB-D Annual Survey of Dental Schools · page ', size: 16, color: '6B7672' }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '6B7672' })] })] }) },
     children,
   }],
 })
 
 fs.mkdirSync('docs', { recursive: true })
-const out = 'docs/AI-Readiness-Questionnaire-Dental-Schools-2026.docx'
+const out = 'docs/ICARB-D-Annual-Survey-Dental-Schools.docx'
 fs.writeFileSync(out, await Packer.toBuffer(doc))
 console.log('Wrote', out)
