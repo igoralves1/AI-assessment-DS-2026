@@ -1,8 +1,9 @@
-"""Consolidate the ICARB-D annual survey: rank dental schools by maturity and compare states and countries, per survey year.
+"""Consolidate the ICARB-D annual survey into a benchmark of health informatics maturity per dental school.
 
-Forms describe a whole school (A17 = 1), a department (2) or a course (3).
-Course and department forms -> department -> school (weighted by courses); a school-wide form is combined
-with that picture to give the school score used for the ranking; schools -> state -> country.
+University -> departments -> courses: each form describes one course and is answered by its director.
+Course -> department (mean) -> school (departments weighted by courses) -> state -> country, per survey year.
+Health informatics is the umbrella; its areas (information systems, AI, robotics, bioinformatics, software
+development) and foundations get their own indices. The benchmark is the mean of the eleven domain indices.
 
 Usage:
     python analysis/consolidate.py data/responses.csv            # real data
@@ -15,7 +16,7 @@ Inputs
 Outputs (analysis/output/)
     course_scores.csv       one row per submitted form, with domain indices, hours and equipment counts
     department_scores.csv   mean of course scores within a department and year (n_courses)
-    school_scores.csv       school ranking: combined score per school and year, rank overall and within country
+    school_scores.csv       benchmark per school and year (0-100), area and foundation indices, rank within country
     state_scores.csv        mean of school scores per country, state and year
     country_scores.csv      mean of school scores per country and year (US first)
     school_trends.csv       overall index of each school in each survey year
@@ -45,18 +46,24 @@ DOMAINS = {
     "HUM": "Human resources",
     "CUR": "AI curriculum",
     "GEN": "Generative AI",
-    "HIN": "Health informatics",
+    "HIN": "Health information systems",
     "ROB": "Robotics & digital dentistry",
     "BIO": "Bioinformatics",
+    "SWD": "Software development for health",
     "GOV": "Governance & ethics",
     "IMP": "Implementation & sustainability",
 }
-WAVE, STATE, SCHOOL, DEPT, UNIT = "A15", "A02", "A03", "A06", "A17"
+WAVE, STATE, SCHOOL, DEPT = "A15", "A02", "A03", "A06"
 COUNTRY = "country"
 SCHOOL_KEYS = [WAVE, COUNTRY, STATE, SCHOOL]
 KEYS = [*SCHOOL_KEYS, DEPT]
 HOURS = {"ai": "E02_", "health_informatics": "G09_", "robotics": "H05_", "bioinformatics": "I07_"}
-SELF_RATED = {"M01": "self_ai", "M02": "self_health_informatics", "M03": "self_robotics", "M04": "self_bioinformatics"}
+SELF_RATED = {"M01": "self_ai", "M02": "self_information_systems", "M03": "self_robotics", "M04": "self_bioinformatics",
+              "M12": "self_software_development", "M13": "self_health_informatics"}
+# Areas of health informatics and the foundations every area needs (see HI_AREAS in questionnaire.js).
+AREAS = {"information_systems": ["HIN"], "ai": ["CUR", "GEN"], "robotics": ["ROB"], "bioinformatics": ["BIO"],
+         "software_development": ["SWD"]}
+FOUNDATIONS = ["INF", "DAT", "HUM", "GOV", "IMP"]
 
 
 def load(path):
@@ -73,7 +80,6 @@ def load(path):
     other = df["A01_other"] if "A01_other" in df else ""
     country = df["A01"].where(df["A01"] != "99", other)
     df[COUNTRY] = country.where(country != "", "Other")
-    df[UNIT] = df[UNIT].where(df[UNIT] != "", "3") if UNIT in df else "3"  # older forms: course level
     return df, codebook
 
 
@@ -87,13 +93,16 @@ def prefixed(df, prefix):
 
 def course_scores(df, codebook):
     scale = codebook[codebook["type"] == "scale"]
-    out = df[["code", *KEYS, UNIT, "A07", "A08"]].copy()
+    out = df[["code", *KEYS, "A07", "A08"]].copy()
     for dom in DOMAINS:
         items = [c for c in scale.loc[scale["domain"] == dom, "name"] if c in df]
         vals = df[items].where(df[items] >= 1)  # -1 (don't know) -> NaN
         out[f"{dom}_index"] = to_index(vals.mean(axis=1))
         out[f"{dom}_items_answered"] = vals.notna().sum(axis=1)
-    out["overall_index"] = out[[f"{d}_index" for d in DOMAINS]].mean(axis=1)
+    out["benchmark_index"] = out[[f"{d}_index" for d in DOMAINS]].mean(axis=1)
+    for area, doms in AREAS.items():
+        out[f"area_{area}_index"] = out[[f"{d}_index" for d in doms]].mean(axis=1)
+    out["funding_readiness_index"] = out[[f"{d}_index" for d in FOUNDATIONS]].mean(axis=1)
 
     for qid, label in [("J11", "aiguard_index"), ("F06", "genai_safeguards_index")]:
         cols = prefixed(df, qid + "_")
@@ -111,45 +120,30 @@ def course_scores(df, codebook):
     return out
 
 
-def rollups(forms):
-    score_cols = [c for c in forms if c.endswith("_index") or c.endswith("_per_year")
+def rollups(courses):
+    score_cols = [c for c in courses if c.endswith("_index") or c.endswith("_per_year")
                   or c in ("digital_equipment_units", *SELF_RATED.values())]
-    detail = forms[forms[UNIT] != "1"]
-    school_wide = forms[forms[UNIT] == "1"]
 
-    # Department = mean of its course and department forms.
-    dept = detail.groupby(KEYS)[score_cols].mean()
-    dept.insert(0, "n_forms", detail.groupby(KEYS).size())
+    # Department = mean of its courses.
+    dept = courses.groupby(KEYS)[score_cols].mean()
+    dept.insert(0, "n_courses", courses.groupby(KEYS).size())
     dept = dept.reset_index()
 
-    # School from departments = departments weighted by the number of forms each contributed.
+    # School = departments weighted by the number of courses each contributed.
     def weighted(g):
-        w = g["n_forms"]
+        w = g["n_courses"]
         row = {c: np.average(g[c].dropna(), weights=w[g[c].notna()]) if g[c].notna().any() else np.nan for c in score_cols}
         row["n_departments"] = len(g)
-        row["n_detail_forms"] = int(w.sum())
+        row["n_courses"] = int(w.sum())
         return pd.Series(row)
 
-    from_depts = dept.groupby(SCHOOL_KEYS).apply(weighted, include_groups=False) if len(dept) else pd.DataFrame()
-    wide = school_wide.groupby(SCHOOL_KEYS)[score_cols].mean()
-    wide["n_school_wide_forms"] = school_wide.groupby(SCHOOL_KEYS).size()
-
-    # School score = mean of the school-wide form and the department picture, whichever exist.
-    idx = from_depts.index.union(wide.index)
-    a = from_depts.reindex(idx)
-    b = wide.reindex(idx)
-    school = pd.concat([a[score_cols], b[score_cols]]).groupby(level=list(range(len(SCHOOL_KEYS)))).mean()
-    school["overall_index_departments"] = a["overall_index"]
-    school["overall_index_school_wide"] = b["overall_index"]
-    school["n_departments"] = a["n_departments"].fillna(0).astype(int)
-    school["n_detail_forms"] = a["n_detail_forms"].fillna(0).astype(int)
-    school["n_school_wide_forms"] = b["n_school_wide_forms"].fillna(0).astype(int)
-    school = school.reset_index()
-    school["rank_overall"] = school.groupby(WAVE)["overall_index"].rank(ascending=False, method="min").astype("Int64")
-    school["rank_in_country"] = school.groupby([WAVE, COUNTRY])["overall_index"].rank(ascending=False, method="min").astype("Int64")
-    lead = [*SCHOOL_KEYS, "rank_overall", "rank_in_country", "overall_index", "overall_index_school_wide",
-            "overall_index_departments", "n_school_wide_forms", "n_departments", "n_detail_forms"]
-    school = school[lead + [c for c in score_cols if c != "overall_index"]].sort_values([WAVE, "rank_overall"])
+    school = dept.groupby(SCHOOL_KEYS).apply(weighted, include_groups=False).reset_index()
+    school[["n_departments", "n_courses"]] = school[["n_departments", "n_courses"]].astype(int)
+    school["rank_in_country"] = school.groupby([WAVE, COUNTRY])["benchmark_index"].rank(ascending=False, method="min").astype("Int64")
+    school["rank_funding_readiness"] = school.groupby([WAVE, COUNTRY])["funding_readiness_index"].rank(ascending=False, method="min").astype("Int64")
+    lead = [*SCHOOL_KEYS, "benchmark_index", "rank_in_country", "funding_readiness_index", "rank_funding_readiness",
+            *[f"area_{a}_index" for a in AREAS], "n_departments", "n_courses"]
+    school = school[lead + [c for c in score_cols if c not in lead]].sort_values([WAVE, COUNTRY, "rank_in_country"])
 
     state = school.groupby([WAVE, COUNTRY, STATE])[score_cols].mean()
     state.insert(0, "n_schools", school.groupby([WAVE, COUNTRY, STATE]).size())
@@ -157,12 +151,12 @@ def rollups(forms):
     country.insert(0, "n_schools", school.groupby([WAVE, COUNTRY]).size())
     country = country.reset_index()
     country["_us"] = country[COUNTRY] != "US"
-    country = country.sort_values([WAVE, "_us", "overall_index"], ascending=[True, True, False]).drop(columns="_us")
+    country = country.sort_values([WAVE, "_us", "benchmark_index"], ascending=[True, True, False]).drop(columns="_us")
 
-    trends = dept.pivot_table(index=[COUNTRY, STATE, SCHOOL, DEPT], columns=WAVE, values="overall_index")
-    trends.columns = [f"overall_{w}" for w in trends.columns]
-    school_trends = school.pivot_table(index=[COUNTRY, STATE, SCHOOL], columns=WAVE, values="overall_index")
-    school_trends.columns = [f"overall_{w}" for w in school_trends.columns]
+    trends = dept.pivot_table(index=[COUNTRY, STATE, SCHOOL, DEPT], columns=WAVE, values="benchmark_index")
+    trends.columns = [f"benchmark_{w}" for w in trends.columns]
+    school_trends = school.pivot_table(index=[COUNTRY, STATE, SCHOOL], columns=WAVE, values="benchmark_index")
+    school_trends.columns = [f"benchmark_{w}" for w in school_trends.columns]
     return dept, school, state.reset_index(), country, trends.reset_index(), school_trends.reset_index()
 
 
@@ -188,7 +182,7 @@ def main(path):
     country.to_csv(OUT / "country_scores.csv", index=False)
     school_trends.to_csv(OUT / "school_trends.csv", index=False)
     trends.to_csv(OUT / "department_trends.csv", index=False)
-    courses[[WAVE, COUNTRY, STATE, SCHOOL, UNIT, DEPT, "A07", "CUR_index"]].sort_values([WAVE, COUNTRY, STATE, SCHOOL, DEPT]).to_csv(
+    courses[[WAVE, COUNTRY, STATE, SCHOOL, DEPT, "A07", "CUR_index"]].sort_values([WAVE, COUNTRY, STATE, SCHOOL, DEPT]).to_csv(
         OUT / "curriculum_courses.csv", index=False)
     hours_by_topic(df).to_csv(OUT / "hours_by_topic.csv")
 
@@ -196,12 +190,13 @@ def main(path):
     print(f"{len(df)} submitted forms · {len(dept)} department-years · {school[SCHOOL].nunique()} schools · "
           f"waves {sorted(df[WAVE].dropna().unique().tolist())}\n")
     latest = school[WAVE].max()
-    top = school[(school[WAVE] == latest) & (school[COUNTRY] == "US")].head(10)
-    print(f"Most prepared US dental schools, {latest} (overall maturity index 0-100):")
-    print(top[["rank_in_country", SCHOOL, STATE, "overall_index", "n_school_wide_forms", "n_detail_forms"]].round(1).to_string(index=False))
-    print()
-    show = [WAVE, COUNTRY, "n_schools", "overall_index", "INF_index", "HUM_index", "CUR_index",
-            "HIN_index", "ROB_index", "BIO_index", "ai_hours_per_year"]
+    us = school[(school[WAVE] == latest) & (school[COUNTRY] == "US")]
+    print(f"Benchmark of US dental schools, {latest} (health informatics maturity, 0-100):")
+    print(us[["rank_in_country", SCHOOL, STATE, "benchmark_index", "funding_readiness_index", "n_departments", "n_courses"]]
+          .head(10).round(1).to_string(index=False))
+    best = us.sort_values("funding_readiness_index", ascending=False).head(3)[SCHOOL].tolist()
+    print(f"\nMost likely to use a new health informatics grant well (foundations index): {', '.join(best)}\n")
+    show = [WAVE, COUNTRY, "n_schools", "benchmark_index", "funding_readiness_index", *[f"area_{a}_index" for a in AREAS]]
     print(country[show].round(1).to_string(index=False))
     print(f"\nFiles written to {OUT}")
 

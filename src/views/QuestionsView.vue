@@ -3,7 +3,7 @@
 // Generated from the questionnaire definition, so it always matches the live form.
 import { onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION, MAIN_QUESTION, UNITS } from '../questionnaire/questionnaire.js'
+import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION, MAIN_GOAL, KEY_QUESTIONS, HI_AREAS, FOUNDATIONS, HIERARCHY } from '../questionnaire/questionnaire.js'
 import { CHECKLIST, CHECKLIST_COUNT, LEVELS } from '../questionnaire/checklist.js'
 import { DOWNLOADS } from '../config.js'
 import { PAHO_BOOKS } from '../questionnaire/inspiration.js'
@@ -70,15 +70,31 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
 
     <section class="card intro">
       <h2>The main idea</h2>
-      <p class="main-q">{{ MAIN_QUESTION }}</p>
-      <p>To answer it, the survey maps the state of the art of maturity in four fields of innovation in dental education: <strong>artificial intelligence</strong>, <strong>health informatics</strong>, <strong>robotics and digital dentistry</strong>, and <strong>bioinformatics</strong>. A form can describe a <strong>whole dental school</strong>, <strong>one department</strong> or <strong>one course</strong> taught in a department. For each unit the reader gets a complete, clear picture of five things:</p>
-      <ul class="plain five">
-        <li><strong>What it has:</strong> computers, software, AI tools, data, laboratories and digital or robotic equipment.</li>
-        <li><strong>Who can do the work:</strong> faculty able to teach, researchers, technical staff, training and partners.</li>
-        <li><strong>What students learn:</strong> topics and hours per year, from AI basics to programming and model development.</li>
-        <li><strong>How it is governed:</strong> plans, ethics, bias, privacy, generative-AI rules and safeguards for AI tools.</li>
-        <li><strong>Whether it lasts:</strong> pilots that become routine, evaluation, funding and collaboration.</li>
-      </ul>
+      <p class="main-q">{{ MAIN_GOAL }}</p>
+      <h3>Questions the benchmark helps answer</h3>
+      <ol class="kq">
+        <li v-for="k in KEY_QUESTIONS" :key="k.label"><span class="kq-label">{{ k.label }}</span>{{ k.text }}</li>
+      </ol>
+
+      <h3>Health informatics is the umbrella</h3>
+      <p>The benchmark measures <strong>health informatics in dentistry</strong>. Artificial intelligence, robotics, bioinformatics and software development for health are areas <em>inside</em> health informatics, together with its core: the health information systems of the clinic. Every area also depends on the same foundations.</p>
+      <div class="umbrella">
+        <div class="umb-top">Health informatics in dentistry <span>· benchmark score 0–100</span></div>
+        <div class="umb-areas">
+          <div v-for="a in HI_AREAS" :key="a.key" class="umb-area"><b>{{ a.l }}</b><span>{{ a.d }}</span></div>
+        </div>
+        <div class="umb-base"><b>{{ FOUNDATIONS.l }}:</b> {{ FOUNDATIONS.d }}</div>
+      </div>
+      <p>For each school the reader gets a complete, clear picture: what it has (computers, software, AI tools, data, laboratories, digital and robotic equipment), who can do the work (faculty, researchers, technical staff, training, partners), what students learn and for how many hours, how technology is governed, and whether projects last.</p>
+
+      <h3>Who answers: the head of each course</h3>
+      <p>A dental school is organised as <strong>university → departments → courses</strong>. The person who knows a course best is its director, so each course director answers one form for their course. Department scores are built from their courses, and the university score from its departments. A school's benchmark is therefore grounded in what is actually taught and used, course by course.</p>
+      <table class="units">
+        <thead><tr><th>Level</th><th>How its score is obtained</th></tr></thead>
+        <tbody><tr v-for="h in HIERARCHY" :key="h.level"><td>{{ h.level }}</td><td>{{ h.how }}</td></tr></tbody>
+      </table>
+      <p class="muted">Some items ask about resources or rules the department or school provides (computers, clinic records, policies). Course directors answer for what their course can use or must follow; "Don't know" is always allowed.</p>
+
       <h3>Where the idea comes from</h3>
       <p>The survey was inspired by four publications of the Pan American Health Organization (PAHO), the World Health Organization's office for the Americas. The first is a questionnaire that measures how ready public health institutions are to use artificial intelligence. This survey adapts it to dental schools and extends it to health informatics, robotics and bioinformatics. The other three shape the items on governance, bias and generative AI.</p>
       <div class="books">
@@ -91,23 +107,9 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
       </div>
       <p class="muted small-print">Cover images belong to PAHO and are shown only to identify the publications. Each card opens the publication on PAHO's website or in IRIS, PAHO's official repository.</p>
       <h3>Why it matters now</h3>
-      <p>AI is already reading radiographs, digital workflows are replacing analogue ones, and students use generative AI every day. Schools are investing at very different speeds, and there is no shared measure of who is ready, where the gaps are, or what to do next. A common, repeated measurement gives deans and faculty evidence to plan, lets schools learn from the best prepared, and shows progress from year to year.</p>
-      <h3>Comparable across countries</h3>
-      <p>The survey starts with US dental schools. Its core items are the same everywhere: US schools see the matching US references (CODA, ADA, HIPAA, FDA), and schools in other countries answer the same items. All scores use the same 0–100 scale, so a US school can be compared with schools abroad.</p>
-      <h3>Who answers</h3>
-      <table class="units">
-        <thead><tr><th>Unit described</th><th>Who answers</th></tr></thead>
-        <tbody><tr v-for="u in UNITS" :key="u.v"><td>{{ u.l }}</td><td>{{ u.who }}</td></tr></tbody>
-      </table>
-      <p class="muted">A school can send one school-wide form and as many department and course forms as it wishes. The research team completes Part A with each respondent and issues a personal access code.</p>
-      <h3>What the reader gets</h3>
-      <ul class="plain">
-        <li>A <strong>ranking of schools</strong> with a 0–100 maturity index overall and for each of ten domains.</li>
-        <li>The <strong>detail behind each score</strong>: departments, named courses, teaching hours and equipment.</li>
-        <li>The <strong>main gaps and barriers</strong>, and the schools that can serve as models.</li>
-        <li><strong>Progress over time</strong>, because the survey is repeated every year.</li>
-        <li>A <strong>comparison</strong> between states and with schools in other countries.</li>
-      </ul>
+      <p>AI is already reading radiographs, digital workflows are replacing analogue ones, and students use generative AI every day. Schools are investing at very different speeds, and there is no shared number that says how ready each school is. A benchmark repeated every year gives deans, faculty and funders evidence to plan and invest, and shows progress over time.</p>
+      <h3>Comparable beyond the United States</h3>
+      <p>The survey starts with US dental schools. Its core items are the same everywhere: US schools see the matching US references (CODA, ADA, HIPAA, FDA), and universities in other countries can answer the same items. Because every score uses the same 0–100 scale, the US benchmark can be compared with schools abroad.</p>
       <h3>A checklist for improvement</h3>
       <p>The same items also work as a guide. Each 1–4 item describes what level 4 ("established") looks like, so a school can use the <a href="#checklist" @click.prevent="goTo('checklist')">maturity checklist</a> to see where it stands and which steps lead to the level it wants to reach.</p>
       <dl class="facts">
@@ -125,7 +127,8 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
         <li><strong>Domain index 0–100.</strong> The 1–4 items of a domain are averaged and converted: (mean − 1) ÷ 3 × 100.</li>
         <li><strong>Checklists.</strong> Yes = 2, Partial = 1, No = 0, expressed as a percentage of the maximum (PAHO AI-GUARD).</li>
         <li><strong>Hours and counts.</strong> Hours per term × terms per year = hours per year. Equipment counts are divided by enrollment.</li>
-        <li><strong>Consolidation.</strong> Course forms → department (mean) → school (weighted by the number of courses). A school-wide form is combined with this picture to rank schools, then results are compared by state, nationally and across countries.</li>
+        <li><strong>Benchmark.</strong> Each course gets a 0–100 index per domain; the benchmark is the mean of the domain indices. Course → department (mean) → university (weighted by the number of courses) → state, national and country summaries.</li>
+        <li><strong>Readiness to use new funding.</strong> The mean of the five foundation domains (infrastructure, data, people, governance, implementation) shows which schools are most likely to use a grant well.</li>
         <li><strong>US references.</strong> Some items show the matching US law or body: HIPAA and FERPA, CODA, the ADA, ADEA and state dental boards.</li>
       </ul>
     </section>
@@ -199,7 +202,7 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
 
     <section id="checklist" class="card checklist">
       <h2>Maturity checklist</h2>
-      <p>Use this list after answering, or before planning. Each point comes from a 1–4 item of the survey. <strong>Target</strong> is level 4 (established); <strong>next step</strong> is level 3 (developing). Tick what is already true for your school, department or course. Ticks stay on this page only and are not saved.</p>
+      <p>Use this list after answering, or before planning. Each point comes from a 1–4 item of the survey. <strong>Target</strong> is level 4 (established); <strong>next step</strong> is level 3 (developing). Tick what is already true for your course, department or school. Ticks stay on this page only and are not saved.</p>
       <ol class="levels"><li v-for="l in LEVELS" :key="l.v"><b>{{ l.v }} · {{ l.l }}</b> {{ l.d }}</li></ol>
       <details v-for="g in CHECKLIST" :key="g.id" class="ck-group">
         <summary><span class="mono">{{ g.id }}</span> {{ g.title }} <span class="muted">· {{ g.items.length }} points</span></summary>
@@ -273,6 +276,16 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
 .small-print { font-size: .78rem; }
 @media (max-width: 720px) { .books { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .books { grid-template-columns: minmax(0, 1fr); } .book img { max-width: 180px; } }
+.kq { padding-left: 0; list-style: none; margin: 6px 0 4px; }
+.kq li { padding: 8px 12px; border-radius: 8px; background: var(--bg); margin-bottom: 6px; }
+.kq-label { display: block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); }
+.umbrella { border: 2px solid var(--accent); border-radius: 12px; padding: 12px; margin: 10px 0 12px; }
+.umb-top { background: var(--accent); color: #fff; font-weight: 700; border-radius: 8px; padding: 8px 12px; }
+.umb-top span { font-weight: 400; opacity: .85; }
+.umb-areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 10px 0; }
+.umb-area { background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; font-size: .85rem; display: flex; flex-direction: column; gap: 2px; }
+.umb-area b { color: var(--accent); }
+.umb-base { background: var(--bg); border-radius: 8px; padding: 8px 12px; font-size: .88rem; }
 .goal-small { font-size: .8rem; color: var(--muted); margin-top: 2px; }
 .goal { margin: 6px 0; }
 .levels { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin: 10px 0 14px; font-size: .88rem; }

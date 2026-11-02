@@ -39,13 +39,10 @@ for i in range(n):
     for _, col in codebook.iterrows():
         if col["section"] and col["section"] != "A":
             r[col["name"]] = value(col)
-    unit = random.choice(["1", "2", "3", "3", "3"])
     abroad = random.random() < 0.15
     r.update(A01="99" if abroad else "US", A01_other=random.choice(["Canada", "Brazil"]) if abroad else "",
-             A02=st, A03=(f"Abroad Dental School {i % 4}" if abroad else random.choice(schools[st])), A17=unit,
-             A06="School-wide" if unit == "1" else random.choice(departments),
-             A07="School-wide" if unit == "1" else ("Department-wide" if unit == "2" else f"COURSE-{i:03d}"),
-             A08="8" if unit != "3" else "1", B05=random.choice(["2", "2", "3", "4"]),
+             A02=st, A03=(f"Abroad Dental School {i % 4}" if abroad else random.choice(schools[st])),
+             A06=random.choice(departments), A07=f"COURSE-{i:03d}", A08="1", B05=random.choice(["2", "2", "3", "4"]),
              A15=random.choice(["2026", "2027"]))
     rows.append(r)
 

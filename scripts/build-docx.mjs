@@ -5,7 +5,7 @@ import {
   Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ShadingType,
   AlignmentType, LevelFormat, PageBreak, Footer, PageNumber, BorderStyle, TableOfContents,
 } from 'docx'
-import { SECTIONS, DOMAINS, VERSION, DK, MAIN_QUESTION, UNITS } from '../src/questionnaire/questionnaire.js'
+import { SECTIONS, DOMAINS, VERSION, DK, MAIN_GOAL, KEY_QUESTIONS, HI_AREAS, FOUNDATIONS, HIERARCHY } from '../src/questionnaire/questionnaire.js'
 import { CHECKLIST, CHECKLIST_COUNT, LEVELS } from '../src/questionnaire/checklist.js'
 import { COUNTRIES, COUNTRY_CONTEXT } from '../src/questionnaire/countries.js'
 import { QUESTION_COLUMNS } from '../src/questionnaire/columns.js'
@@ -113,12 +113,12 @@ const children = []
 children.push(
   new Paragraph({ spacing: { before: 2400, after: 200 }, children: [new TextRun({ text: 'ICARB-D ANNUAL MATURITY SURVEY', bold: true, size: 26, color: ACCENT })] }),
   new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: 'Dental Schools, Departments and Courses', bold: true, size: 48 })] }),
-  p([new TextRun({ text: 'Artificial intelligence · Health informatics · Robotics · Bioinformatics', size: 26, color: ACCENT })]),
+  p([new TextRun({ text: 'Health informatics in dentistry: AI · Robotics · Bioinformatics · Software development', size: 26, color: ACCENT })]),
   new Paragraph({ children: [new TextRun({ text: '', size: 2 })] }),
   p([new TextRun({ text: 'United States · national benchmark of dental schools', size: 28 })]),
-  p([new TextRun({ text: `Annual questionnaire for a whole school, a department or a course · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
-  new Paragraph({ spacing: { before: 400, after: 120 }, children: [new TextRun({ text: 'Main question', bold: true })] }),
-  p([new TextRun({ text: MAIN_QUESTION, size: 24, color: ACCENT })]),
+  p([new TextRun({ text: `Annual questionnaire answered by the director of each course · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
+  new Paragraph({ spacing: { before: 400, after: 120 }, children: [new TextRun({ text: 'Main goal', bold: true })] }),
+  p([new TextRun({ text: MAIN_GOAL, size: 24, color: ACCENT })]),
   new Paragraph({ spacing: { before: 600, after: 120 }, children: [new TextRun({ text: 'Proposed article title', bold: true })] }),
   p([new TextRun({ text: STUDY.titles[0], italics: true })]),
   p([new TextRun({ text: 'Built on the PAHO/WHO–IDB AI Readiness Assessment Toolkit (2024), AI-GUARD (2026), Bias-free AI in Health (2026) and AI Prompt Design for Public Health (2025).', size: 20, color: '6B7672' })], { spacing: { before: 600 } }),
@@ -131,8 +131,14 @@ children.push(
 children.push(h1('1. About the study'))
 for (const para of STUDY.overview) children.push(p(para))
 children.push(h2('Who answers'))
-children.push(p('Each form describes one unit and is answered by the person closest to it. A school can send one school-wide form and as many department and course forms as it wishes.'))
-children.push(table(['Unit described', 'Who answers'], UNITS.map((u) => [u.l, u.who]), [3600, CONTENT_W - 3600]))
+children.push(h2('Questions the benchmark helps answer'))
+KEY_QUESTIONS.forEach((k) => children.push(bullet([new TextRun({ text: `${k.label}. `, bold: true }), new TextRun(k.text)])))
+children.push(h2('Health informatics and its areas'))
+children.push(p('Health informatics is the umbrella and the benchmark measures it as a whole. Its areas are listed below; every area also depends on the same foundations.'))
+children.push(table(['Area of health informatics', 'What it covers'], [...HI_AREAS.map((a) => [a.l, a.d]), [FOUNDATIONS.l, FOUNDATIONS.d]], [3600, CONTENT_W - 3600]))
+children.push(spacer())
+children.push(p('A dental school is organised as university → departments → courses. Each course director (the head of the course) answers one form for their course; department and university scores are built from the courses.'))
+children.push(table(['Level', 'How its score is obtained'], HIERARCHY.map((h) => [h.level, h.how]), [3600, CONTENT_W - 3600]))
 children.push(spacer())
 children.push(h2('Objectives'))
 STUDY.objectives.forEach((o) => children.push(bullet(o)))

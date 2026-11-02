@@ -1,8 +1,16 @@
 # ICARB-D Annual Survey of Dental Schools
 
-**Main question: which dental schools in the United States are best prepared to adopt and lead innovation in health informatics, artificial intelligence, robotics and bioinformatics, and how do they compare with dental schools in other countries?**
+**Main goal: build a benchmark — one comparable number from 0 to 100 that measures how mature each US dental school is in health informatics, with a score for each of its areas.**
 
-This annual survey answers it by mapping the state of the art of maturity of a **whole dental school, one department, or one course** taught in a department. The reader gets a complete, clear picture of what each unit has, who can do the work, what students learn, how technology is governed, and whether projects last. After answering, the same items work as a **maturity checklist** that shows the steps to the level a school wants to reach.
+The benchmark helps answer three questions:
+
+1. **Main goal:** where does each US dental school stand in health informatics?
+2. **Practical conclusion:** if a grant for health informatics in dentistry were available, which university would have the best chance of using it well?
+3. **Secondary:** how do schools compare with each other, and, where universities in other countries answer the same survey, how do US schools compare with them?
+
+**Health informatics is the umbrella.** Its areas are health information systems (records, imaging, coding, teledentistry, analytics), artificial intelligence, robotics and digital dentistry, bioinformatics, and software development for health. All of them rest on the same foundations: infrastructure, data and privacy, people, governance, and implementation and sustainability.
+
+**Who answers:** a dental school is organised as university → departments → courses. Each **course director** (the head of the course) answers one form for their course; department scores are built from their courses and the university benchmark from its departments. After answering, the same items work as a **maturity checklist** that shows the steps to the level a school wants to reach.
 
 The idea comes from the Pan American Health Organization (PAHO), which created a questionnaire to measure how ready public health institutions are for AI (*Artificial Intelligence in Public Health: Readiness Assessment Toolkit*, PAHO and IDB, 2024). This survey adapts its dimensions and 1–4 maturity scale to dental schools.
 
@@ -19,37 +27,37 @@ The survey is run independently of the ICARB-D consortium website (https://igora
 
 ## Proposed article title
 
-> **Mapping the Digital Maturity of US Dental Education: A National, Annual, Course-Level Survey of Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in US Dental Schools**
+> **A Benchmark of Health Informatics Maturity in US Dental Schools: A National, Annual, Course-Level Survey of Artificial Intelligence, Robotics, Bioinformatics and Software Development**
 
 Alternatives:
 
-- *Which Course, Which Department? Physical and Human Resources for Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in US Dental Schools — Baseline Results of the ICARB-D Annual Survey*
-- *From Awareness to Implementation: Department-Level Maturity of Digital Technologies in US Dental Education — A National Cross-Sectional Study Aligned with ADA AI Standards and CODA Accreditation*
+- *Which Dental School Is Ready to Invest? Physical and Human Resources for Health Informatics in US Dental Schools — Baseline Results of the ICARB-D Annual Survey*
+- *From Courses to Universities: Measuring Health Informatics Maturity in US Dental Education with an Adapted PAHO/WHO Readiness Framework*
 
 ## What the survey measures
 
-The survey gives a comprehensive overview of the maturity of each unit (school, department or course) in four technology domains:
+The benchmark measures **health informatics in dentistry** as a whole, with a score for each of its areas and for the foundations they share:
 
-| Domain | What is pictured |
-|---|---|
-| Artificial intelligence | Computing, AI tools used by students, datasets, faculty able to teach AI, AI hours by 16 topics (incl. programming and model development), generative-AI policy |
-| Health informatics | Electronic records, imaging archives (PACS), coding, teledentistry, analytics, research data access, informatics teaching and staff |
-| Robotics and digital dentistry | Counts of robots, navigation systems, haptic/VR simulators, scanners, CBCT, milling units, 3D printers; student access, digital workflow, maintenance, teaching hours, trained faculty |
-| Bioinformatics and omics | Laboratories, sequencers, biobanks, HPC, pipelines, bioinformaticians, teaching hours, research areas, FAIR data sharing |
+| Level | Area | What is pictured |
+|---|---|---|
+| Area | Health information systems | Electronic records, imaging archives (PACS), coding, teledentistry, analytics, research data access, informatics teaching and staff |
+| Area | Artificial intelligence | AI tools used by students, AI hours by 16 topics (incl. programming and model development), generative-AI policy and safeguards |
+| Area | Robotics and digital dentistry | Counts of robots, navigation systems, haptic/VR simulators, scanners, CBCT, milling units, 3D printers; student access, digital workflow, maintenance, teaching hours |
+| Area | Bioinformatics | Laboratories, sequencers, biobanks, HPC, pipelines, bioinformaticians, teaching hours, FAIR data sharing |
+| Area | Software development for health | Software built and maintained, development practices (version control, testing, security), teaching software development |
+| Foundations | Infrastructure, data, people, governance, implementation | Computing, data quality and privacy, faculty and staff, plans, ethics and safeguards, pilots, evaluation and funding |
 
-For every domain it captures **physical resources** (equipment, infrastructure, data) and **human resources** (faculty, technical staff, partners), plus teaching, governance, implementation and sustainability. It also maps each unit's readiness to share data and collaborate on multi-institution AI projects.
-
-The survey is **annual**: each wave maps the state of the art across dental schools, and linking waves shows how each school, department and course develops.
+The survey is **annual**: each wave updates the benchmark, and linking waves shows how each school, department and course develops.
 
 ## Who answers
 
-| Unit described (item A17) | Who answers |
+| Level | How its score is obtained |
 |---|---|
-| Whole dental school (school-wide) | Dean or associate dean (academic affairs, research, clinical affairs or informatics) |
-| One department | Department chair or a faculty member designated by the chair |
-| One course taught in a department | Course director or coordinator |
+| University (dental school) | Built from all its departments, weighted by the number of courses |
+| Department | Built from the courses it teaches |
+| Course | One form, answered by the course director (the head of the course) |
 
-A school can send one school-wide form and as many department and course forms as it wishes. US schools see US references (CODA, ADA, HIPAA, FDA); schools in other countries answer the same items (A01 "Other country"), so all scores share the same 0–100 scale.
+Course directors answer for what their course can use or must follow, including resources provided by the department or school; "Don't know" is always allowed. US schools see US references (CODA, ADA, HIPAA, FDA); universities in other countries answer the same items (A01 "Other country"), so all scores share the same 0–100 scale.
 
 ## Why it matters for the United States
 
@@ -74,25 +82,25 @@ A school can send one school-wide form and as many department and course forms a
 
 ## Questionnaire structure
 
-175 questions in 13 parts, stored as 469 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
+180 questions in 13 parts, stored as 475 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
 
 | Part | Content | Filled by |
 |---|---|---|
-| A | Profile: state, school, department, course, level, role, consent, **survey year**, previous year's code | Research team |
-| B | Context: enrollment, faculty, calendar, course hours, domains addressed | Respondent |
+| A | Profile of the course: country, state, university, department, course, level, role, consent, **survey year**, previous year's code | Research team |
+| B | Context: enrollment, faculty, calendar, course hours, areas of health informatics addressed | Respondent |
 | C | Physical resources: computing, software, AI tools used by students, datasets, data quality, privacy, connectivity | Respondent |
 | D | Human resources: faculty able to teach AI, researchers, training, partners, technical staff, barriers | Respondent |
 | E | AI curriculum: hours by format and 16 topics, programming hours, undergraduate and graduate courses, assessment | Respondent |
 | F | Generative AI: policy, permitted uses, prompt design, verification, safeguards | Respondent |
-| G | Health informatics: records, PACS, coding, teledentistry, analytics, teaching hours, staff | Respondent |
+| G | Health information systems (records, PACS, coding, teledentistry, analytics, teaching hours, staff) and software development for health | Respondent |
 | H | Robotics and digital dentistry: equipment counts, access, digital workflow, teaching hours, trained faculty, maintenance | Respondent |
 | I | Bioinformatics and omics: laboratories, biobank, pipelines, expertise, teaching hours, data sharing | Respondent |
 | J | Governance, ethics, bias, regulation, AI-GUARD checklist | Respondent |
 | K | Implementation, evaluation, sustainability, funding | Respondent |
 | L | Collaboration and the open dental AI model: interest, data that could be shared, preferred models (e.g., federated learning), barriers | Respondent |
-| M | Self-assessment of maturity in each of the four domains, barriers, facilitators, open comments | Respondent |
+| M | Self-assessment of maturity in health informatics and each of its areas, barriers, facilitators, open comments | Respondent |
 
-Maturity items use a 1–4 anchored scale (1 = absent … 4 = established) plus "Don't know / Not applicable" (coded −1, treated as missing). Each one belongs to one of ten domains: Infrastructure (INF), Data (DAT), Human resources (HUM), AI curriculum (CUR), Generative AI (GEN), Health informatics (HIN), Robotics and digital dentistry (ROB), Bioinformatics (BIO), Governance & ethics (GOV), Implementation & sustainability (IMP).
+Maturity items use a 1–4 anchored scale (1 = absent … 4 = established) plus "Don't know / Not applicable" (coded −1, treated as missing). Each one belongs to one of eleven domains: Infrastructure (INF), Data (DAT), Human resources (HUM), AI curriculum (CUR), Generative AI (GEN), Health information systems (HIN), Robotics and digital dentistry (ROB), Bioinformatics (BIO), Software development for health (SWD), Governance & ethics (GOV), Implementation & sustainability (IMP).
 
 ### US references
 
@@ -181,15 +189,16 @@ python3 -m venv .venv && .venv/bin/pip install pandas numpy
 
 `analysis/consolidate.py` writes to `analysis/output/`:
 
-1. **Form record**: each form is one record keyed by Survey year × Country × State × School × Unit level × Department × Course.
-2. **Domain index** (ten domains): mean of the domain's 1–4 items → 0–100 index `(mean − 1) / 3 × 100`. The AI-GUARD (J11) and safeguards (F06) indices score Yes = 2, Partial = 1, No = 0.
-3. **Hours per year** for AI, health informatics, robotics and bioinformatics, plus programming hours; **equipment units** and students per unit.
-4. **Department roll-up** per year: course and department forms, with the number of forms (n).
-5. **School ranking** (`school_scores.csv`): departments weighted by forms, combined with any school-wide form; schools ranked overall and within their country. The script prints the most prepared US schools of the latest year.
-6. **State and country summaries** per year (`state_scores.csv`, `country_scores.csv`, US first).
-7. **Annual trends**: each school's and department's overall index by survey year (`school_trends.csv`, `department_trends.csv`).
-8. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
-9. **Hours by topic** per year and country (`hours_by_topic.csv`).
+1. **Course record**: each form is one record keyed by Survey year × Country × State × School × Department × Course.
+2. **Domain index** (eleven domains): mean of the domain's 1–4 items → 0–100 index `(mean − 1) / 3 × 100`. The AI-GUARD (J11) and safeguards (F06) indices score Yes = 2, Partial = 1, No = 0.
+3. **Benchmark index** (mean of the eleven domain indices), **area indices** (information systems, AI, robotics, bioinformatics, software development) and the **funding readiness index** (mean of the five foundations: INF, DAT, HUM, GOV, IMP).
+4. **Hours per year** for AI, health information systems, robotics and bioinformatics, plus programming hours; **equipment units** and students per unit.
+5. **Department roll-up** per year: mean of its courses, with the number of courses (n).
+6. **School benchmark** (`school_scores.csv`): departments weighted by courses; rank within country by benchmark and by funding readiness. The script prints the US benchmark for the latest year and the schools most likely to use a new grant well.
+7. **State and country summaries** per year (`state_scores.csv`, `country_scores.csv`, US first).
+8. **Annual trends**: each school's and department's benchmark by survey year (`school_trends.csv`, `department_trends.csv`).
+9. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
+10. **Hours by topic** per year and country (`hours_by_topic.csv`).
 
 ## Methods checklist (before fieldwork)
 

@@ -9,12 +9,11 @@ A01,A01,A,,single,Country,US=United States | 99=Other country,false
 A01_other,A01,A,,text,Country — other (text),,false
 A02,A02,A,,text,State / region,,false
 A03,A03,A,,text,Institution,,false
-A17,A17,A,,single,Unit reported,1=Whole dental school (school-wide) | 2=One department | 3=One course taught in a department,false
 A04,A04,A,,single,Institution type,"1=Public (federal) | 2=Public (state / municipal) | 3=Private, non-profit | 4=Private, for-profit",false
 A05,A05,A,,text,City,,false
 A06,A06,A,,text,Department,,false
 A07,A07,A,,text,Course,,false
-A08,A08,A,,single,Training level,"1=Predoctoral first professional degree (DDS/DMD) | 2=Research master's (MS/MSc) | 3=Professional/clinical master's or specialty certificate | 4=Doctoral (PhD/DSc) | 5=Residency / advanced education (e.g., AEGD, GPR, specialty residency) | 6=Integrated long-track program (e.g., DDS/DMD-PhD) | 7=Continuing education / CPD | 8=Several levels (school-wide or department-wide form) | 99=Other",false
+A08,A08,A,,single,Training level,"1=Predoctoral first professional degree (DDS/DMD) | 2=Research master's (MS/MSc) | 3=Professional/clinical master's or specialty certificate | 4=Doctoral (PhD/DSc) | 5=Residency / advanced education (e.g., AEGD, GPR, specialty residency) | 6=Integrated long-track program (e.g., DDS/DMD-PhD) | 7=Continuing education / CPD | 99=Other",false
 A08_other,A08,A,,text,Training level — other (text),,false
 A09,A09,A,,single,Respondent role,1=Department head / chair | 2=Course director / coordinator | 3=Program director (graduate / residency) | 4=Curriculum committee member | 5=Faculty representative | 6=Dean / associate dean | 7=Chief information or informatics officer | 99=Other,false
 A09_other,A09,A,,text,Respondent role — other (text),,false
@@ -40,11 +39,12 @@ B07__y5,B07,B,,binary,Program years: Year 5,1=selected | 0=not selected,false
 B07__y6,B07,B,,binary,Program years: Year 6 or later / internship,1=selected | 0=not selected,false
 B07__grad,B07,B,,binary,Program years: Graduate / residency year,1=selected | 0=not selected,false
 B08,B08,B,,single,Course format,1=Didactic (lectures/seminars) | 2=Preclinical / laboratory | 3=Clinical | 4=Mixed | 5=Research,false
-B09__ai,B09,B,,binary,Domains addressed: Artificial intelligence,1=selected | 0=not selected,false
-B09__hin,B09,B,,binary,"Domains addressed: Health informatics (EHR, imaging systems, teledentistry, data)",1=selected | 0=not selected,false
-B09__rob,B09,B,,binary,"Domains addressed: Robotics and digital dentistry (CAD/CAM, simulators, robots, navigation)",1=selected | 0=not selected,false
-B09__bio,B09,B,,binary,Domains addressed: Bioinformatics and omics,1=selected | 0=not selected,false
-B09__none,B09,B,,binary,Domains addressed: None of these,1=selected | 0=not selected,false
+B09__hin,B09,B,,binary,"Areas of health informatics addressed: Health information systems (EHR, imaging systems, teledentistry, data)",1=selected | 0=not selected,false
+B09__ai,B09,B,,binary,Areas of health informatics addressed: Artificial intelligence,1=selected | 0=not selected,false
+B09__rob,B09,B,,binary,"Areas of health informatics addressed: Robotics and digital dentistry (CAD/CAM, simulators, robots, navigation)",1=selected | 0=not selected,false
+B09__bio,B09,B,,binary,Areas of health informatics addressed: Bioinformatics and omics,1=selected | 0=not selected,false
+B09__swd,B09,B,,binary,Areas of health informatics addressed: Software development for health,1=selected | 0=not selected,false
+B09__none,B09,B,,binary,Areas of health informatics addressed: None of these,1=selected | 0=not selected,false
 B10,B10,B,,single,Respondent experience,1=None | 2=Less than 1 year | 3=1–3 years | 4=More than 3 years,false
 B11,B11,B,,scale,Respondent AI literacy,"1=Basic: I know general concepts only | 2=Intermediate: I can interpret AI outputs and their limitations | 3=Advanced: I can critically appraise AI studies and select tools | 4=Expert: I develop, train or validate AI models",false
 C01,C01,C,INF,scale,Computing hardware,"1=None | 2=Only individual faculty members' personal equipment | 3=Shared equipment, insufficient for demand | 4=Dedicated high-performance computing, regularly updated and accessible to students | -1=Don't know / N/A",false
@@ -155,7 +155,7 @@ D10_2_type,D10,D,,single,Interdisciplinary partners #2: Type,1=Same university �
 D10_3_name,D10,D,,text,Interdisciplinary partners #3: Partner unit,,false
 D10_3_type,D10,D,,single,Interdisciplinary partners #3: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / biology / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
 D11,D11,D,HUM,scale,Partnership depth,1=No partners | 2=Informal individual collaboration only | 3=Formal project-based collaboration | 4=Long-term institutional partnership with joint funding or appointments | -1=Don't know / N/A,false
-D12,D12,D,HUM,scale,Technical staff,"1=No access | 2=Shared across the school, high demand | 3=Adequate access for most needs | 4=Dedicated technical staff embedded in the unit | -1=Don't know / N/A",false
+D12,D12,D,HUM,scale,Technical staff,"1=No access | 2=Shared across the school, high demand | 3=Adequate access for most needs | 4=Dedicated technical staff embedded in the department | -1=Don't know / N/A",false
 D13,D13,D,,number,Technical staff FTE (FTE),,false
 D14,D14,D,HUM,scale,Hiring plans,"1=Not planned | 2=Discussed, no approved position | 3=Position approved or recruitment underway | 4=Expertise already recruited and further positions planned | -1=Don't know / N/A",false
 D15,D15,D,HUM,scale,Faculty openness,1=Mostly resistant | 2=Mixed / indifferent | 3=Mostly supportive | 4=Strongly supportive with active champions | -1=Don't know / N/A,false
@@ -284,6 +284,10 @@ G09_privacy,G09,G,,number,"Health informatics hours by topic: Privacy, cybersecu
 G10,G10,G,HIN,scale,Informatics teaching depth,1=None | 2=Mentioned in lectures | 3=Dedicated module | 4=Dedicated course with practical assessment | -1=Don't know / N/A,false
 G11,G11,G,,number,Faculty with informatics training (faculty),,false
 G12,G12,G,HIN,scale,Clinical informatics staff,1=None | 2=Central university IT only | 3=Shared clinical informatics staff | 4=Dedicated clinical informatics team for the school | -1=Don't know / N/A,false
+G13,G13,G,SWD,scale,Software development capacity,"1=No software developed | 2=Occasional scripts or prototypes by individuals | 3=Some tools built for teaching or research, not maintained | 4=Software built and maintained by a team, with documentation and real users | -1=Don't know / N/A",false
+G14,G14,G,SWD,scale,Development practices,"1=No software is developed | 2=Ad hoc (no version control or testing) | 3=Version control and some testing | 4=Version control, testing, code review, and security and privacy by design | -1=Don't know / N/A",false
+G15,G15,G,SWD,scale,Teaching software development,1=Not taught | 2=Mentioned only | 3=One dedicated session or module | 4=Structured course or project-based learning with real users | -1=Don't know / N/A,false
+G16,G16,G,,number,Health software built (3 y) (tools),,false
 H01_robot_implant,H01,H,,number,Equipment inventory: Robot-assisted implant surgery systems (units available),,false
 H01_robot_other,H01,H,,number,"Equipment inventory: Other surgical, endodontic or automated robotic systems (units available)",,false
 H01_navigation,H01,H,,number,Equipment inventory: Dynamic navigation systems for guided surgery (units available),,false
@@ -443,7 +447,7 @@ L06_other,L06,L,,text,Barriers to sharing — other (text),,false
 L07,L07,L,,number,People available (people),,false
 L08,L08,L,,textarea,Project ideas,,false
 M01,M01,M,,scale,Overall maturity — AI,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
-M02,M02,M,,scale,Overall maturity — health informatics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M02,M02,M,,scale,Overall maturity — health information systems,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
 M03,M03,M,,scale,Overall maturity — robotics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
 M04,M04,M,,scale,Overall maturity — bioinformatics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
 M05__funding,M05,M,,binary,Primary barriers: Lack of funding,1=selected | 0=not selected,false
@@ -470,4 +474,6 @@ M07,M07,M,,textarea,Most important need,,false
 M08,M08,M,,textarea,Innovative practice,,false
 M09,M09,M,,textarea,Vision 2030,,false
 M10,M10,M,,scale,Confidence in answers,1=Low | 2=Moderate | 3=High | 4=Very high (checked with records),false
+M12,M12,M,,scale,Overall maturity — software development,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
+M13,M13,M,,scale,Overall maturity — health informatics,"1=Exploring: no formal action; individual interest only | 2=Planning: discussions underway, some resources identified, no systematic implementation | 3=Implementing: some formal courses/projects launched, not scaled or sustainable | 4=Mature: systematic integration, dedicated resources, continuous evaluation | -1=Don't know / N/A",false
 M11,M11,M,,single,Follow-up interview,1=Yes | 0=No,false

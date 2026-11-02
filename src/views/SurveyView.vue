@@ -38,7 +38,6 @@ const optionLabel = (qid, v) => intake.questions.find((q) => q.id === qid)?.opti
 const profile = computed(() => [
   ['Country', COUNTRIES.find((c) => c.v === record.value.A01)?.l || record.value.A01],
   ['Institution', record.value.A03],
-  ['Unit', optionLabel('A17', record.value.A17)],
   ['Department', record.value.A06],
   ['Course', record.value.A07],
   ['Level', optionLabel('A08', record.value.A08)],

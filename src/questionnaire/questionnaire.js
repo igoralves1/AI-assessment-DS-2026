@@ -18,16 +18,31 @@
 
 import { COUNTRIES, GUIDANCE_DOCS } from './countries.js'
 
-export const VERSION = '2.1.0'
+export const VERSION = '3.0.0'
 export const DK = -1 // "Don't know / Not applicable"
 export const SURVEY_NAME = 'ICARB-D Annual Maturity Survey of Dental Schools'
-export const SURVEY_SUBTITLE = 'Artificial intelligence, health informatics, robotics and bioinformatics'
-export const MAIN_QUESTION = 'Which dental schools in the United States are best prepared to adopt and lead innovation in health informatics, artificial intelligence, robotics and bioinformatics, and how do they compare with dental schools in other countries?'
-// The three units a form can describe, and who answers for each.
-export const UNITS = [
-  { v: 1, l: 'Whole dental school (school-wide)', who: 'Dean or associate dean (academic affairs, research, clinical affairs or informatics)' },
-  { v: 2, l: 'One department', who: 'Department chair or a faculty member designated by the chair' },
-  { v: 3, l: 'One course taught in a department', who: 'Course director or coordinator' },
+export const SURVEY_SUBTITLE = 'Health informatics in dentistry: artificial intelligence, robotics, bioinformatics and software development'
+// Main goal of the survey and the questions its results help answer (shown on the guide, documents and slides).
+export const MAIN_GOAL = 'Build a benchmark: one comparable number, from 0 to 100, that measures how mature each US dental school is in health informatics, with a score for each of its areas.'
+export const KEY_QUESTIONS = [
+  { label: 'Main goal', text: 'Where does each US dental school stand in health informatics? The benchmark gives every school a number built from its departments and courses, with a score for each area.' },
+  { label: 'Practical conclusion', text: 'If a grant for health informatics in dentistry were available, which university would have the best chance of using it well?' },
+  { label: 'Secondary', text: 'How do schools compare with each other, and, where schools in other countries answer the same survey, how do US schools compare with them?' },
+]
+// Health informatics is the umbrella. These are its areas (field scores) and the foundations every area needs.
+export const HI_AREAS = [
+  { key: 'HIS', l: 'Health information systems', d: 'Electronic records, imaging archives, coding, teledentistry and analytics', domains: ['HIN'] },
+  { key: 'AI', l: 'Artificial intelligence', d: 'AI tools, AI teaching and generative AI', domains: ['CUR', 'GEN'] },
+  { key: 'ROB', l: 'Robotics and digital dentistry', d: 'Robots, simulators, scanners, CAD/CAM and 3D printing', domains: ['ROB'] },
+  { key: 'BIO', l: 'Bioinformatics', d: 'Omics laboratories, pipelines and biological data', domains: ['BIO'] },
+  { key: 'SWD', l: 'Software development for health', d: 'Building, testing and maintaining health software', domains: ['SWD'] },
+]
+export const FOUNDATIONS = { l: 'Foundations', d: 'Infrastructure, data and privacy, people, governance, and implementation and sustainability', domains: ['INF', 'DAT', 'HUM', 'GOV', 'IMP'] }
+// University -> departments -> courses. Each form describes one course and is answered by the head of that course.
+export const HIERARCHY = [
+  { level: 'University (dental school)', how: 'Score built from all its departments, weighted by the number of courses' },
+  { level: 'Department', how: 'Score built from the courses it teaches' },
+  { level: 'Course', how: 'One form, answered by the course director (the head of the course)' },
 ]
 
 const scale = (id, domain, title, text, anchors, captures, extra = {}) => ({
@@ -45,19 +60,17 @@ const NONE = (l = 'None') => ({ v: 'none', l, exclusive: true })
 // ---------------------------------------------------------------------------
 const partA = {
   id: 'A', filledBy: 'team',
-  title: 'Part A. Profile of the unit (completed by the research team)',
-  goal: 'Identify exactly which unit is measured and who answers for it, so every score can be traced, compared and followed from year to year.',
-  intro: 'The research team completes this part with the respondent (by phone, video call or email). It sets the unit the form describes (the whole dental school, one department or one course) and who answers for it. Saving it generates the XXX-XXX access code given to the respondent.',
-  purpose: 'Identifies exactly which unit is described (country, state, school, unit level, department, course, training level) and who answers for it, and records consent. These fields are the keys used to rank schools, group answers by department and school, compare states and countries, and follow the same unit from one annual wave to the next.',
+  title: 'Part A. Profile of the course (completed by the research team)',
+  goal: 'Place each course in its department and university, and record who answers for it, so every score can be traced, compared and followed from year to year.',
+  intro: 'The research team completes this part with the course director (by phone, video call or email). Each form describes one course, placed in its department and university. Saving this part generates the XXX-XXX access code given to the course director.',
+  purpose: 'Places the course in the hierarchy university → department → course (with country, state and training level), records who answers and their consent. These fields are the keys used to build department and university scores, compare states and countries, and follow the same course from one annual wave to the next.',
   questions: [
     { id: 'A01', type: 'single', title: 'Country', text: 'Country', options: [...COUNTRIES, { v: 99, l: 'Other country' }], other: true, required: true,
       captures: 'Country of the school. US schools see the matching US references in later items. Schools in other countries answer the same items, so their scores can be compared with US schools.' },
     { id: 'A02', type: 'text', title: 'State / region', text: 'State (United States) or province / region (other countries)', required: true,
       captures: 'State or region of the school, to compare schools within a country.' },
     { id: 'A03', type: 'text', title: 'Institution', text: 'Name of dental school (institution)', required: true,
-      captures: 'The school. All forms from the same school are combined into one school score, used to rank schools.' },
-    { id: 'A17', type: 'single', title: 'Unit reported', text: 'Which unit does this form describe?', required: true, options: UNITS.map(({ v, l }) => ({ v, l })),
-      captures: 'The level of the unit. A school-wide form gives the school\'s overall picture; department and course forms give the detail behind it. Each form is analysed at its own level, and the school ranking combines them.' },
+      captures: 'The university (dental school). The courses of all its departments are combined into the school\'s benchmark score.' },
     { id: 'A04', type: 'single', title: 'Institution type', text: 'Type of institution', required: true, options: [
       { v: 1, l: 'Public (federal)' },
       { v: 2, l: 'Public (state / municipal)' },
@@ -66,11 +79,11 @@ const partA = {
     ], captures: 'Funding model of the school, to test whether public and private schools differ in maturity and resources.' },
     { id: 'A05', type: 'text', title: 'City', text: 'City', required: true,
       captures: 'City of the campus, for mapping and to distinguish campuses of the same institution.' },
-    { id: 'A06', type: 'text', title: 'Department', text: 'Name of the department (e.g., Department of Oral Radiology). Write "School-wide" if the form covers the whole school.', required: true,
-      captures: 'The department. Department and course forms are first consolidated at this level.' },
-    { id: 'A07', type: 'text', title: 'Course', text: 'Course code and title (e.g., "RAD-301 Oral Radiology II"). Write "Department-wide" if the form covers a whole department, or "School-wide" if it covers the whole school.', required: true,
+    { id: 'A06', type: 'text', title: 'Department', text: 'Name of the department that teaches the course (e.g., Department of Oral Radiology)', required: true,
+      captures: 'The department. Course scores are first combined at this level.' },
+    { id: 'A07', type: 'text', title: 'Course', text: 'Course code and title (e.g., "RAD-301 Oral Radiology II")', required: true,
       captures: 'The named course, so readers can see exactly which courses produced each school\'s curriculum results.' },
-    { id: 'A08', type: 'single', title: 'Training level', text: 'Training level of this unit', required: true, other: true, options: [
+    { id: 'A08', type: 'single', title: 'Training level', text: 'Training level of this course', required: true, other: true, options: [
       { v: 1, l: 'Predoctoral first professional degree (DDS/DMD)' },
       { v: 2, l: 'Research master\'s (MS/MSc)' },
       { v: 3, l: 'Professional/clinical master\'s or specialty certificate' },
@@ -78,7 +91,6 @@ const partA = {
       { v: 5, l: 'Residency / advanced education (e.g., AEGD, GPR, specialty residency)' },
       { v: 6, l: 'Integrated long-track program (e.g., DDS/DMD-PhD)' },
       { v: 7, l: 'Continuing education / CPD' },
-      { v: 8, l: 'Several levels (school-wide or department-wide form)' },
       { v: 99, l: 'Other' },
     ], captures: 'Training level, to compare predoctoral, graduate and residency teaching.' },
     { id: 'A09', type: 'single', title: 'Respondent role', text: 'Role of the respondent', required: true, other: true, options: [
@@ -90,7 +102,7 @@ const partA = {
       { v: 6, l: 'Dean / associate dean' },
       { v: 7, l: 'Chief information or informatics officer' },
       { v: 99, l: 'Other' },
-    ], captures: 'Who answered. The expected respondent is the dean or an associate dean for a school-wide form, the chair for a department, and the course director for a course. Used to judge how close the respondent is to the information.' },
+    ], captures: 'Who answered. The expected respondent is the course director (the head of the course); another role is recorded when the director delegates. Used to judge how close the respondent is to the information.' },
     { id: 'A10', type: 'text', title: 'Respondent name', text: 'Respondent full name', pii: true,
       captures: 'Contact only. Stored in a separate private file, never in the analysis data.' },
     { id: 'A11', type: 'text', title: 'Respondent email', text: 'Respondent email', pii: true,
@@ -104,8 +116,8 @@ const partA = {
       captures: 'Ethical requirement. Forms without consent are excluded from analysis.' },
     { id: 'A15', type: 'number', title: 'Survey year (wave)', text: 'Survey year (annual wave), e.g., 2026', required: true, min: 2026, max: 2100,
       captures: 'The annual wave. The survey is repeated every year so changes in each department can be tracked over time.' },
-    { id: 'A16', type: 'text', title: 'Previous code', text: 'Access code this same unit used in the previous year, if any (XXX-XXX)',
-      captures: 'Links this year\'s answers to last year\'s for the same unit, to measure year-to-year progress.' },
+    { id: 'A16', type: 'text', title: 'Previous code', text: 'Access code this same course used in the previous year, if any (XXX-XXX)',
+      captures: 'Links this year\'s answers to last year\'s for the same course, to measure year-to-year progress.' },
   ],
 }
 
@@ -114,18 +126,18 @@ const partA = {
 // ---------------------------------------------------------------------------
 const partB = {
   id: 'B', filledBy: 'respondent',
-  title: 'Part B. Context of the unit',
-  goal: 'Measure the size of the unit, so every count becomes a fair ratio (per student, per faculty member, per year).',
-  intro: 'Answer every item only for the unit named in Part A: the whole dental school, one department or one course. Approximate numbers are acceptable.',
-  purpose: 'Describes the size and structure of the unit (students, faculty, calendar, hours) and which of the four technology domains it touches. These numbers are denominators: they turn raw counts (e.g., computers, trained faculty, teaching hours) into comparable ratios.',
+  title: 'Part B. Context of the course',
+  goal: 'Measure the size of the course, so every count becomes a fair ratio (per student, per faculty member, per year).',
+  intro: 'Answer every item for the course named in Part A. Where an item asks about resources or rules, describe what this course can use or must follow, even if the department or school provides it. Approximate numbers are acceptable.',
+  purpose: 'Describes the size and structure of the course (students, faculty, calendar, hours) and which areas of health informatics it touches. These numbers are denominators: they turn raw counts (e.g., computers, trained faculty, teaching hours) into comparable ratios.',
   questions: [
-    { id: 'B01', type: 'number', title: 'Enrollment', text: 'Approximate number of students enrolled in this unit per year', unit: 'students', min: 0,
+    { id: 'B01', type: 'number', title: 'Enrollment', text: 'Approximate number of students enrolled in this course per year', unit: 'students', min: 0,
       captures: 'Size of the student body, used to compute students per computer, per device and per trained teacher.' },
-    { id: 'B02', type: 'number', title: 'Faculty headcount', text: 'Number of faculty members assigned to this unit (headcount)', unit: 'faculty', min: 0,
+    { id: 'B02', type: 'number', title: 'Faculty headcount', text: 'Number of faculty members assigned to this course (headcount)', unit: 'faculty', min: 0,
       captures: 'Teaching staff size, denominator for the share of faculty with AI, informatics, robotics or bioinformatics expertise.' },
-    { id: 'B03', type: 'number', title: 'Faculty FTE', text: 'Full-time equivalent (FTE) of faculty assigned to this unit', unit: 'FTE', min: 0, step: 0.1,
+    { id: 'B03', type: 'number', title: 'Faculty FTE', text: 'Full-time equivalent (FTE) of faculty assigned to this course', unit: 'FTE', min: 0, step: 0.1,
       captures: 'Teaching capacity adjusted for part-time staff.' },
-    { id: 'B04', type: 'single', title: 'Academic calendar', text: 'Academic calendar used by this unit', countryHint: 'calendarNote', options: [
+    { id: 'B04', type: 'single', title: 'Academic calendar', text: 'Academic calendar used by this course', countryHint: 'calendarNote', options: [
       { v: 1, l: 'Semester (2 terms per year)' },
       { v: 2, l: 'Trimester (3 terms per year)' },
       { v: 3, l: 'Quarter (4 terms per year)' },
@@ -144,11 +156,11 @@ const partB = {
       { v: 1, l: 'Didactic (lectures/seminars)' }, { v: 2, l: 'Preclinical / laboratory' },
       { v: 3, l: 'Clinical' }, { v: 4, l: 'Mixed' }, { v: 5, l: 'Research' },
     ], captures: 'Teaching setting, because equipment and tool use differ between lecture, lab and clinic courses.' },
-    { id: 'B09', type: 'multi', title: 'Domains addressed', text: 'Which technology domains does this unit address in teaching, research or care?', options: [
-      { v: 'ai', l: 'Artificial intelligence' }, { v: 'hin', l: 'Health informatics (EHR, imaging systems, teledentistry, data)' },
+    { id: 'B09', type: 'multi', title: 'Areas of health informatics addressed', text: 'Which areas of health informatics does this course address in teaching, research or care?', options: [
+      { v: 'hin', l: 'Health information systems (EHR, imaging systems, teledentistry, data)' }, { v: 'ai', l: 'Artificial intelligence' },
       { v: 'rob', l: 'Robotics and digital dentistry (CAD/CAM, simulators, robots, navigation)' },
-      { v: 'bio', l: 'Bioinformatics and omics' }, NONE('None of these'),
-    ], captures: 'Which of the four ICARB-D domains are present at all, giving a quick profile before the detailed parts.' },
+      { v: 'bio', l: 'Bioinformatics and omics' }, { v: 'swd', l: 'Software development for health' }, NONE('None of these'),
+    ], captures: 'Which areas of health informatics are present at all, giving a quick profile before the detailed parts.' },
     { id: 'B10', type: 'single', title: 'Respondent experience', text: 'Your own experience with digital technologies (AI, informatics, robotics or bioinformatics) in teaching, research or practice', options: [
       { v: 1, l: 'None' }, { v: 2, l: 'Less than 1 year' }, { v: 3, l: '1–3 years' }, { v: 4, l: 'More than 3 years' },
     ], captures: 'Respondent background, used to check whether answers vary with the respondent\'s own experience.' },
@@ -157,7 +169,7 @@ const partB = {
       'Intermediate: I can interpret AI outputs and their limitations',
       'Advanced: I can critically appraise AI studies and select tools',
       'Expert: I develop, train or validate AI models',
-    ], 'Self-rated AI literacy of the respondent (not scored as unit maturity).', { noDK: true }),
+    ], 'Self-rated AI literacy of the respondent (not scored as course maturity).', { noDK: true }),
   ],
 }
 
@@ -185,17 +197,17 @@ const TOOL_TASKS = [
 const partC = {
   id: 'C', filledBy: 'respondent',
   title: 'Part C. Physical resources: computing, AI tools and data',
-  goal: 'Know what the unit has today: computing, software, AI tools, data, privacy and security.',
-  intro: 'Facilities, equipment, software, data and technical support available to the named unit.',
-  purpose: 'Pictures the physical and digital resources that every technology domain depends on: computers and GPUs, cloud access, dedicated spaces, software, AI tools actually used by students, datasets, data quality, privacy, connectivity, interoperability and security. It answers "what does this unit have today?"',
+  goal: 'Know what the course has today: computing, software, AI tools, data, privacy and security.',
+  intro: 'Facilities, equipment, software, data and technical support available to the named course.',
+  purpose: 'Pictures the physical and digital resources that every technology domain depends on: computers and GPUs, cloud access, dedicated spaces, software, AI tools actually used by students, datasets, data quality, privacy, connectivity, interoperability and security. It answers "what does this course have today?"',
   questions: [
-    scale('C01', 'INF', 'Computing hardware', 'Is there hardware designated for AI or data-intensive teaching or research (GPU workstations, high-performance computing, cloud credits) in this unit?', [
+    scale('C01', 'INF', 'Computing hardware', 'Is there hardware designated for AI or data-intensive teaching or research (GPU workstations, high-performance computing, cloud credits) in this course?', [
       'None',
       'Only individual faculty members\' personal equipment',
       'Shared equipment, insufficient for demand',
       'Dedicated high-performance computing, regularly updated and accessible to students',
-    ], 'Whether the unit has its own computing power for AI and data work, or depends on personal equipment.'),
-    { id: 'C02', type: 'number', title: 'GPU workstations', text: 'Number of GPU-equipped workstations or servers available to this unit', unit: 'units', min: 0,
+    ], 'Whether the course has its own computing power for AI and data work, or depends on personal equipment.'),
+    { id: 'C02', type: 'number', title: 'GPU workstations', text: 'Number of GPU-equipped workstations or servers available to this course', unit: 'units', min: 0,
       captures: 'Hard count of AI-capable machines, comparable across schools and over years.' },
     scale('C03', 'INF', 'Cloud computing', 'Access to cloud computing (institutional cloud accounts, research credits, university HPC cluster)', [
       'No access', 'Individual/ad hoc access paid by faculty', 'Institutional access on request, limited quota', 'Routine institutional access with support',
@@ -205,7 +217,7 @@ const partC = {
     scale('C05', 'INF', 'Dedicated digital space', 'Is there a dedicated physical space for digital dentistry, informatics or AI teaching/research (lab, innovation hub)?', [
       'None', 'Shared general computer room', 'Dedicated digital dentistry lab without AI focus', 'Dedicated AI/digital dentistry lab with staff and scheduled student access',
     ], 'Existence of a physical home for digital work, a strong sign of institutional commitment.'),
-    { id: 'C06', type: 'multi', title: 'Software licences', text: 'Which data-science and AI software is available to students and faculty of this unit?', other: true, options: [
+    { id: 'C06', type: 'multi', title: 'Software licences', text: 'Which data-science and AI software is available to students and faculty of this course?', other: true, options: [
       { v: 'python', l: 'Python / Jupyter / Google Colab' }, { v: 'r', l: 'R / RStudio' }, { v: 'matlab', l: 'MATLAB' },
       { v: 'nocode', l: 'No-code machine learning (e.g., Orange, KNIME, Teachable Machine)' },
       { v: 'annotation', l: 'Image annotation tools (e.g., CVAT, Label Studio, 3D Slicer)' },
@@ -214,7 +226,7 @@ const partC = {
       { v: 'genai_licensed', l: 'Institutionally licensed generative AI (e.g., Copilot, ChatGPT Edu, Gemini)' },
       NONE(),
     ], captures: 'The software toolbox available, from programming languages to annotation and commercial AI.' },
-    { id: 'C07', type: 'multi', title: 'AI-enabled equipment', text: 'Which AI-enabled equipment or systems are in use in this unit?', other: true, options: [
+    { id: 'C07', type: 'multi', title: 'AI-enabled equipment', text: 'Which AI-enabled equipment or systems are in use in this course?', other: true, options: [
       { v: 'radiography', l: 'Digital radiography with AI analysis' }, { v: 'cbct', l: 'CBCT with AI segmentation' },
       { v: 'ios', l: 'Intraoral scanners with AI features' }, { v: 'cadcam', l: 'CAD/CAM or 3D printing with AI design' },
       { v: 'haptic', l: 'Haptic / simulation units with AI feedback' }, { v: 'ehr_ai', l: 'Electronic health record with AI modules' },
@@ -222,7 +234,7 @@ const partC = {
       NONE(),
     ], captures: 'Where AI is already embedded in equipment, often without being taught explicitly.' },
     { id: 'C08', type: 'repeat', title: 'AI tools used by students', count: 6,
-      text: 'List each AI tool students actually use in this unit. Leave rows empty if not applicable.',
+      text: 'List each AI tool students actually use in this course. Leave rows empty if not applicable.',
       fields: [
         { id: 'name', type: 'text', l: 'Tool / product name' },
         { id: 'task', type: 'single', l: 'Main task', options: TOOL_TASKS },
@@ -242,7 +254,7 @@ const partC = {
         { id: 'graded', type: 'single', l: 'Part of graded work?', options: YES_NO },
         { id: 'since', type: 'number', l: 'Year introduced', min: 2000, max: 2100 },
       ], captures: 'An inventory of real AI tools: what they do, whether they are approved, how deeply students use them and since when. Pooled across schools it becomes a map of dental AI adoption.' },
-    scale('C09', 'INF', 'Number of AI tools', 'Overall use of AI tools by students in this unit', [
+    scale('C09', 'INF', 'Number of AI tools', 'Overall use of AI tools by students in this course', [
       'No AI tool is used', '1 AI tool used', '2–3 AI tools used', '4 or more AI tools used and integrated into graded coursework',
     ], 'Summary of AI tool adoption for scoring.'),
     scale('C10', 'DAT', 'De-identified dataset', 'Is there a standardized, de-identified oral-health dataset (radiographs, intraoral scans, treatment records) that students or faculty can access for AI training or research?', [
@@ -260,13 +272,13 @@ const partC = {
     scale('C13', 'DAT', 'Annotation capacity', 'Capacity to label/annotate data for AI (calibrated annotators, annotation protocol, inter-rater agreement)', [
       'No capacity', 'Ad hoc annotation by individual researchers', 'Annotation protocol exists, limited calibration', 'Calibrated annotators with documented protocol and agreement statistics',
     ], 'Ability to produce reliable labels, which determines whether data can be used to train trustworthy AI.'),
-    scale('C14', 'DAT', 'Data quality', 'What measures ensure the accuracy, completeness and timeliness of data used in this unit?', [
+    scale('C14', 'DAT', 'Data quality', 'What measures ensure the accuracy, completeness and timeliness of data used in this course?', [
       'No measures applied', 'Ad hoc checks only', 'Some measures exist but are not comprehensive', 'Systematic quality assurance with documented protocols',
     ], 'Data quality assurance (PAHO/WHO readiness toolkit item).'),
     scale('C15', 'DAT', 'Data representativeness', 'Is the representativeness of the data assessed (age, sex, ethnicity, socioeconomic group, rural/urban, device type)?', [
       'Never assessed', 'Discussed informally', 'Assessed for some projects', 'Systematically assessed and reported',
     ], 'Whether datasets reflect the patients the AI will serve (PAHO bias-free AI guidance).'),
-    scale('C16', 'DAT', 'Privacy and security', 'What privacy and security systems protect patient data used in this unit?', [
+    scale('C16', 'DAT', 'Privacy and security', 'What privacy and security systems protect patient data used in this course?', [
       'No systems', 'Basic password protection only', 'Systems exist but are inconsistent', 'Comprehensive systems with encryption, audit trails and a named person responsible',
     ], 'Protection of patient data, read against US privacy law (HIPAA, FERPA).', { countryHint: 'privacy' }),
     scale('C17', 'DAT', 'De-identification', 'Are there documented procedures for anonymization / de-identification of patient data before use in teaching or research?', [
@@ -275,7 +287,7 @@ const partC = {
     scale('C18', 'DAT', 'Secure research environment', 'Is a secure environment available for working with identifiable or sensitive data (trusted research environment, approved server, data enclave)?', [
       'Not available', 'Planned', 'Available on request with delays', 'Available and routinely used',
     ], 'Whether sensitive data can be analysed without leaving a protected environment.'),
-    scale('C19', 'INF', 'Connectivity and IT support', 'Does this unit have reliable broadband and technical support for the digital tools it uses?', [
+    scale('C19', 'INF', 'Connectivity and IT support', 'Does this course have reliable broadband and technical support for the digital tools it uses?', [
       'Neither reliable connectivity nor specific support', 'Basic IT support exists but does not cover these tools', 'Partial support (software installation only)', 'Dedicated educational-technology support assigned to the unit',
     ], 'Basic connectivity and support, without which equipment goes unused.'),
     scale('C20', 'INF', 'Interoperability', 'Can the digital tools used exchange data with existing systems (EHR, imaging/PACS, learning management system) using standards such as DICOM, HL7 FHIR or LTI?', [
@@ -297,22 +309,22 @@ const partD = {
   id: 'D', filledBy: 'respondent',
   title: 'Part D. Human resources and expertise (AI and data science)',
   goal: 'Know who can teach, build and support these technologies, and what holds them back.',
-  intro: 'Faculty and staff assigned to the named unit.',
+  intro: 'Faculty and staff assigned to the named course.',
   purpose: 'Pictures the people: how many faculty can teach AI, who does AI research, what training they received, which partners and technical staff support them, and what holds them back. Equipment without trained people does not change teaching; this part measures that capacity.',
   questions: [
     scale('D01', 'HUM', 'Faculty able to teach AI', 'What proportion of faculty can independently teach AI content (machine-learning principles, interpreting AI outputs, critical appraisal of AI literature)?', [
       '0%', '1–10%', '11–25%', 'More than 25%',
     ], 'Teaching capacity for AI as a share of all faculty.'),
-    { id: 'D02', type: 'number', title: 'Faculty teaching AI (n)', text: 'Number of faculty who currently teach any AI content in this unit', unit: 'faculty', min: 0,
+    { id: 'D02', type: 'number', title: 'Faculty teaching AI (n)', text: 'Number of faculty who currently teach any AI content in this course', unit: 'faculty', min: 0,
       captures: 'Exact count, comparable across years.' },
     { id: 'D03', type: 'number', title: 'Faculty with formal AI degree', text: 'Number of faculty with a formal qualification in AI, computer science, data science or biomedical informatics (degree or university certificate)', unit: 'faculty', min: 0,
-      captures: 'Deep expertise in the unit, beyond self-taught knowledge.' },
+      captures: 'Deep expertise in the course and its department, beyond self-taught knowledge.' },
     scale('D04', 'HUM', 'AI-primary researchers', 'How many faculty have AI in dentistry or dental education as their primary research area?', [
       'None', '1', '2–3', '4 or more',
     ], 'Research leadership in AI, often the engine of curricular change.'),
-    { id: 'D05', type: 'number', title: 'AI publications (3 y)', text: 'Number of peer-reviewed AI-related publications by faculty of this unit in the past 3 years', unit: 'publications', min: 0,
+    { id: 'D05', type: 'number', title: 'AI publications (3 y)', text: 'Number of peer-reviewed AI-related publications by faculty of this course in the past 3 years', unit: 'publications', min: 0,
       captures: 'Research output, a verifiable indicator of AI activity.' },
-    { id: 'D06', type: 'number', title: 'AI graduate trainees', text: 'Number of graduate students, residents or postdocs currently working on AI projects in this unit', unit: 'trainees', min: 0,
+    { id: 'D06', type: 'number', title: 'AI graduate trainees', text: 'Number of graduate students, residents or postdocs currently working on AI projects in this course', unit: 'trainees', min: 0,
       captures: 'The next generation of AI researchers being trained.' },
     scale('D07', 'HUM', 'Faculty AI training', 'What formal AI training have faculty received in the past 24 months?', [
       'No training received', 'Voluntary, sporadic sessions only', 'Organized training, but low or inconsistent attendance', 'Systematic training with institutional incentives and tracking',
@@ -326,7 +338,7 @@ const partD = {
       { v: 'degree', l: 'Sponsored degree programs' }, NONE(),
     ], captures: 'How faculty learn, to design consortium training that fills gaps.' },
     { id: 'D10', type: 'repeat', title: 'Interdisciplinary partners', count: 3,
-      text: 'Name each external unit this unit collaborates with on AI, informatics, robotics or bioinformatics (e.g., Department of Computer Science, Faculty of Engineering, a company).',
+      text: 'Name each external unit this course collaborates with on AI, informatics, robotics or bioinformatics (e.g., Department of Computer Science, Faculty of Engineering, a company).',
       fields: [
         { id: 'name', type: 'text', l: 'Partner unit' },
         { id: 'type', type: 'single', l: 'Type', options: [
@@ -340,14 +352,14 @@ const partD = {
       'No partners', 'Informal individual collaboration only', 'Formal project-based collaboration', 'Long-term institutional partnership with joint funding or appointments',
     ], 'How formal and durable those partnerships are.'),
     scale('D12', 'HUM', 'Technical staff', 'Access to dedicated technical personnel (data scientists, AI engineers, statisticians, research software engineers)', [
-      'No access', 'Shared across the school, high demand', 'Adequate access for most needs', 'Dedicated technical staff embedded in the unit',
+      'No access', 'Shared across the school, high demand', 'Adequate access for most needs', 'Dedicated technical staff embedded in the department',
     ], 'Technical support available to faculty and students.'),
-    { id: 'D13', type: 'number', title: 'Technical staff FTE', text: 'Full-time equivalent of technical data/AI staff available to this unit', unit: 'FTE', min: 0, step: 0.1,
+    { id: 'D13', type: 'number', title: 'Technical staff FTE', text: 'Full-time equivalent of technical data/AI staff available to this course', unit: 'FTE', min: 0, step: 0.1,
       captures: 'Exact technical staffing, comparable over years.' },
     scale('D14', 'HUM', 'Hiring plans', 'Is recruitment of faculty or staff with AI, informatics, robotics or bioinformatics expertise planned?', [
       'Not planned', 'Discussed, no approved position', 'Position approved or recruitment underway', 'Expertise already recruited and further positions planned',
     ], 'Forward-looking investment in people.'),
-    scale('D15', 'HUM', 'Faculty openness', 'Overall attitude of faculty in this unit toward integrating these technologies', [
+    scale('D15', 'HUM', 'Faculty openness', 'Overall attitude of faculty in this course toward integrating these technologies', [
       'Mostly resistant', 'Mixed / indifferent', 'Mostly supportive', 'Strongly supportive with active champions',
     ], 'Cultural readiness for change.'),
     { id: 'D16', type: 'multi', title: 'Faculty competency barriers', max: 2, text: 'Most significant barriers to faculty competency (select up to two)', other: true, options: [
@@ -385,7 +397,7 @@ const partE = {
   id: 'E', filledBy: 'respondent',
   title: 'Part E. AI curriculum and teaching',
   goal: 'Know what students actually learn about AI, at which level and for how many hours.',
-  intro: 'Refers to the unit named in Part A. For a school-wide or department-wide form, report totals across the courses it covers. Hours: include lectures, hands-on sessions and assignments; exclude generic literature searching and routine use of clinical software.',
+  intro: 'Refers to the course named in Part A. Hours: include lectures, hands-on sessions and assignments; exclude generic literature searching and routine use of clinical software.',
   purpose: 'Measures what students are actually taught about AI and for how long: hours per term by format and by 16 topics (including programming and formal model development), named undergraduate and graduate courses, assessment, materials and planned changes. Hours are converted to hours per year (with B05) to build an international benchmark.',
   questions: [
     scale('E01', 'CUR', 'Dedicated AI instruction', 'Does the course include dedicated AI instruction (not a passing mention)?', [
@@ -421,23 +433,23 @@ const partE = {
     { id: 'E10', type: 'number', title: 'Student AI projects', text: 'Number of student AI projects (coursework, theses, capstones) completed in the past academic year', unit: 'projects', min: 0,
       captures: 'Concrete student output in AI.' },
     { id: 'E11', type: 'repeat', title: 'Undergraduate AI courses', count: 3,
-      text: 'Name the undergraduate course(s) in this unit that are dedicated to AI or contain a dedicated AI module',
+      text: 'Name the undergraduate course(s) in this course that are dedicated to AI or contain a dedicated AI module',
       fields: [
         { id: 'name', type: 'text', l: 'Course code and title' },
         { id: 'hours', type: 'number', l: 'AI hours per term', min: 0 },
         { id: 'status', type: 'single', l: 'Status', options: [{ v: 1, l: 'Elective' }, { v: 2, l: 'Required' }] },
       ], captures: 'The named undergraduate AI courses and their hours, for the transparency list in publications.' },
     { id: 'E12', type: 'repeat', title: 'Graduate / residency AI courses', count: 3,
-      text: 'Name the graduate or residency course(s) in this unit that include AI content',
+      text: 'Name the graduate or residency course(s) in this course that include AI content',
       fields: [
         { id: 'name', type: 'text', l: 'Course code and title' },
         { id: 'hours', type: 'number', l: 'AI hours per term', min: 0 },
         { id: 'status', type: 'single', l: 'Status', options: [{ v: 1, l: 'Elective' }, { v: 2, l: 'Required' }] },
       ], captures: 'The named graduate and residency AI courses and their hours.' },
-    scale('E13', 'CUR', 'Graduate AI offering', 'Graduate-level AI offering in this unit', [
+    scale('E13', 'CUR', 'Graduate AI offering', 'Graduate-level AI offering in this course', [
       'No graduate AI course', 'Elective only', 'Required course exists', 'Required course plus a formal AI research project requirement',
     ], 'Maturity of AI at graduate level.'),
-    { id: 'E14', type: 'number', title: 'AI theses (3 y)', text: 'Number of master\'s/doctoral theses or residency projects on AI defended in this unit in the past 3 years', unit: 'theses', min: 0,
+    { id: 'E14', type: 'number', title: 'AI theses (3 y)', text: 'Number of master\'s/doctoral theses or residency projects on AI defended in this course in the past 3 years', unit: 'theses', min: 0,
       captures: 'Graduate research output in AI.' },
     scale('E15', 'CUR', 'Clinical AI training', 'Are students trained in clinical application and critical interpretation of AI outputs (reading AI-assisted reports, identifying AI errors, understanding limitations)?', [
       'None', 'Informal discussion only', '1 dedicated session', 'Integrated into clinical rotations with formal assessment',
@@ -463,7 +475,7 @@ const partE = {
     scale('E21', 'CUR', 'AI as a teaching tool', 'Is AI used as a tool to deliver teaching (adaptive learning, automated feedback on preparations, AI-generated cases, virtual patients)?', [
       'Not used', 'Experimented by individual faculty', 'Used regularly in some activities', 'Systematically used and evaluated',
     ], 'AI used to teach, not only taught as a topic.'),
-    { id: 'E22', type: 'number', title: 'CPD AI offerings', text: 'Number of continuing-education (CPD) activities on AI offered by this unit in the past 12 months', unit: 'activities', min: 0,
+    { id: 'E22', type: 'number', title: 'CPD AI offerings', text: 'Number of continuing-education (CPD) activities on AI offered by this course in the past 12 months', unit: 'activities', min: 0,
       captures: 'Reach of the department beyond its own students, to practising dentists.' },
     scale('E23', 'CUR', 'Student preparedness', 'How prepared and interested in AI are students in this course?', [
       'Low interest and preparedness', 'Interest but low preparedness', 'Interest and moderate preparedness', 'High interest and preparedness',
@@ -482,9 +494,9 @@ const partF = {
   title: 'Part F. Generative AI in teaching and learning',
   goal: 'Know whether generative AI is used with clear rules, real skills and working safeguards.',
   intro: 'Generative AI includes chatbots and large language models such as ChatGPT, Gemini, Copilot, DeepSeek, Qwen or Ernie Bot.',
-  purpose: 'Captures how the unit governs and teaches generative AI: policies, permitted uses, prompt-design and verification skills, and safeguards (adapted from PAHO "AI prompt design" and AI-GUARD Tier 1). Generative AI spread faster than any earlier technology, so this part is tracked closely year to year.',
+  purpose: 'Captures how the course governs and teaches generative AI: policies, permitted uses, prompt-design and verification skills, and safeguards (adapted from PAHO "AI prompt design" and AI-GUARD Tier 1). Generative AI spread faster than any earlier technology, so this part is tracked closely year to year.',
   questions: [
-    scale('F01', 'GEN', 'Generative AI policy', 'Which policy governs student and faculty use of generative AI in this unit?', [
+    scale('F01', 'GEN', 'Generative AI policy', 'Which policy governs student and faculty use of generative AI in this course?', [
       'No policy', 'General academic-integrity policy only, not AI-specific', 'Interim guidance issued', 'Formal, regularly updated policy with training',
     ], 'Maturity of generative-AI rules.'),
     { id: 'F02', type: 'text', title: 'Policy name', text: 'Name of the policy document (and level: university / school / department / course)',
@@ -502,7 +514,7 @@ const partF = {
       'Not taught', 'Mentioned informally', '1 dedicated session', 'Integrated practice with assessment',
     ], 'Critical checking of AI output, essential for patient safety.'),
     { id: 'F06', type: 'grid', title: 'Generative AI safeguards', options: YPN,
-      text: 'Which safeguards are in place for generative AI use in this unit? (adapted from PAHO AI-GUARD, Tier 1)',
+      text: 'Which safeguards are in place for generative AI use in this course? (adapted from PAHO AI-GUARD, Tier 1)',
       rows: [
         { v: 'no_patient_data', l: 'Rule that no identifiable patient data is entered into public AI tools' },
         { v: 'secure_tool', l: 'An institutionally licensed, privacy-protected generative AI tool is available' },
@@ -525,12 +537,12 @@ const partF = {
 // ---------------------------------------------------------------------------
 const partG = {
   id: 'G', filledBy: 'respondent',
-  title: 'Part G. Health informatics',
-  goal: 'Know whether the clinic produces the reliable digital data that teaching, research and AI depend on.',
-  intro: 'Health informatics covers electronic health records, imaging systems, coding and terminologies, teledentistry, data analytics and geographic information systems.',
-  purpose: 'Measures the digital backbone of the school clinic and how informatics is taught: electronic records, imaging archives, coding, teledentistry, analytics and research data access, plus teaching hours and staff. Health informatics produces the structured data that AI and research depend on.',
+  title: 'Part G. Health information systems and software development',
+  goal: 'Know whether the clinic produces reliable digital data, and whether the course can build and maintain its own health software.',
+  intro: 'Health informatics is the umbrella of this survey: AI, robotics, bioinformatics and software development for health all sit inside it. This part covers its core, health information systems (electronic health records, imaging systems, coding and terminologies, teledentistry, data analytics, geographic information systems), and software development for health (G13–G16).',
+  purpose: 'Measures the digital backbone of the clinic and how informatics is taught: electronic records, imaging archives, coding, teledentistry, analytics and research data access, plus teaching hours and staff. It also measures software development for health: whether the course builds, tests and maintains its own tools, and whether students learn to do so. Information systems produce the structured data that AI and research depend on.',
   questions: [
-    scale('G01', 'HIN', 'Electronic health record', 'Which best describes the patient record system used in the clinics of this unit?', [
+    scale('G01', 'HIN', 'Electronic health record', 'Which best describes the patient record system used in the clinics where this course is taught?', [
       'Paper records', 'Electronic scheduling/billing only; clinical notes on paper', 'Electronic clinical records, mostly free text', 'Integrated electronic record with structured data, imaging and decision support',
     ], 'Digital maturity of patient records, the main source of clinical data.'),
     { id: 'G02', type: 'text', title: 'EHR system name', text: 'Name the electronic record and imaging (PACS) systems used (e.g., axiUm, Dentrix, MiPACS)',
@@ -543,7 +555,7 @@ const partG = {
     scale('G04', 'HIN', 'Digital imaging archive', 'How are dental images stored and shared?', [
       'Film or images not archived centrally', 'Digital images stored per device or computer', 'Central archive (PACS) for some modalities', 'Enterprise PACS integrated with the health record via DICOM',
     ], 'Whether images are centrally available, a precondition for imaging AI.'),
-    scale('G05', 'HIN', 'Teledentistry', 'Use of teledentistry (remote consultation, triage, monitoring) in this unit', [
+    scale('G05', 'HIN', 'Teledentistry', 'Use of teledentistry (remote consultation, triage, monitoring) in this course', [
       'None', 'Ad hoc use by individuals', 'Structured program in some services', 'Routine teledentistry with student involvement',
     ], 'Remote care capacity and student exposure to it.'),
     scale('G06', 'HIN', 'Data analytics', 'Are clinic and teaching data analysed with dashboards or routine reports?', [
@@ -572,6 +584,17 @@ const partG = {
     scale('G12', 'HIN', 'Clinical informatics staff', 'Support from clinical informatics staff (EHR analysts, imaging/PACS administrators)', [
       'None', 'Central university IT only', 'Shared clinical informatics staff', 'Dedicated clinical informatics team for the school',
     ], 'Technical staff who keep clinical systems running and data usable.'),
+    scale('G13', 'SWD', 'Software development capacity', 'Does this course (or its department) develop its own software for health, such as apps, teaching tools, scripts or data pipelines?', [
+      'No software developed', 'Occasional scripts or prototypes by individuals', 'Some tools built for teaching or research, not maintained', 'Software built and maintained by a team, with documentation and real users',
+    ], 'Whether the course can turn ideas into working health software, a core skill of health informatics.'),
+    scale('G14', 'SWD', 'Development practices', 'Which practices are used when software is developed?', [
+      'No software is developed', 'Ad hoc (no version control or testing)', 'Version control and some testing', 'Version control, testing, code review, and security and privacy by design',
+    ], 'Quality and safety of the software that is built.'),
+    scale('G15', 'SWD', 'Teaching software development', 'Are students taught to design or build health software (requirements, user-centred design, programming, interoperability standards such as HL7 FHIR and DICOM)?', [
+      'Not taught', 'Mentioned only', 'One dedicated session or module', 'Structured course or project-based learning with real users',
+    ], 'Whether graduates can take part in building health software.'),
+    { id: 'G16', type: 'number', title: 'Health software built (3 y)', text: 'Number of software tools or apps for health developed by this course or its department in the past 3 years', unit: 'tools', min: 0,
+      captures: 'Output of software development, counted the same way every year.' },
   ],
 }
 
@@ -586,7 +609,7 @@ const partH = {
   purpose: 'Takes an inventory of the physical equipment for robotics and digital dentistry (how many units of each), how students access it, how digital workflows are used, who can teach and maintain it, teaching hours and research. Counted every year, it shows how equipment and skills spread across schools.',
   questions: [
     { id: 'H01', type: 'hours', title: 'Equipment inventory', unit: 'units available',
-      text: 'Number of units available to this unit (enter 0 if none)',
+      text: 'Number of units available to this course (enter 0 if none)',
       rows: [
         { v: 'robot_implant', l: 'Robot-assisted implant surgery systems' },
         { v: 'robot_other', l: 'Other surgical, endodontic or automated robotic systems' },
@@ -627,7 +650,7 @@ const partH = {
     scale('H09', 'ROB', 'Safety and credentialing', 'Training and credentialing protocols before robotic or navigation systems are used on patients', [
       'None', 'Informal supervision', 'Written protocol, not always applied', 'Formal credentialing with documented training and supervision',
     ], 'Patient safety when new technology is used in the clinic.'),
-    scale('H10', 'ROB', 'Robotics research', 'Robotics and digital-dentistry research in this unit', [
+    scale('H10', 'ROB', 'Robotics research', 'Robotics and digital-dentistry research in this course', [
       'None', 'Individual projects', 'Funded projects', 'Established research group with engineering partners',
     ], 'Research activity that drives innovation.'),
   ],
@@ -639,11 +662,11 @@ const partH = {
 const partI = {
   id: 'I', filledBy: 'respondent',
   title: 'Part I. Bioinformatics and omics',
-  goal: 'Know whether the unit can produce, analyse and share biological data.',
+  goal: 'Know whether the course can produce, analyse and share biological data.',
   intro: 'Bioinformatics covers the computational analysis of biological data such as the oral microbiome, genomes, gene expression, proteins and metabolites.',
   purpose: 'Pictures laboratory and computing resources for omics research (sequencing, biobanks, pipelines), the people with bioinformatics skills, teaching hours and data-sharing practices. It shows which schools can contribute biological data to future multi-modal AI that links images, records and biology.',
   questions: [
-    { id: 'I01', type: 'multi', title: 'Laboratory resources', text: 'Which resources are available to this unit?', other: true, options: [
+    { id: 'I01', type: 'multi', title: 'Laboratory resources', text: 'Which resources are available to this course?', other: true, options: [
       { v: 'wetlab', l: 'Molecular biology laboratory' }, { v: 'sequencer', l: 'DNA/RNA sequencer in the department or school' },
       { v: 'core', l: 'University sequencing / genomics core facility' }, { v: 'biobank', l: 'Biobank of oral samples (saliva, plaque, tissue)' },
       { v: 'massspec', l: 'Mass spectrometry (proteomics / metabolomics)' }, { v: 'hpc', l: 'High-performance computing for bioinformatics' },
@@ -652,7 +675,7 @@ const partI = {
     scale('I02', 'BIO', 'Biobank and sample governance', 'Status of biological sample collection and storage', [
       'None', 'Samples collected per project only', 'Biobank with consent protocol', 'Biobank with linked clinical data, governance and use by several projects',
     ], 'Ability to run omics studies and link biology to clinical data.'),
-    { id: 'I03', type: 'multi', title: 'Research areas', text: 'Bioinformatics and omics research areas active in this unit', other: true, options: [
+    { id: 'I03', type: 'multi', title: 'Research areas', text: 'Bioinformatics and omics research areas active in this course', other: true, options: [
       { v: 'microbiome', l: 'Oral microbiome' }, { v: 'genomics', l: 'Host genomics / genetic association studies' },
       { v: 'transcriptomics', l: 'Transcriptomics' }, { v: 'proteomics', l: 'Proteomics / metabolomics (e.g., saliva)' },
       { v: 'epigenetics', l: 'Epigenetics' }, { v: 'craniofacial', l: 'Craniofacial and developmental genetics' },
@@ -680,7 +703,7 @@ const partI = {
     scale('I08', 'BIO', 'Bioinformatics teaching depth', 'Depth of bioinformatics teaching', [
       'None', 'Conceptual only', 'Demonstrations', 'Hands-on analysis of real data',
     ], 'Whether students learn to analyse biological data themselves.'),
-    { id: 'I09', type: 'number', title: 'Omics publications (3 y)', text: 'Number of peer-reviewed bioinformatics/omics publications by this unit in the past 3 years', unit: 'publications', min: 0,
+    { id: 'I09', type: 'number', title: 'Omics publications (3 y)', text: 'Number of peer-reviewed bioinformatics/omics publications by this course in the past 3 years', unit: 'publications', min: 0,
       captures: 'Research output in bioinformatics.' },
     scale('I10', 'BIO', 'Data sharing (FAIR)', 'Sharing of omics data in public repositories', [
       'Not shared', 'Shared on request', 'Sometimes deposited in public repositories', 'Routinely deposited with FAIR metadata',
@@ -695,13 +718,13 @@ const partJ = {
   id: 'J', filledBy: 'respondent',
   title: 'Part J. Governance, ethics, bias and regulation',
   goal: 'Know whether technology is used safely, ethically and under clear responsibility.',
-  intro: 'Items J01–J07 refer to the unit named in Part A; J08–J12 refer to the policies and procedures that govern it.',
+  intro: 'Items J01–J07 refer to the course named in Part A; J08–J12 refer to the policies and procedures that govern it.',
   purpose: 'Captures the rules around technology use: strategic plans, leadership, oversight, ethics and bias teaching, use of national and professional guidance, patient consent, a governance checklist for AI tools (PAHO AI-GUARD) and stakeholder involvement. Strong governance is what makes technology use safe and trustworthy.',
   questions: [
-    scale('J01', 'GOV', 'Written plan', 'Does this unit have a written plan or formal strategic direction for AI and digital technology in teaching?', [
+    scale('J01', 'GOV', 'Written plan', 'Does this course have a written plan or formal strategic direction for AI and digital technology in teaching?', [
       'None', 'Informal consensus, not documented', 'Draft document under discussion', 'Formal strategic plan, regularly reviewed',
     ], 'Strategic intent written down.'),
-    scale('J02', 'GOV', 'Leadership commitment', 'How committed is the leadership of this unit (dean, chair or course director) to advancing these initiatives?', [
+    scale('J02', 'GOV', 'Leadership commitment', 'How committed is the leadership of this course and its department (chair, course director) to advancing these initiatives?', [
       'No commitment shown', 'Initial interest, no concrete actions', 'Some commitment, inconsistent or limited in scope', 'Strong commitment with ongoing initiatives and resources',
     ], 'Leadership support, one of the strongest predictors of change.'),
     scale('J03', 'GOV', 'Oversight structure', 'Is there a committee or a named person accountable for AI and digital technology in teaching and clinics?', [
@@ -723,7 +746,7 @@ const partJ = {
     scale('J07', 'GOV', 'Ethical guidelines available', 'Are established ethical guidelines or white papers on AI and digital technology in dentistry available to faculty and students?', [
       'None available', 'Some documents exist but are incomplete', 'Guidelines exist but need dissemination', 'Comprehensive, well-implemented guidelines available',
     ], 'Access to guidance (PAHO/WHO readiness toolkit item).'),
-    { id: 'J08', type: 'multi', title: 'Guidance documents used', text: 'Which of the following documents are used in teaching or clinical protocols of this unit?', options: GUIDANCE_DOCS,
+    { id: 'J08', type: 'multi', title: 'Guidance documents used', text: 'Which of the following documents are used in teaching or clinical protocols of this course?', options: GUIDANCE_DOCS,
       captures: 'Which US standards and other guidance documents shape practice.' },
     scale('J09', 'GOV', 'Regulatory guidance incorporated', 'Is national / professional regulatory guidance on AI and digital technology in dentistry incorporated into teaching and clinical protocols?', [
       'Not incorporated', 'Aware but not incorporated', 'Discussed in faculty meetings', 'Incorporated into teaching and clinical protocols',
@@ -732,7 +755,7 @@ const partJ = {
       'Never', 'Occasionally, at clinician discretion', 'Required by policy but inconsistently applied', 'Required by policy, documented in the record',
     ], 'Respect for patient autonomy.'),
     { id: 'J11', type: 'grid', title: 'AI tool governance (AI-GUARD)', options: YPN,
-      text: 'Before and during use of clinical AI tools in this unit, are the following in place? (adapted from PAHO AI-GUARD, Tier 2)',
+      text: 'Before and during use of clinical AI tools in this course, are the following in place? (adapted from PAHO AI-GUARD, Tier 2)',
       rows: [
         { v: 'ownership', l: 'Defined owner / responsible authority for each AI tool' },
         { v: 'vendor_docs', l: 'Vendor documentation or model card reviewed (intended use, training data, limitations)' },
@@ -758,10 +781,10 @@ const partK = {
   id: 'K', filledBy: 'respondent',
   title: 'Part K. Implementation, evaluation and sustainability',
   goal: 'Know whether projects move from pilot to routine use, are evaluated, and can last.',
-  intro: 'Refers to technology initiatives of the named unit (AI, informatics, robotics, bioinformatics).',
+  intro: 'Refers to technology initiatives of the named course (AI, informatics, robotics, bioinformatics).',
   purpose: 'Measures whether initiatives move from pilots to routine use and whether they last: pilots, scalability, workflow integration, metrics, evaluation, feedback, cost-benefit, sustainability and funding (PAHO/WHO readiness toolkit). It separates one-off enthusiasm from lasting change.',
   questions: [
-    { id: 'K01', type: 'repeat', title: 'Pilot projects', count: 3, text: 'Name any technology pilot project currently running in this unit',
+    { id: 'K01', type: 'repeat', title: 'Pilot projects', count: 3, text: 'Name any technology pilot project currently running in this course',
       fields: [
         { id: 'name', type: 'text', l: 'Project' },
         { id: 'domain', type: 'single', l: 'Domain', options: [
@@ -799,7 +822,7 @@ const partK = {
     scale('K10', 'IMP', 'Financial sustainability', 'Are there plans for long-term financial sustainability (budget lines, grant strategies, partnerships)?', [
       'No plans', 'Initial discussions only', 'Plans exist but incomplete', 'Comprehensive, well-developed plans',
     ], 'Whether initiatives will survive after initial funding.'),
-    { id: 'K11', type: 'repeat', title: 'Funding sources', count: 3, text: 'Name each funding source that supports technology teaching or research in this unit',
+    { id: 'K11', type: 'repeat', title: 'Funding sources', count: 3, text: 'Name each funding source that supports technology teaching or research in this course',
       fields: [
         { id: 'name', type: 'text', l: 'Funding source' },
         { id: 'type', type: 'single', l: 'Type', options: [
@@ -807,14 +830,14 @@ const partK = {
           { v: 3, l: 'Industry' }, { v: 4, l: 'Philanthropy / foundation' }, { v: 5, l: 'International agency' }, { v: 6, l: 'Other' },
         ] },
       ], captures: 'Who pays, to identify funding opportunities for consortium projects.' },
-    scale('K12', 'IMP', 'Funding adequacy', 'Funding available for technology teaching or research in this unit', [
+    scale('K12', 'IMP', 'Funding adequacy', 'Funding available for technology teaching or research in this course', [
       'No funding', 'Limited funding with significant gaps', 'Funding available but inconsistent or insufficient', 'Sufficient, reliable funding',
     ], 'Adequacy of money.'),
-    { id: 'K13', type: 'single', title: 'Annual budget', text: 'Approximate annual budget dedicated to these technologies in this unit (USD equivalent)', options: [
+    { id: 'K13', type: 'single', title: 'Annual budget', text: 'Approximate annual budget dedicated to these technologies in this course (USD equivalent)', options: [
       { v: 0, l: 'None' }, { v: 1, l: 'Less than 5,000' }, { v: 2, l: '5,000 – 25,000' }, { v: 3, l: '25,001 – 100,000' },
       { v: 4, l: 'More than 100,000' }, { v: -1, l: 'Don\'t know' },
     ], captures: 'Order of magnitude of investment, comparable across schools.' },
-    { id: 'K14', type: 'number', title: 'Grants (3 y)', text: 'Number of competitive grants related to these technologies obtained by this unit in the past 3 years', unit: 'grants', min: 0,
+    { id: 'K14', type: 'number', title: 'Grants (3 y)', text: 'Number of competitive grants related to these technologies obtained by this course in the past 3 years', unit: 'grants', min: 0,
       captures: 'Success in attracting competitive funding.' },
   ],
 }
@@ -825,14 +848,14 @@ const partK = {
 const partL = {
   id: 'L', filledBy: 'respondent',
   title: 'Part L. Collaboration and the open dental AI model',
-  goal: 'Know whether the unit is ready to share data and work with other institutions on AI.',
+  goal: 'Know whether the course is ready to share data and work with other institutions on AI.',
   intro: 'These items measure readiness to collaborate and share data in multi-institution AI projects, such as an open dental AI model. Answering does not commit your institution.',
   purpose: 'Maps which departments could contribute data, annotation, validation, teaching or grant work to the consortium\'s free dental AI model, under which conditions, and what stands in the way. It turns the survey into a practical plan for collaboration.',
   questions: [
-    { id: 'L01', type: 'single', title: 'Interest in multi-institution projects', text: 'Interest of this unit in joining multi-institution AI projects (for example, ICARB-D projects)', options: [
+    { id: 'L01', type: 'single', title: 'Interest in multi-institution projects', text: 'Interest of this course in joining multi-institution AI projects (for example, ICARB-D projects)', options: [
       { v: 1, l: 'Not interested' }, { v: 2, l: 'Would like more information' }, { v: 3, l: 'Interested in participating' }, { v: 4, l: 'Already involved' },
     ], captures: 'Who wants to join, to plan the first collaborative projects.' },
-    { id: 'L02', type: 'multi', title: 'Data that could be contributed', text: 'Which de-identified data could this unit potentially contribute to a shared dental AI model (subject to ethics approval)?', options: [
+    { id: 'L02', type: 'multi', title: 'Data that could be contributed', text: 'Which de-identified data could this course potentially contribute to a shared dental AI model (subject to ethics approval)?', options: [
       { v: 'periapical', l: 'Periapical / bitewing radiographs' }, { v: 'panoramic', l: 'Panoramic radiographs' }, { v: 'cbct', l: 'CBCT' },
       { v: 'ios', l: 'Intraoral scans (3D)' }, { v: 'photos', l: 'Clinical photographs' }, { v: 'records', l: 'Structured clinical records' },
       { v: 'histology', l: 'Histopathology images' }, { v: 'omics', l: 'Omics / microbiome data' }, NONE('None'),
@@ -842,7 +865,7 @@ const partL = {
     scale('L04', null, 'Ability to share data', 'Ability to share de-identified data with external partners', [
       'Not possible', 'Possible only with a new ethics approval', 'Possible under existing approvals and data-sharing agreements', 'Already sharing data with external partners',
     ], 'How quickly data could actually be shared (not part of the maturity score).'),
-    { id: 'L05', type: 'multi', title: 'Preferred ways to collaborate', text: 'How would this unit prefer to collaborate?', other: true, options: [
+    { id: 'L05', type: 'multi', title: 'Preferred ways to collaborate', text: 'How would this course prefer to collaborate?', other: true, options: [
       { v: 'federated', l: 'Federated learning (data stays at our institution)' },
       { v: 'central', l: 'Contributing de-identified data to a central repository' },
       { v: 'annotation', l: 'Annotating / labelling images' },
@@ -875,15 +898,15 @@ const MATURITY = [
 const partM = {
   id: 'M', filledBy: 'respondent',
   title: 'Part M. Self-assessment and open response',
-  goal: 'Compare how the unit sees itself with what its answers show, and record its most urgent needs.',
+  goal: 'Compare how the course sees itself with what its answers show, and record its most urgent needs.',
   intro: '',
-  purpose: 'Asks the respondent for an overall judgement of maturity in each of the four domains, the main barriers and facilitators, and open comments. Self-ratings are compared with the scores computed from Parts C–K, and open answers explain the numbers.',
+  purpose: 'Asks the respondent for an overall judgement of maturity in health informatics as a whole and in each of its areas, the main barriers and facilitators, and open comments. Self-ratings are compared with the scores computed from Parts C–K, and open answers explain the numbers.',
   questions: [
-    scale('M01', null, 'Overall maturity — AI', 'Overall maturity of this unit in artificial intelligence', MATURITY, 'Respondent\'s overall judgement for AI, compared with computed scores.'),
-    scale('M02', null, 'Overall maturity — health informatics', 'Overall maturity in health informatics', MATURITY, 'Overall judgement for health informatics.'),
+    scale('M01', null, 'Overall maturity — AI', 'Overall maturity of this course in artificial intelligence', MATURITY, 'Respondent\'s overall judgement for AI, compared with computed scores.'),
+    scale('M02', null, 'Overall maturity — health information systems', 'Overall maturity in health information systems (records, imaging, coding, teledentistry)', MATURITY, 'Overall judgement for health information systems.'),
     scale('M03', null, 'Overall maturity — robotics', 'Overall maturity in robotics and digital dentistry', MATURITY, 'Overall judgement for robotics and digital dentistry.'),
     scale('M04', null, 'Overall maturity — bioinformatics', 'Overall maturity in bioinformatics and omics', MATURITY, 'Overall judgement for bioinformatics.'),
-    { id: 'M05', type: 'multi', title: 'Primary barriers', max: 3, text: 'Primary barriers to progress in this unit (select up to three)', other: true, options: [
+    { id: 'M05', type: 'multi', title: 'Primary barriers', max: 3, text: 'Primary barriers to progress in this course (select up to three)', other: true, options: [
       { v: 'funding', l: 'Lack of funding' }, { v: 'expertise', l: 'Lack of faculty expertise' },
       { v: 'time', l: 'Lack of time in the curriculum' }, { v: 'leadership', l: 'Lack of leadership support' },
       { v: 'equipment', l: 'Lack of equipment / infrastructure' }, { v: 'ethics_legal', l: 'Ethical / legal uncertainty' },
@@ -896,15 +919,17 @@ const partM = {
       { v: 'students', l: 'Student demand' }, { v: 'accreditation', l: 'Accreditation / national guidelines' },
       { v: 'network', l: 'National or international networks' },
     ], captures: 'What helps, to replicate success elsewhere.' },
-    { id: 'M07', type: 'textarea', title: 'Most important need', text: 'What is the single most important resource or policy support this unit needs in the next 2 years?',
+    { id: 'M07', type: 'textarea', title: 'Most important need', text: 'What is the single most important resource or policy support this course needs in the next 2 years?',
       captures: 'The top priority in the respondent\'s words, analysed by theme.' },
-    { id: 'M08', type: 'textarea', title: 'Innovative practice', text: 'Describe any innovative teaching practice with AI, informatics, robotics or bioinformatics in this unit (optional)',
+    { id: 'M08', type: 'textarea', title: 'Innovative practice', text: 'Describe any innovative teaching practice with AI, informatics, robotics or bioinformatics in this course (optional)',
       captures: 'Good practices to showcase and share.' },
-    { id: 'M09', type: 'textarea', title: 'Vision 2030', text: 'How do you expect these technologies to change teaching in this unit by 2030? (optional)',
+    { id: 'M09', type: 'textarea', title: 'Vision 2030', text: 'How do you expect these technologies to change teaching in this course by 2030? (optional)',
       captures: 'Expectations for the future (PAHO "Vision 2030" question).' },
     scale('M10', null, 'Confidence in answers', 'How confident are you in the accuracy of your answers?', [
       'Low', 'Moderate', 'High', 'Very high (checked with records)',
     ], 'Data-quality flag used in sensitivity analyses.', { noDK: true }),
+    scale('M12', null, 'Overall maturity — software development', 'Overall maturity in software development for health', MATURITY, 'Overall judgement for software development for health.'),
+    scale('M13', null, 'Overall maturity — health informatics', 'Overall maturity in health informatics as a whole (all of the areas above)', MATURITY, 'Overall judgement for the umbrella field, compared with the benchmark score.'),
     { id: 'M11', type: 'single', title: 'Follow-up interview', text: 'Would you agree to a short follow-up interview?', options: YES_NO,
       captures: 'Willingness for qualitative follow-up.' },
   ],
@@ -918,9 +943,10 @@ export const DOMAINS = {
   HUM: 'Human resources and expertise',
   CUR: 'AI curriculum and teaching',
   GEN: 'Generative AI governance and literacy',
-  HIN: 'Health informatics',
+  HIN: 'Health information systems',
   ROB: 'Robotics and digital dentistry',
   BIO: 'Bioinformatics and omics',
+  SWD: 'Software development for health',
   GOV: 'Governance, ethics and regulation',
   IMP: 'Implementation, evaluation and sustainability',
 }
