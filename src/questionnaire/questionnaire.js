@@ -25,7 +25,7 @@ export const SURVEY_SUBTITLE = 'Health informatics in dentistry: artificial inte
 // Main goal of the survey and the questions its results help answer (shown on the guide, documents and slides).
 export const MAIN_GOAL = 'Build a benchmark: one comparable number, from 0 to 100, that measures how mature each US dental school is in health informatics, with a score for each of its areas.'
 export const KEY_QUESTIONS = [
-  { label: 'Main goal', text: 'Where does each US dental school stand in health informatics? The benchmark gives every school a number built from its departments and courses, with a score for each area.' },
+  { label: 'Main goal', text: 'Where does each US dental school stand in health informatics? The benchmark gives every school a number built from its departments and courses, with a score for each area. The same questions also work as a checklist of what each course or department is missing to reach the level of maturity it wants: a guide for decision makers to improve health informatics.' },
   { label: 'Practical conclusion', text: 'If a grant for health informatics in dentistry were available, which university would have the best chance of using it well?' },
   { label: 'Secondary', text: 'How do schools compare with each other, and, where schools in other countries answer the same survey, how do US schools compare with them?' },
 ]

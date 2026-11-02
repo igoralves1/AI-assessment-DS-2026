@@ -117,17 +117,18 @@ pres.addSection({ title: 'The main idea' })
 {
   const s = pres.addSlide({ masterName: 'CONTENT', sectionTitle: 'The main idea' })
   s.addText('The main goal: a benchmark', { placeholder: 'title' })
-  card(s, M, 1.5, W - 2 * M, 1.35, DEEP)
-  T(s, MAIN_GOAL, { x: M + 0.35, y: 1.55, w: W - 2 * M - 0.7, h: 1.25, fontFace: HEAD, fontSize: 21, color: WHITE, valign: 'middle' })
-  T(s, 'Questions the benchmark helps answer', { x: M, y: 3.1, w: W - 2 * M, h: 0.4, fontSize: 16, bold: true, color: MUTED })
+  card(s, M, 1.4, W - 2 * M, 1.15, DEEP)
+  T(s, MAIN_GOAL, { x: M + 0.35, y: 1.45, w: W - 2 * M - 0.7, h: 1.05, fontFace: HEAD, fontSize: 20, color: WHITE, valign: 'middle' })
+  T(s, 'What the survey is for', { x: M, y: 2.7, w: W - 2 * M, h: 0.4, fontSize: 16, bold: true, color: MUTED })
   const cw = (W - 2 * M - 0.6) / 3
   KEY_QUESTIONS.forEach((k, i) => {
     const x = M + i * (cw + 0.3)
     const hl = i === 1
-    card(s, x, 3.6, cw, 3.05, hl ? 'FDF3E1' : SOFT)
-    circle(s, x + 0.3, 3.85, 0.7, hl ? AMBER : TEAL, String(i + 1), 20)
-    T(s, k.label.toUpperCase(), { x: x + 1.15, y: 3.85, w: cw - 1.35, h: 0.7, fontSize: 13, bold: true, color: hl ? AMBER : TEAL, valign: 'middle', charSpacing: 1 })
-    T(s, k.text, { x: x + 0.3, y: 4.7, w: cw - 0.6, h: 1.85, fontSize: 15 })
+    card(s, x, 3.15, cw, 3.6, hl ? 'FDF3E1' : SOFT)
+    circle(s, x + 0.3, 3.35, 0.7, hl ? AMBER : TEAL, String(i + 1), 20)
+    T(s, k.label.toUpperCase(), { x: x + 1.15, y: 3.35, w: cw - 1.35, h: 0.7, fontSize: 13, bold: true, color: hl ? AMBER : TEAL, valign: 'middle', charSpacing: 1 })
+    const text = i === 0 ? 'Where does each US dental school stand in health informatics? Every school gets a number built from its departments and courses, with a score for each area. The same questions also work as a checklist of what each course or department is missing to reach the maturity it wants: a guide for decision makers.' : k.text
+    T(s, text, { x: x + 0.3, y: 4.2, w: cw - 0.6, h: 2.45, fontSize: 14 })
   })
   s.addNotes('The survey is not mainly a ranking. Its first purpose is a benchmark: a number that defines the maturity of each school in health informatics. With it, a funder can see which university has the best chance of using a grant well. Comparisons between schools, and with other countries that use the same survey, come after.')
 }
@@ -345,7 +346,7 @@ pres.addSection({ title: 'Using the results' })
 {
   const s = pres.addSlide({ masterName: 'CONTENT', sectionTitle: 'Using the results' })
   s.addText('After the survey: a checklist for improvement', { placeholder: 'title' })
-  T(s, `The same items become ${CHECKLIST_COUNT} checkpoints. For each one, the target is level 4 and the next step is level 3.`,
+  T(s, `A guide for decision makers: the same items become ${CHECKLIST_COUNT} checkpoints that show what each course or department is missing. For each one, the target is level 4 and the next step is level 3.`,
     { x: M, y: 1.35, w: W - 2 * M, h: 0.5, fontSize: 16, color: MUTED })
   const steps = [
     ['Answer', 'Each course director completes the survey for their course.'],

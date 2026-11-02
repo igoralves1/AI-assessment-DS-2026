@@ -131,7 +131,7 @@ children.push(
 children.push(h1('1. About the study'))
 for (const para of STUDY.overview) children.push(p(para))
 children.push(h2('Who answers'))
-children.push(h2('Questions the benchmark helps answer'))
+children.push(h2('What the survey is for'))
 KEY_QUESTIONS.forEach((k) => children.push(bullet([new TextRun({ text: `${k.label}. `, bold: true }), new TextRun(k.text)])))
 children.push(h2('Health informatics and its areas'))
 children.push(p('Health informatics is the umbrella and the benchmark measures it as a whole. Its areas are listed below; every area also depends on the same foundations.'))

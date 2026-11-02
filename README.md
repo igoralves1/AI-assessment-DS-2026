@@ -2,9 +2,9 @@
 
 **Main goal: build a benchmark — one comparable number from 0 to 100 that measures how mature each US dental school is in health informatics, with a score for each of its areas.**
 
-The benchmark helps answer three questions:
+The survey is for three things:
 
-1. **Main goal:** where does each US dental school stand in health informatics?
+1. **Main goal:** where does each US dental school stand in health informatics? The same questions also work as a checklist of what each course or department is missing to reach the level of maturity it wants, a guide for decision makers to improve health informatics.
 2. **Practical conclusion:** if a grant for health informatics in dentistry were available, which university would have the best chance of using it well?
 3. **Secondary:** how do schools compare with each other, and, where universities in other countries answer the same survey, how do US schools compare with them?
 

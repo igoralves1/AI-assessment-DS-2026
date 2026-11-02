@@ -71,7 +71,7 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
     <section class="card intro">
       <h2>The main idea</h2>
       <p class="main-q">{{ MAIN_GOAL }}</p>
-      <h3>Questions the benchmark helps answer</h3>
+      <h3>What the survey is for</h3>
       <ol class="kq">
         <li v-for="k in KEY_QUESTIONS" :key="k.label"><span class="kq-label">{{ k.label }}</span>{{ k.text }}</li>
       </ol>
@@ -111,7 +111,7 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
       <h3>Comparable beyond the United States</h3>
       <p>The survey starts with US dental schools. Its core items are the same everywhere: US schools see the matching US references (CODA, ADA, HIPAA, FDA), and universities in other countries can answer the same items. Because every score uses the same 0–100 scale, the US benchmark can be compared with schools abroad.</p>
       <h3>A checklist for improvement</h3>
-      <p>The same items also work as a guide. Each 1–4 item describes what level 4 ("established") looks like, so a school can use the <a href="#checklist" @click.prevent="goTo('checklist')">maturity checklist</a> to see where it stands and which steps lead to the level it wants to reach.</p>
+      <p>The same questions also work as a guide for decision makers: deans, department chairs and course directors. Each 1–4 item describes what level 4 ("established") looks like, so the <a href="#checklist" @click.prevent="goTo('checklist')">maturity checklist</a> shows what each course or department is missing to reach the level of maturity it wants, and which steps come next.</p>
       <dl class="facts">
         <div><dt>Parts</dt><dd>{{ SECTIONS.length }}</dd></div>
         <div><dt>Questions</dt><dd>{{ itemCount }}</dd></div>
