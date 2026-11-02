@@ -3,6 +3,7 @@
 import { computed } from 'vue'
 import { COUNTRY_CONTEXT } from '../questionnaire/countries.js'
 import { DK } from '../questionnaire/questionnaire.js'
+import { howToAnswer } from '../lib/help.js'
 
 const props = defineProps({
   q: { type: Object, required: true },
@@ -56,6 +57,11 @@ const name = (suffix = '') => `${props.q.id}${suffix}`
       <span class="qid">{{ q.id }}</span>
       <span class="qtext">{{ q.text }}<span v-if="q.required" class="req" title="Required"> *</span></span>
     </legend>
+    <details v-if="!readonly" class="q-help">
+      <summary>Why we ask and how to answer</summary>
+      <p><strong>Why we ask.</strong> {{ q.captures }}</p>
+      <p><strong>How to answer.</strong> {{ howToAnswer(q) }}</p>
+    </details>
     <p v-if="hint" class="hint">{{ hint }}</p>
     <p v-if="q.type === 'multi' && q.max" class="hint">Select up to {{ q.max }}.</p>
 

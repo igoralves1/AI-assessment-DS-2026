@@ -18,6 +18,7 @@ The survey is run independently of the ICARB-D consortium website (https://igora
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
+- **Results 2026 (simulated):** https://igoralves1.github.io/AI-assessment-DS-2026/#/results — 15 fictional universities with randomly generated answers (4 at level 4, 3 at level 3, 5 at level 2, 3 at level 1) to show the benchmark, heatmap, boxplots, statistics and each university's diagnostic by area, group of questions and question (D3.js). Regenerate with `npm run sim`. Not real data.
 - **Try the form:** demonstration code `DEM-TRY` (opens a sample course; answers stay in the visitor's browser and are never part of the study; it is not the admin code): https://igoralves1.github.io/AI-assessment-DS-2026/#/?code=DEM-TRY
 - **References** (US standards and research bodies, US dental schools, studies and PAHO/WHO frameworks, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
 - **Guide for teachers and decision makers in dentistry** (slides: the main goal, health informatics and its areas, who answers, and the goal of each group of questions): [PDF](public/downloads/ICARB-D-Survey-Teacher-Slides.pdf) · [PowerPoint](public/downloads/ICARB-D-Survey-Teacher-Slides.pptx), also linked at the top of the questions guide

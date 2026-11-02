@@ -15,6 +15,7 @@ const router = createRouter({
     { path: '/survey', component: SurveyView },
     { path: '/admin', component: AdminView },
     { path: '/questions', component: QuestionsView },
+    { path: '/results', component: () => import('./views/ResultsView.vue') },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })

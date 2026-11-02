@@ -62,6 +62,7 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
       <div class="q-actions">
         <router-link class="btn primary" to="/">I have an access code</router-link>
         <button class="btn" @click="printPage">Print this guide</button>
+        <router-link class="btn" to="/results">Results 2026 (simulated)</router-link>
       </div>
       <div class="demo-box" id="demo">
         <div class="eyebrow">Try the form</div>

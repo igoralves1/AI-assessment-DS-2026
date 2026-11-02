@@ -10,10 +10,14 @@ import { CONSORTIUM_URL } from './config.js'
         <span class="logo" aria-hidden="true">AI</span>
         <span>
           <strong>ICARB-D Annual Survey of Dental Schools</strong>
-          <small>AI · Health informatics · Robotics · Bioinformatics</small>
+          <small>Health informatics: AI · Robotics · Bioinformatics · Software</small>
         </span>
       </router-link>
-      <a class="consortium" :href="CONSORTIUM_URL">ICARB-D</a>
+      <nav class="topnav" aria-label="Main">
+        <router-link to="/questions">Questions</router-link>
+        <router-link to="/results">Results 2026</router-link>
+        <a class="consortium" :href="CONSORTIUM_URL">ICARB-D</a>
+      </nav>
     </div>
   </header>
   <div v-if="storage.mode === 'local'" class="demo-banner">

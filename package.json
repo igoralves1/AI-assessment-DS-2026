@@ -11,9 +11,11 @@
     "server": "node server/index.js",
     "codebook": "node scripts/build-codebook.mjs",
     "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf ICARB-D-Annual-Survey-Dental-Schools.docx >/dev/null && mkdir -p ../public/downloads && cp ICARB-D-Annual-Survey-Dental-Schools.docx ICARB-D-Annual-Survey-Dental-Schools.pdf ../public/downloads/",
-    "slides": "node scripts/build-slides.mjs && cd public/downloads && soffice --headless --convert-to pdf ICARB-D-Survey-Teacher-Slides.pptx >/dev/null"
+    "slides": "node scripts/build-slides.mjs && cd public/downloads && soffice --headless --convert-to pdf ICARB-D-Survey-Teacher-Slides.pptx >/dev/null",
+    "sim": "node scripts/build-sim-results.mjs"
   },
   "dependencies": {
+    "d3": "^7.9.0",
     "vue": "^3.5.44",
     "vue-router": "^4.6.4"
   },
