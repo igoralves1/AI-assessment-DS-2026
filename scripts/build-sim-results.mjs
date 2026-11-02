@@ -2,7 +2,7 @@
 // Fifteen fictional universities ("Dental University of A" … "of O") with randomly generated answers.
 // Overall maturity levels are fixed by design: 4 at level 4, 3 at level 3, 5 at level 2 and 3 at level 1,
 // assigned to the universities in random order. Nothing here is real data.
-//   node scripts/build-sim-results.mjs   -> src/data/results-2026-simulated.json
+//   node scripts/build-sim-results.mjs   -> src/simulated/results-2026-simulated.json
 import fs from 'node:fs'
 import { ALL_QUESTIONS, DOMAINS } from '../src/questionnaire/questionnaire.js'
 import { SCORED, scoreUniversity } from '../src/lib/scoring.js'
@@ -85,8 +85,8 @@ const out = {
   levelsByDesign: { 4: 4, 3: 3, 2: 5, 1: 3 },
   universities,
 }
-fs.mkdirSync('src/data', { recursive: true })
-fs.writeFileSync('src/data/results-2026-simulated.json', JSON.stringify(out))
+fs.mkdirSync('src/simulated', { recursive: true })
+fs.writeFileSync('src/simulated/results-2026-simulated.json', JSON.stringify(out))
 const counts = universities.reduce((m, u) => ({ ...m, [u.targetLevel]: (m[u.targetLevel] || 0) + 1 }), {})
-console.log('Wrote src/data/results-2026-simulated.json', JSON.stringify(counts),
+console.log('Wrote src/simulated/results-2026-simulated.json', JSON.stringify(counts),
   universities.map((u) => `${u.id}:L${u.targetLevel}:${scoreUniversity(u).scores.benchmark.toFixed(0)}`).join(' '))

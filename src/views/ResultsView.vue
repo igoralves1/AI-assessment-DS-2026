@@ -3,7 +3,7 @@
 // benchmark, the group comparison and each university's diagnostic will look once real data arrive.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import DATA from '../data/results-2026-simulated.json'
+import DATA from '../simulated/results-2026-simulated.json'
 import { SECTIONS, HI_AREAS, DOMAINS } from '../questionnaire/questionnaire.js'
 import { CHECKLIST } from '../questionnaire/checklist.js'
 import { scoreUniversity, averageScores, describe, levelOf, LEVEL_NAMES, PART_SHORT, SCORED, SCORED_PARTS } from '../lib/scoring.js'
