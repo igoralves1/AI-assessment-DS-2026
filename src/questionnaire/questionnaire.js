@@ -18,7 +18,7 @@
 
 import { COUNTRIES, GUIDANCE_DOCS } from './countries.js'
 
-export const VERSION = '2.0.0'
+export const VERSION = '2.1.0'
 export const DK = -1 // "Don't know / Not applicable"
 export const SURVEY_NAME = 'ICARB-D Annual Maturity Survey of Dental Schools'
 export const SURVEY_SUBTITLE = 'Artificial intelligence, health informatics, robotics and bioinformatics'
@@ -40,17 +40,17 @@ const partA = {
   id: 'A', filledBy: 'team',
   title: 'Part A. Department/course profile (completed by the research team)',
   intro: 'The research team completes this part with the department head or course director (by phone, video call or email). Saving it generates the XXX-XXX access code given to the respondent.',
-  purpose: 'Identifies exactly which unit is being described (country, school, department, course, level) and records consent. These fields are the keys used to group answers by department, school and country, and to follow the same unit from one annual wave to the next.',
+  purpose: 'Identifies exactly which unit is being described (state, school, department, course, level) and records consent. These fields are the keys used to group answers by department, school and state, and nationally, and to follow the same unit from one annual wave to the next.',
   questions: [
     { id: 'A01', type: 'single', title: 'Country', text: 'Country', options: COUNTRIES, required: true,
-      captures: 'Country of the school. Used for country comparisons and to adapt examples (laws, regulators, degree names) in later items.' },
-    { id: 'A02', type: 'text', title: 'Region', text: 'State / province / region', required: true,
-      captures: 'Sub-national region, to describe geographic spread and regional inequalities within a country.' },
+      captures: 'Country of the school (United States). Later items use it to show the matching US references (privacy law, accreditation, regulators).' },
+    { id: 'A02', type: 'text', title: 'State', text: 'State', required: true,
+      captures: 'State of the school, to describe geographic spread and regional differences across the United States.' },
     { id: 'A03', type: 'text', title: 'Institution', text: 'Name of dental school (institution)', required: true,
       captures: 'The school. All departments of the same school are consolidated into one school score.' },
     { id: 'A04', type: 'single', title: 'Institution type', text: 'Type of institution', required: true, options: [
-      { v: 1, l: 'Public (federal / national)' },
-      { v: 2, l: 'Public (state / provincial / municipal)' },
+      { v: 1, l: 'Public (federal)' },
+      { v: 2, l: 'Public (state / municipal)' },
       { v: 3, l: 'Private, non-profit' },
       { v: 4, l: 'Private, for-profit' },
     ], captures: 'Funding model of the school, to test whether public and private schools differ in maturity and resources.' },
@@ -61,15 +61,15 @@ const partA = {
     { id: 'A07', type: 'text', title: 'Course', text: 'Course code and title referenced in this form (e.g., "RAD-301 Oral Radiology II"). Write "Department-wide" if the form covers the whole department.', required: true,
       captures: 'The named course, so readers can see exactly which courses produced each school\'s curriculum results.' },
     { id: 'A08', type: 'single', title: 'Level', text: 'Level of this named department/course', required: true, other: true, options: [
-      { v: 1, l: 'Undergraduate first professional degree (DDS/DMD, BDS, Bacharelado em Odontologia, 口腔医学 Bachelor)' },
-      { v: 2, l: 'Research master\'s (MSc/MS, Mestrado acadêmico, 学术型硕士)' },
-      { v: 3, l: 'Professional/clinical master\'s or specialty degree (MDS in India, Mestrado profissional, 专业型硕士)' },
-      { v: 4, l: 'Doctoral (PhD/DSc, Doutorado, 博士)' },
-      { v: 5, l: 'Residency / specialty training (US/Canada residency, Brazil residência/especialização, China standardized residency training 规培)' },
-      { v: 6, l: 'Integrated long-track program (e.g., China 8-year program, DDS-PhD)' },
+      { v: 1, l: 'Predoctoral first professional degree (DDS/DMD)' },
+      { v: 2, l: 'Research master\'s (MS/MSc)' },
+      { v: 3, l: 'Professional/clinical master\'s or specialty certificate' },
+      { v: 4, l: 'Doctoral (PhD/DSc)' },
+      { v: 5, l: 'Residency / advanced education (e.g., AEGD, GPR, specialty residency)' },
+      { v: 6, l: 'Integrated long-track program (e.g., DDS/DMD-PhD)' },
       { v: 7, l: 'Continuing education / CPD' },
       { v: 99, l: 'Other' },
-    ], captures: 'Training level, harmonized across five national systems, to compare undergraduate, graduate and residency teaching.' },
+    ], captures: 'Training level, to compare predoctoral, graduate and residency teaching.' },
     { id: 'A09', type: 'single', title: 'Respondent role', text: 'Role of the respondent in this named department/course', required: true, other: true, options: [
       { v: 1, l: 'Department head / chair' },
       { v: 2, l: 'Course director / coordinator' },
@@ -86,8 +86,7 @@ const partA = {
     { id: 'A12', type: 'text', title: 'Interviewer', text: 'Research team member who completed Part A', pii: true,
       captures: 'Audit trail of who issued the code. Stored separately.' },
     { id: 'A13', type: 'single', title: 'Language', text: 'Preferred language of the respondent', other: true, options: [
-      { v: 'en', l: 'English' }, { v: 'fr', l: 'French' }, { v: 'pt', l: 'Portuguese' },
-      { v: 'zh', l: 'Chinese' }, { v: 'hi', l: 'Hindi' }, { v: 'es', l: 'Spanish' }, { v: 99, l: 'Other' },
+      { v: 'en', l: 'English' }, { v: 'es', l: 'Spanish' }, { v: 99, l: 'Other' },
     ], captures: 'Language for communication and translated versions of the instrument.' },
     { id: 'A14', type: 'single', title: 'Consent', text: 'Informed consent to participate was obtained', required: true, options: YES_NO,
       captures: 'Ethical requirement. Forms without consent are excluded from analysis.' },
@@ -119,7 +118,7 @@ const partB = {
       { v: 3, l: 'Quarter (4 terms per year)' },
       { v: 4, l: 'Annual system (1 term per year)' },
       { v: 5, l: 'Modular / block system' },
-    ], captures: 'Calendar type, needed because hours are asked per term and calendars differ between countries.' },
+    ], captures: 'Calendar type, needed because hours are asked per term and calendars differ between schools.' },
     { id: 'B05', type: 'number', title: 'Terms per year', text: 'Number of academic terms per year (used to convert hours per term into hours per year)', unit: 'terms', min: 1, max: 6,
       captures: 'Converts every "hours per term" answer into hours per year so schools are comparable.' },
     { id: 'B06', type: 'number', title: 'Course hours', text: 'Total contact hours of this course per term (all topics)', unit: 'hours per term', min: 0,
@@ -255,7 +254,7 @@ const partC = {
     ], 'Whether datasets reflect the patients the AI will serve (PAHO bias-free AI guidance).'),
     scale('C16', 'DAT', 'Privacy and security', 'What privacy and security systems protect patient data used in this department/course?', [
       'No systems', 'Basic password protection only', 'Systems exist but are inconsistent', 'Comprehensive systems with encryption, audit trails and a named person responsible',
-    ], 'Protection of patient data, read against each country\'s privacy law.', { countryHint: 'privacy' }),
+    ], 'Protection of patient data, read against US privacy law (HIPAA, FERPA).', { countryHint: 'privacy' }),
     scale('C17', 'DAT', 'De-identification', 'Are there documented procedures for anonymization / de-identification of patient data before use in teaching or research?', [
       'No procedures', 'Informal practice only', 'Written procedures, inconsistently applied', 'Written procedures, routinely applied and audited',
     ], 'Readiness to share data safely, a precondition for joint AI development.'),
@@ -442,9 +441,9 @@ const partE = {
     ], 'Quality of teaching resources.'),
     { id: 'E19', type: 'repeat', title: 'Materials used', count: 3, text: 'Name the main AI educational materials used',
       fields: [{ id: 'name', type: 'text', l: 'Material (title / URL)' }], captures: 'Specific materials, to build a shared open library.' },
-    scale('E20', 'CUR', 'Competency framework', 'Is AI teaching aligned with a competency framework (e.g., IADR/ITU-WHO core curriculum for dental AI, national curriculum guidelines)?', [
+    scale('E20', 'CUR', 'Competency framework', 'Is AI teaching aligned with a competency framework (e.g., IADR/ITU-WHO core curriculum for dental AI, ADEA competencies, CODA standards)?', [
       'No framework', 'Aware of frameworks, not used', 'Partially aligned', 'Explicitly mapped to a framework with defined learning outcomes',
-    ], 'Alignment with international and national curriculum guidance.', { countryHint: 'accreditation' }),
+    ], 'Alignment with curriculum guidance and accreditation standards.', { countryHint: 'accreditation' }),
     scale('E21', 'CUR', 'AI as a teaching tool', 'Is AI used as a tool to deliver teaching (adaptive learning, automated feedback on preparations, AI-generated cases, virtual patients)?', [
       'Not used', 'Experimented by individual faculty', 'Used regularly in some activities', 'Systematically used and evaluated',
     ], 'AI used to teach, not only taught as a topic.'),
@@ -676,7 +675,7 @@ const partJ = {
   id: 'J', filledBy: 'respondent',
   title: 'Part J. Governance, ethics, bias and regulation',
   intro: 'Items J01–J07 refer to the named department/course; J08–J12 refer to the policies and procedures that govern it.',
-  purpose: 'Captures the rules around technology use: strategic plans, leadership, oversight, ethics and bias teaching, use of national and international guidance, patient consent, a governance checklist for AI tools (PAHO AI-GUARD) and stakeholder involvement. Strong governance is what makes technology use safe and trustworthy.',
+  purpose: 'Captures the rules around technology use: strategic plans, leadership, oversight, ethics and bias teaching, use of national and professional guidance, patient consent, a governance checklist for AI tools (PAHO AI-GUARD) and stakeholder involvement. Strong governance is what makes technology use safe and trustworthy.',
   questions: [
     scale('J01', 'GOV', 'Written plan', 'Does this department/course have a written plan or formal strategic direction for AI and digital technology in teaching?', [
       'None', 'Informal consensus, not documented', 'Draft document under discussion', 'Formal strategic plan, regularly reviewed',
@@ -703,8 +702,8 @@ const partJ = {
     scale('J07', 'GOV', 'Ethical guidelines available', 'Are established ethical guidelines or white papers on AI and digital technology in dentistry available to faculty and students?', [
       'None available', 'Some documents exist but are incomplete', 'Guidelines exist but need dissemination', 'Comprehensive, well-implemented guidelines available',
     ], 'Access to guidance (PAHO/WHO readiness toolkit item).'),
-    { id: 'J08', type: 'multi', title: 'Guidance documents used', text: 'Which of the following documents are used in teaching or clinical protocols of this department/course?', options: GUIDANCE_DOCS, countryFiltered: true,
-      captures: 'Which international and national documents shape practice; the list adapts to the respondent\'s country.' },
+    { id: 'J08', type: 'multi', title: 'Guidance documents used', text: 'Which of the following documents are used in teaching or clinical protocols of this department/course?', options: GUIDANCE_DOCS,
+      captures: 'Which US standards and other guidance documents shape practice.' },
     scale('J09', 'GOV', 'Regulatory guidance incorporated', 'Is national / professional regulatory guidance on AI and digital technology in dentistry incorporated into teaching and clinical protocols?', [
       'Not incorporated', 'Aware but not incorporated', 'Discussed in faculty meetings', 'Incorporated into teaching and clinical protocols',
     ], 'Translation of regulation into practice.', { countryHint: 'professional' }),
@@ -792,7 +791,7 @@ const partK = {
     { id: 'K13', type: 'single', title: 'Annual budget', text: 'Approximate annual budget dedicated to these technologies in this department/course (USD equivalent)', options: [
       { v: 0, l: 'None' }, { v: 1, l: 'Less than 5,000' }, { v: 2, l: '5,000 – 25,000' }, { v: 3, l: '25,001 – 100,000' },
       { v: 4, l: 'More than 100,000' }, { v: -1, l: 'Don\'t know' },
-    ], captures: 'Order of magnitude of investment, comparable across countries.' },
+    ], captures: 'Order of magnitude of investment, comparable across schools.' },
     { id: 'K14', type: 'number', title: 'Grants (3 y)', text: 'Number of competitive grants related to these technologies obtained by this department in the past 3 years', unit: 'grants', min: 0,
       captures: 'Success in attracting competitive funding.' },
   ],
@@ -866,7 +865,7 @@ const partM = {
       { v: 'equipment', l: 'Lack of equipment / infrastructure' }, { v: 'ethics_legal', l: 'Ethical / legal uncertainty' },
       { v: 'students', l: 'Lack of student interest or preparedness' }, { v: 'data', l: 'Lack of data access' },
       { v: 'accreditation', l: 'Accreditation / curriculum rules leave no room' }, { v: 'language', l: 'Language barriers (tools/materials not in local language)' },
-    ], captures: 'The three biggest obstacles, ranked across schools and countries.' },
+    ], captures: 'The three biggest obstacles, ranked across schools.' },
     { id: 'M06', type: 'multi', title: 'Facilitators', max: 3, text: 'Main facilitators of progress (select up to three)', other: true, options: [
       { v: 'champions', l: 'Faculty champions' }, { v: 'leadership', l: 'Leadership support' }, { v: 'funding', l: 'Dedicated funding' },
       { v: 'partners', l: 'Interdisciplinary partners' }, { v: 'industry', l: 'Industry partnerships' },

@@ -1,4 +1,4 @@
-"""Consolidate the ICARB-D annual survey: course record -> department -> school -> country, per survey year.
+"""Consolidate the ICARB-D annual survey of US dental schools: course record -> department -> school -> state -> national, per survey year.
 
 Usage:
     python analysis/consolidate.py data/responses.csv            # real data
@@ -12,7 +12,8 @@ Outputs (analysis/output/)
     course_scores.csv       one row per submitted form, with domain indices, hours and equipment counts
     department_scores.csv   mean of course scores within a department and year (n_courses)
     school_scores.csv       department scores weighted by number of courses contributed
-    country_scores.csv      mean of school scores per country and year
+    state_scores.csv        mean of school scores per state and year
+    national_scores.csv     mean of school scores per year (all US schools)
     department_trends.csv   overall index of each department in each survey year (annual follow-up)
     curriculum_courses.csv  transparency list: which named courses produced the curriculum score
     hours_by_topic.csv      hours per year by topic (AI, health informatics, robotics, bioinformatics)
@@ -45,8 +46,8 @@ DOMAINS = {
     "GOV": "Governance & ethics",
     "IMP": "Implementation & sustainability",
 }
-WAVE, COUNTRY, SCHOOL, DEPT = "A15", "A01", "A03", "A06"
-KEYS = [WAVE, COUNTRY, SCHOOL, DEPT]
+WAVE, STATE, SCHOOL, DEPT = "A15", "A02", "A03", "A06"
+KEYS = [WAVE, STATE, SCHOOL, DEPT]
 HOURS = {"ai": "E02_", "health_informatics": "G09_", "robotics": "H05_", "bioinformatics": "I07_"}
 SELF_RATED = {"M01": "self_ai", "M02": "self_health_informatics", "M03": "self_robotics", "M04": "self_bioinformatics"}
 
@@ -114,21 +115,23 @@ def rollups(courses):
         row["n_courses"] = int(w.sum())
         return pd.Series(row)
 
-    school = dept.groupby([WAVE, COUNTRY, SCHOOL]).apply(weighted, include_groups=False).reset_index()
-    country = school.groupby([WAVE, COUNTRY])[score_cols].mean()
-    country.insert(0, "n_schools", school.groupby([WAVE, COUNTRY]).size())
+    school = dept.groupby([WAVE, STATE, SCHOOL]).apply(weighted, include_groups=False).reset_index()
+    state = school.groupby([WAVE, STATE])[score_cols].mean()
+    state.insert(0, "n_schools", school.groupby([WAVE, STATE]).size())
+    national = school.groupby(WAVE)[score_cols].mean()
+    national.insert(0, "n_schools", school.groupby(WAVE).size())
 
-    trends = dept.pivot_table(index=[COUNTRY, SCHOOL, DEPT], columns=WAVE, values="overall_index")
+    trends = dept.pivot_table(index=[STATE, SCHOOL, DEPT], columns=WAVE, values="overall_index")
     trends.columns = [f"overall_{w}" for w in trends.columns]
-    return dept, school, country.reset_index(), trends.reset_index()
+    return dept, school, state.reset_index(), national.reset_index(), trends.reset_index()
 
 
 def hours_by_topic(df):
     terms = df["B05"].fillna(2).replace(0, 2)
     cols = [c for p in ("E03_", "G09_", "H05_", "I07_") for c in prefixed(df, p)]
     hours = df[cols].multiply(terms, axis=0)
-    hours[WAVE], hours[COUNTRY] = df[WAVE], df[COUNTRY]
-    return hours.groupby([WAVE, COUNTRY]).median().round(1)
+    hours[WAVE] = df[WAVE]
+    return hours.groupby(WAVE).median().round(1)
 
 
 def main(path):
@@ -137,22 +140,23 @@ def main(path):
         sys.exit("No submitted forms in " + str(path))
     OUT.mkdir(parents=True, exist_ok=True)
     courses = course_scores(df, codebook)
-    dept, school, country, trends = rollups(courses)
+    dept, school, state, national, trends = rollups(courses)
     courses.to_csv(OUT / "course_scores.csv", index=False)
     dept.to_csv(OUT / "department_scores.csv", index=False)
     school.to_csv(OUT / "school_scores.csv", index=False)
-    country.to_csv(OUT / "country_scores.csv", index=False)
+    state.to_csv(OUT / "state_scores.csv", index=False)
+    national.to_csv(OUT / "national_scores.csv", index=False)
     trends.to_csv(OUT / "department_trends.csv", index=False)
-    courses[[WAVE, COUNTRY, SCHOOL, DEPT, "A07", "CUR_index"]].sort_values([WAVE, COUNTRY, SCHOOL, DEPT]).to_csv(
+    courses[[WAVE, STATE, SCHOOL, DEPT, "A07", "CUR_index"]].sort_values([WAVE, STATE, SCHOOL, DEPT]).to_csv(
         OUT / "curriculum_courses.csv", index=False)
     hours_by_topic(df).to_csv(OUT / "hours_by_topic.csv")
 
     pd.set_option("display.width", 200)
     print(f"{len(df)} submitted forms · {len(dept)} department-years · {school[SCHOOL].nunique()} schools · "
           f"waves {sorted(df[WAVE].dropna().unique().tolist())}\n")
-    show = [WAVE, COUNTRY, "n_schools", "overall_index", "INF_index", "HUM_index", "CUR_index",
+    show = [WAVE, "n_schools", "overall_index", "INF_index", "HUM_index", "CUR_index",
             "HIN_index", "ROB_index", "BIO_index", "ai_hours_per_year"]
-    print(country[show].round(1).to_string(index=False))
+    print(national[show].round(1).to_string(index=False))
     print(f"\nFiles written to {OUT}")
 
 

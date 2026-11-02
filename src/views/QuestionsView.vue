@@ -42,7 +42,6 @@ const optionsOf = (q) => (q.type === 'scale' && !q.noDK ? [...q.options, { v: DK
 const ctxKeys = { privacy: 'privacy law', accreditation: 'curriculum / accreditation body', professional: 'professional and regulatory bodies', calendarNote: 'academic calendar' }
 const printPage = () => window.print()
 const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.name}: ${c[key]}`)
 </script>
 
 <template>
@@ -60,7 +59,7 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
     <section class="card">
       <h2>What the survey is for</h2>
       <p>The survey gives a comprehensive picture of how mature each dental school department and course is in four technology domains: <strong>artificial intelligence</strong>, <strong>health informatics</strong>, <strong>robotics and digital dentistry</strong>, and <strong>bioinformatics</strong>. It pictures the current <strong>physical resources</strong> (computers, equipment, laboratories, data) and <strong>human resources</strong> (trained faculty, technical staff, partners), as well as teaching hours, governance and sustainability.</p>
-      <p>It is answered <strong>every year</strong>. Each annual wave maps the state of the art across universities and courses, and comparing waves shows how each department develops over time. Results are consolidated from course to department, school and country.</p>
+      <p>It is answered <strong>every year</strong>. Each annual wave maps the state of the art across US dental schools and courses, and comparing waves shows how each department develops over time. Results are consolidated from course to department, school, state and the national level.</p>
       <dl class="facts">
         <div><dt>Parts</dt><dd>{{ SECTIONS.length }}</dd></div>
         <div><dt>Questions</dt><dd>{{ itemCount }}</dd></div>
@@ -76,8 +75,8 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
         <li><strong>Domain index 0–100.</strong> The 1–4 items of a domain are averaged and converted: (mean − 1) ÷ 3 × 100.</li>
         <li><strong>Checklists.</strong> Yes = 2, Partial = 1, No = 0, expressed as a percentage of the maximum (PAHO AI-GUARD).</li>
         <li><strong>Hours and counts.</strong> Hours per term × terms per year = hours per year. Equipment counts are divided by enrollment.</li>
-        <li><strong>Consolidation.</strong> Course → department (mean) → school (weighted by the number of courses) → country.</li>
-        <li><strong>Country adaptation.</strong> Some items show the laws, regulators and degree names of the respondent's country (Canada, USA, Brazil, China, India).</li>
+        <li><strong>Consolidation.</strong> Course → department (mean) → school (weighted by the number of courses) → state → national.</li>
+        <li><strong>US references.</strong> Some items show the matching US law or body: HIPAA and FERPA, CODA, the ADA, ADEA and state dental boards.</li>
       </ul>
     </section>
 
@@ -122,8 +121,7 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
           <dt>Captures</dt><dd>{{ q.captures }}</dd>
           <dt>Answer</dt><dd>{{ format(q) }}</dd>
           <dt>Use</dt><dd>{{ scoring(q) }}</dd>
-          <template v-if="q.countryHint"><dt>Country</dt><dd>Shown with the {{ ctxKeys[q.countryHint] }} of each country, e.g. {{ countryExamples(q.countryHint).slice(0, 2).join('; ') }}.</dd></template>
-          <template v-if="q.countryFiltered"><dt>Country</dt><dd>The list adapts to the respondent's country; international documents are always shown.</dd></template>
+          <template v-if="q.countryHint"><dt>US reference</dt><dd>Shown with the {{ ctxKeys[q.countryHint] }}: {{ COUNTRY_CONTEXT.US[q.countryHint] }}.</dd></template>
         </dl>
         <details v-if="optionsOf(q).length || q.rows || q.fields" :open="q.type === 'scale'">
           <summary>{{ q.type === 'scale' ? 'Scale anchors' : q.rows ? 'Rows' : q.fields ? 'Table columns' : 'Answer options' }}</summary>
@@ -135,7 +133,7 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
             <li v-for="f in q.fields" :key="f.id">{{ f.l }}<span v-if="f.options" class="muted"> — {{ f.options.map((o) => o.l).join('; ') }}</span></li>
           </ul>
           <ul v-else class="opts">
-            <li v-for="o in optionsOf(q)" :key="o.v">{{ o.l }}<span v-if="o.countries" class="muted"> ({{ o.countries.join(', ') }})</span></li>
+            <li v-for="o in optionsOf(q)" :key="o.v">{{ o.l }}</li>
             <li v-if="q.other" class="muted">Other (free text)</li>
           </ul>
         </details>
@@ -144,7 +142,7 @@ const countryExamples = (key) => Object.values(COUNTRY_CONTEXT).map((c) => `${c.
 
     <section id="references" class="card refs">
       <h2>References</h2>
-      <p class="muted">Documents, organizations, universities and studies on technology in dentistry and public health that informed this survey. Open an item to read a short summary. Links were checked on 28 October 2026.</p>
+      <p class="muted">US standards and research bodies, US dental schools, studies, and the public health frameworks that informed this survey. Open an item to read a short summary. Links were checked on 28 October and 2 November 2026.</p>
       <nav class="ref-toc" aria-label="Reference groups">
         <a v-for="g in REFERENCE_GROUPS" :key="g.id" :href="'#ref-' + g.id" @click.prevent="goTo('ref-' + g.id)">{{ g.title }}</a>
       </nav>

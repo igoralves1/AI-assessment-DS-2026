@@ -1,8 +1,122 @@
 // References shown at the end of the public questions guide (#/questions).
 // Each item: title, source (organization / authors), year, url (+ optional extra links), summary (our own words).
-// Links were checked on 2026-10-28. Summaries describe the document; they are not quotations.
+// Links were checked on 2026-10-28; US items added 2026-11-02. Summaries describe the document; they are not quotations.
 
 export const REFERENCE_GROUPS = [
+  {
+    id: 'united-states',
+    title: 'United States: standards, accreditation and research',
+    note: 'The US bodies whose standards and priorities the survey results speak to: dental AI standards, accreditation, federal research and the oral health workforce, AI risk management and device regulation.',
+    items: [
+      {
+        title: 'ADA standards on artificial and augmented intelligence',
+        source: 'American Dental Association', year: '2024–2025',
+        url: 'https://www.ada.org/resources/practice/dental-standards/informatics-standards/artificial-and-augmented-intelligence',
+        links: [{ label: 'ADA News on Technical Report 1109', url: 'https://adanews.ada.org/ada-news/2024/october/ada-technical-report-calls-for-external-validation-of-ai-algorithms-in-dentistry/' }],
+        summary: 'The ADA\'s AI standards work, including Technical Report 1109 on evaluating dental image-analysis AI and ANSI/ADA Standard 1110-1:2025, the first US national standard on dental AI, which sets rules for annotating and collecting 2D radiographs for validation datasets. The ADA recommends independent external validation of AI algorithms.',
+      },
+      {
+        title: 'CODA Accreditation Standards',
+        source: 'Commission on Dental Accreditation (CODA)', year: '2026',
+        url: 'https://coda.ada.org/standards',
+        summary: 'CODA sets the accreditation standards for US dental education programs (DDS/DMD), allied dental programs and advanced dental education programs, and revises them regularly. The survey maps the technology content of curricula that schools can use when planning for accreditation.',
+      },
+      {
+        title: 'NIDCR Strategic Plan 2021–2026',
+        source: 'National Institute of Dental and Craniofacial Research (NIH)', year: '2022',
+        url: 'https://www.nidcr.nih.gov/about-us/strategic-plan',
+        links: [{ label: 'Full plan (PDF)', url: 'https://www.nidcr.nih.gov/sites/default/files/2022-01/NIDCR-Strategic-Plan-2021-2026.pdf' }],
+        summary: 'The federal plan for dental, oral and craniofacial research. It calls for health informatics and data-science research, new training programs that use data science, and a larger pool of dentist-scientists, and it expects AI-based methods for diagnosis to reach clinical practice.',
+      },
+      {
+        title: 'Oral Health in America: Advances and Challenges',
+        source: 'National Institutes of Health (NIDCR)', year: '2021',
+        url: 'https://www.nidcr.nih.gov/research/oralhealthinamerica',
+        links: [{ label: 'Section 4: the oral health workforce', url: 'https://www.nidcr.nih.gov/research/oralhealthinamerica/section-4-summary' }, { label: 'Section 6: emerging science and technology', url: 'https://www.nidcr.nih.gov/research/oralhealthinamerica/section-6-summary' }],
+        summary: 'A national report by more than 400 contributors on the state of oral health in the United States. It notes that AI, 3D printing and digital imaging are reshaping care, that the US oral health workforce had more than 750,000 practitioners in 2020, and that about 60 million Americans live in areas with too few providers.',
+      },
+      {
+        title: 'AI Risk Management Framework (AI RMF 1.0)',
+        source: 'National Institute of Standards and Technology (NIST)', year: '2023',
+        url: 'https://www.nist.gov/itl/ai-risk-management-framework',
+        summary: 'A voluntary US framework, released in January 2023, for managing the risks of AI and building trustworthiness into the design, development, use and evaluation of AI systems. A Generative AI Profile followed in July 2024.',
+      },
+      {
+        title: 'List of AI-enabled medical devices',
+        source: 'US Food and Drug Administration (FDA)', year: '2026',
+        url: 'https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices',
+        summary: 'The FDA\'s regularly updated list of AI-enabled devices authorized for marketing in the United States. It includes dental tools, such as AI systems that read dental radiographs and CBCT scans, which students may meet in clinics.',
+      },
+    ],
+  },
+  {
+    id: 'universities',
+    title: 'US dental school initiatives',
+    note: 'Examples of AI and digital dentistry initiatives at US dental schools.',
+    items: [
+      {
+        title: 'Harvard School of Dental Medicine — Artificial Intelligence',
+        source: 'Harvard University, USA', year: '2024–2027',
+        url: 'https://www.hsdm.harvard.edu/news-and-events/artificial-intelligence',
+        links: [{ label: 'AI-enhanced dental education project', url: 'https://hsdm.harvard.edu/news/exploring-how-ai-can-enhance-dental-education' }],
+        summary: 'Harvard\'s dental school hosts the Global Symposium on AI in Dentistry (hundreds of participants from more than 50 countries) and runs AI education research, including a funded project that uses de-identified dental records to train a language model that creates synthetic patient cases for teaching, plus summer research on algorithmic fairness.',
+      },
+      {
+        title: 'University of Rochester, Eastman Institute for Oral Health — AI for oral disease screening',
+        source: 'University of Rochester, USA', year: '2021–2030',
+        url: 'https://www.urmc.rochester.edu/people/27338278-jin-xiao',
+        summary: 'Dr. Jin Xiao\'s team (with computer science and biostatistics) develops AICaries and SMARTeeth, AI smartphone tools that detect early tooth decay and gum disease outside the dental clinic, funded by the US National Institute of Dental and Craniofacial Research. The Eastman Institute also runs a Center of Excellence for Digital Dentistry in its clinics and curriculum.',
+      },
+    ],
+  },
+  {
+    id: 'papers',
+    title: 'Research on AI in dental education',
+    items: [
+      {
+        title: 'Artificial intelligence for oral and dental healthcare: Core education curriculum',
+        source: 'Schwendicke F, et al. Journal of Dentistry 128:104363', year: '2023',
+        url: 'https://research.vu.nl/en/publications/artificial-intelligence-for-oral-and-dental-healthcare-core-educa/',
+        summary: 'International consensus (IADR, ITU/WHO, ADEE experts; Delphi method) on the minimum AI learning outcomes for dental students: basic AI concepts and validation, dental use cases, evaluation and impact on patients, and accountability and governance. Item E20 of this survey refers to it.',
+      },
+      {
+        title: 'AI chatbots and large language models in dental education: Worldwide survey of educators',
+        source: 'Uribe SE, et al. European Journal of Dental Education 28(4):865–876', year: '2024',
+        url: 'https://doi.org/10.1111/eje.13009',
+        summary: '428 dental educators from many countries: about a third already used AI chatbots and most saw potential for learning, research and clinical decisions, but the main concern was the lack of clear guidelines and training.',
+      },
+      {
+        title: 'Dental students\' knowledge, perceptions, and educational needs regarding AI: a multinational survey',
+        source: 'Kavadella A, et al. BMC Medical Education 26:401', year: '2026',
+        url: 'https://link.springer.com/article/10.1186/s12909-026-08699-6',
+        summary: 'Dental students in several countries want AI in their undergraduate education, prefer case-based teaching, and most feel their current education has not prepared them for AI.',
+      },
+      {
+        title: 'Artificial Intelligence in Dental Education: A Scoping Review of Applications, Challenges, and Gaps',
+        source: 'El-Hakim M, Anthonappa R, Fawzy A. Dentistry Journal 13(9):384', year: '2025',
+        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12468998/',
+        summary: '17 studies grouped into preclinical training, clinical and radiographic training, assessment and feedback, and AI-generated content. AI improved accuracy, confidence and feedback, but struggled to assess dexterity and judgment; the authors warn that virtual reality is often mislabelled as AI.',
+      },
+      {
+        title: 'Evaluating large language models in dental education at a U.S. dental school',
+        source: 'Sheng C, et al. Frontiers in Digital Health 8:1786363', year: '2026',
+        url: 'https://www.frontiersin.org/journals/digital-health/articles/10.3389/fdgth.2026.1786363/full',
+        summary: '243 faculty, residents and students at UTHealth Houston: two-thirds of faculty and three-quarters of students use AI language tools, mainly for writing and study; faculty report a stronger need for AI training.',
+      },
+      {
+        title: 'Global student survey on AI in medical, dental, and veterinary education at 192 faculties',
+        source: 'Busch F, et al. BMC Medical Education', year: '2024',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/39342231/',
+        summary: 'More than 4,500 students in 48 countries are positive about AI and want more AI teaching; dental students were a small part of the sample.',
+      },
+      {
+        title: 'AI in medicine: a multinational multi-center survey on medical and dental students\' perception',
+        source: 'Bisdas S, et al. Frontiers in Public Health 9:795284', year: '2021',
+        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8739771/',
+        summary: 'More than 3,000 students in 63 countries; most see AI as a partner rather than a competitor and call for AI teaching.',
+      },
+    ],
+  },
   {
     id: 'paho-tools',
     title: 'PAHO/WHO documents this survey is built on',
@@ -118,7 +232,7 @@ export const REFERENCE_GROUPS = [
   },
   {
     id: 'global-dental',
-    title: 'International dental organizations',
+    title: 'Global dental organizations',
     items: [
       {
         title: 'FDI policy statement: Artificial intelligence in dentistry',
@@ -138,242 +252,6 @@ export const REFERENCE_GROUPS = [
         source: 'International Association for Dental, Oral, and Craniofacial Research', year: '2023',
         url: 'https://www.iadr.org/about/news-reports/press-releases/future-artificial-intelligence-e-oral-health-and-dentistry',
         summary: 'IADR\'s network on digital oral health brings researchers together on AI, teledentistry, ethics and regulation. With ITU/WHO it produced the dental AI core curriculum and a reporting checklist for dental AI studies.',
-      },
-    ],
-  },
-  {
-    id: 'americas',
-    title: 'North America: associations and regulators',
-    items: [
-      {
-        title: 'ADA standards on artificial and augmented intelligence',
-        source: 'American Dental Association', year: '2024–2025',
-        url: 'https://www.ada.org/resources/practice/dental-standards/informatics-standards/artificial-and-augmented-intelligence',
-        links: [{ label: 'ADA News on Technical Report 1109', url: 'https://adanews.ada.org/ada-news/2024/october/ada-technical-report-calls-for-external-validation-of-ai-algorithms-in-dentistry/' }],
-        summary: 'The ADA\'s AI standards work, including Technical Report 1109 on evaluating dental image-analysis AI and ANSI/ADA Standard 1110-1:2025, the first US national standard on dental AI, which sets rules for annotating and collecting 2D radiographs for validation datasets. The ADA recommends independent external validation of AI algorithms.',
-      },
-      {
-        title: 'Guidance: Artificial Intelligence in Dentistry (Ontario, Canada)',
-        source: 'Royal College of Dental Surgeons of Ontario (RCDSO)', year: '',
-        url: 'https://cdn.agilitycms.com/rcdso/pdf/standards-of-practice/RCDSO_5789_GUIDANCE_Artificial_Intelligence_in_Dentistry.pdf',
-        summary: 'Guidance from Ontario\'s dental regulator for dentists who use AI. It sets no new rules but explains how existing duties apply: check that a tool is legal and privacy-compliant, assess its clinical validity and accuracy, stay accountable for decisions, and be transparent with patients.',
-      },
-      {
-        title: 'Artificial Intelligence practice guideline for dental hygienists (Ontario, Canada)',
-        source: 'College of Dental Hygienists of Ontario (CDHO)', year: '2026',
-        url: 'https://cdho.org/wp-content/uploads/2026/02/GUI-Artificial-Intelligence.pdf',
-        summary: 'A guideline for dental hygienists on responsible AI use: professional judgment, privacy, informed consent and documentation. It shows how dental regulators in Canada are addressing AI across professions.',
-      },
-    ],
-  },
-  {
-    id: 'europe',
-    title: 'Europe: associations and regulation',
-    items: [
-      {
-        title: 'CED Resolution: Artificial Intelligence in Dentistry — 2025 update',
-        source: 'Council of European Dentists', year: '2025',
-        url: 'https://www.cedentists.eu/wp-content/uploads/2025/05/CED-DOC-2025-018-E-FIN.pdf',
-        summary: 'The position of Europe\'s dental associations on AI (first issued 2020, updated 2025). It notes that regulation is still fragmented, asks for clarity on who is liable when AI fails, prefers transparent ("white box") AI, and links dental AI to the EU AI Act and the European Health Data Space.',
-      },
-      {
-        title: 'ADEE Special Interest Group: AI in Oral Health Education',
-        source: 'Association for Dental Education in Europe', year: '2025',
-        url: 'https://adee.org/ai-oral-health-education-under-and-postgraduate-dental-students',
-        links: [{ label: 'DigEdDent: Digital Education for Dentistry', url: 'https://adee.org/digeddent-digital-education-dentistry' }],
-        summary: 'ADEE\'s group on AI in undergraduate and postgraduate dental education, with a focus on dental radiology. It aims to train educators, share resources across European schools, and draft guidelines for the ethical and educational use of AI. ADEE\'s DigEdDent library collects digital-teaching resources, including AI.',
-      },
-      {
-        title: 'EU Artificial Intelligence Act — Regulation (EU) 2024/1689',
-        source: 'European Union', year: '2024',
-        url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj',
-        summary: 'The European law on AI. It classifies AI systems by risk. AI that is part of a medical device needing independent certification (which can include dental diagnostic software) is treated as high-risk, with duties on data quality, documentation, transparency, human oversight and post-market monitoring.',
-      },
-    ],
-  },
-  {
-    id: 'asia-africa',
-    title: 'Asia and Africa',
-    items: [
-      {
-        title: 'Ethical Guidelines for Application of Artificial Intelligence in Biomedical Research and Healthcare',
-        source: 'Indian Council of Medical Research (ICMR), India', year: '2023',
-        url: 'https://www.icmr.gov.in/ethical-guidelines-for-application-of-artificial-intelligence-in-biomedical-research-and-healthcare',
-        summary: 'India\'s national ethics framework for health AI, for developers, researchers, clinicians, ethics committees and funders. It covers ethical principles, stakeholder responsibilities, ethics review, governance and informed consent, and is meant to be updated as the field evolves.',
-      },
-      {
-        title: 'Integrating Artificial Intelligence in Dental Education (SPARC-UKIERI project, India–UK)',
-        source: 'Queen Mary University of London, Maulana Azad Institute of Dental Sciences, GGSIP University', year: '2025–2026',
-        url: 'https://www.jmi.ac.in/upload/publication/pr2_English_2026July15.pdf',
-        links: [{ label: 'News report', url: 'https://dailypioneer.com/news/session-on-ai-in-dental-education-organised' }],
-        summary: 'An India–UK project, funded by SPARC and UKIERI, building an eight-module AI training program for Indian dental students and interns. Sessions are delivered in Delhi dental schools (e.g., Jamia Millia Islamia). An example of structured AI teaching at national scale in India.',
-      },
-      {
-        title: 'Expert consensus on the clinical application of AI in the design of fixed dental restorations (China)',
-        source: 'Chinese prosthodontic experts, Dental Research journal', year: '2026',
-        url: 'https://journal.hep.com.cn/dr/EN/10.1016/j.dtrs.2026.100041',
-        summary: 'A Chinese expert consensus that sets standard steps for using AI to design crowns and bridges, from planning to esthetic design, with quality-control checkpoints and ethical safeguards. It shows how China is formalizing AI use in digital prosthodontics.',
-      },
-      {
-        title: 'Embracing change, moving with time: digital technologies and accelerators in community oral health in Africa',
-        source: 'Frontiers (review)', year: '2025',
-        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11925870/',
-        summary: 'A review of how digital tools (mobile health, teledentistry, AI) can expand community oral health care in Africa, where oral diseases affect a large share of the population and the dental workforce is small. It argues these tools are a low-cost way to improve access, if infrastructure and training are in place.',
-      },
-      {
-        title: '54th IADR South African Division meeting: oral health research in the era of AI',
-        source: 'University of the Witwatersrand, South Africa', year: '2025',
-        url: 'https://www.wits.ac.za/news/sources/health-news/2025/wits-hosts-the-54th-iadr-south-african-scientific-meeting.html',
-        summary: 'South Africa\'s national dental research meeting, hosted by the Wits Oral Health Centre, was dedicated to AI in oral health research, practice and ethics, a sign of growing AI activity in African dental schools.',
-      },
-    ],
-  },
-  {
-    id: 'universities',
-    title: 'University initiatives',
-    note: 'Examples of AI, digital dentistry and data-science initiatives at universities linked to the founders and to the first survey countries.',
-    items: [
-      {
-        title: 'Harvard School of Dental Medicine — Artificial Intelligence',
-        source: 'Harvard University, USA', year: '2024–2027',
-        url: 'https://www.hsdm.harvard.edu/news-and-events/artificial-intelligence',
-        links: [{ label: 'AI-enhanced dental education project', url: 'https://hsdm.harvard.edu/news/exploring-how-ai-can-enhance-dental-education' }],
-        summary: 'Harvard\'s dental school hosts the Global Symposium on AI in Dentistry (hundreds of participants from more than 50 countries) and runs AI education research, including a funded project that uses de-identified dental records to train a language model that creates synthetic patient cases for teaching, plus summer research on algorithmic fairness.',
-      },
-      {
-        title: 'University of Rochester, Eastman Institute for Oral Health — AI for oral disease screening',
-        source: 'University of Rochester, USA', year: '2021–2030',
-        url: 'https://www.urmc.rochester.edu/people/27338278-jin-xiao',
-        summary: 'Dr. Jin Xiao\'s team (with computer science and biostatistics) develops AICaries and SMARTeeth, AI smartphone tools that detect early tooth decay and gum disease outside the dental clinic, funded by the US National Institute of Dental and Craniofacial Research. The Eastman Institute also runs a Center of Excellence for Digital Dentistry in its clinics and curriculum.',
-      },
-      {
-        title: 'University of Toronto, Faculty of Dentistry — AI and oral health',
-        source: 'University of Toronto, Canada', year: '2020–2025',
-        url: 'https://dentistry.library.utoronto.ca/dentistry-blog/oral-health-month-2024-ai-and-oral-health',
-        summary: 'The faculty has an AI-focused research day, a new Lectureship in AI-Enhanced Dentistry and a dean who plans to expand digital technology in teaching and clinics. The library page gathers AI-in-oral-health workshops, books and publication data for 2022–2024.',
-      },
-      {
-        title: 'McGill University, Faculty of Dental Medicine and Oral Health Sciences — AI and Digital Oral Health',
-        source: 'McGill University, Canada', year: 'ongoing',
-        url: 'https://www.mcgill.ca/dentistry/node/3378',
-        links: [{ label: 'Faculty news on AI research', url: 'https://www.mcgill.ca/dentistry/article/faculty-news-research/researchers-mcgill-work-improve-patients-trips-dentist' }],
-        summary: 'A research cluster using AI and digital technology to improve dental care. Members include a Canada Research Chair in AI and Advanced Digital Primary Health Care, and faculty working on AI in periodontics, imaging and continuing education, plus virtual-reality projects.',
-      },
-      {
-        title: 'Université de Montréal (UdeM) and the Quebec Network for Oral and Bone Health Research',
-        source: 'Université de Montréal / Fonds de recherche du Québec, Canada', year: 'ongoing',
-        url: 'https://frq.gouv.qc.ca/en/cluster/reseau-de-recherche-en-sante-buccodentaire-et-osseuse-rsbo-en/',
-        summary: 'UdeM\'s Faculty of Dental Medicine, the largest French-language dental faculty in North America, is recruiting faculty in AI applied to oral and craniofacial health, working with Mila, IVADO and Montreal hospitals on image analysis, diagnosis and digital dentistry. The FRQ-funded Oral and Bone Health Research Network links UdeM, McGill and other Quebec universities.',
-      },
-      {
-        title: 'University of São Paulo (USP) — NuTes-DigiLab: Telehealth, Teledentistry and Digital Health & AI Laboratory',
-        source: 'Faculdade de Odontologia da USP, Brazil', year: 'ongoing',
-        url: 'https://sites.usp.br/telessaude/digilab-laboratorio-de-saude-digital-e-ia/',
-        links: [{ label: 'Teledentistry network', url: 'https://sites.usp.br/telessaude/rede-teleodonto/' }],
-        summary: 'The USP dental school\'s laboratory for telehealth, teledentistry, digital health and AI. It runs teleconsultation projects, research and innovation, and open online courses on digital health for Brazil\'s public health system (SUS).',
-      },
-      {
-        title: 'Federal University of Bahia (UFBA) and CIDACS — health data science',
-        source: 'UFBA / Fiocruz Bahia, Brazil', year: 'ongoing',
-        url: 'https://agencia.fapesp.br/grandes-bases-de-dados-em-saude-permitem-construir-politicas-publicas-baseadas-em-evidencias/58541',
-        summary: 'Salvador is a Brazilian hub for health data science: CIDACS (Fiocruz Bahia), founded with UFBA researchers, links large national databases with privacy protection and hosts one of the world\'s largest population cohorts, and UFBA has new graduate programs in collective health, statistics and data science. A strong base for public oral health informatics in Bahia.',
-      },
-      {
-        title: 'University of Fortaleza (UNIFOR) — Digital dentistry in undergraduate training',
-        source: 'Universidade de Fortaleza, Brazil', year: '2024–2025',
-        url: 'https://unifor.br/web/graduacao/-/odontologia-digital-tendencia-de-mercado-ja-e-realidade-na-unifor',
-        links: [{ label: 'Class on AI and digital dentistry', url: 'https://unifor.br/web/pos-graduacao/-/egresso-da-unifor-ministra-aula-sobre-ia-odontologia-digital-e-carreira-internacional' }],
-        summary: 'UNIFOR\'s digital dentistry lab has 3D printers, intraoral scanners, milling units, CAD software and digital radiology, and digital prosthodontics is part of the undergraduate curriculum. The school also offers sessions on AI, machine learning, teledentistry and robotics in dental practice.',
-      },
-    ],
-  },
-  {
-    id: 'papers',
-    title: 'Research on AI in dental education',
-    items: [
-      {
-        title: 'Artificial intelligence for oral and dental healthcare: Core education curriculum',
-        source: 'Schwendicke F, et al. Journal of Dentistry 128:104363', year: '2023',
-        url: 'https://research.vu.nl/en/publications/artificial-intelligence-for-oral-and-dental-healthcare-core-educa/',
-        summary: 'International consensus (IADR, ITU/WHO, ADEE experts; Delphi method) on the minimum AI learning outcomes for dental students: basic AI concepts and validation, dental use cases, evaluation and impact on patients, and accountability and governance. Item E20 of this survey refers to it.',
-      },
-      {
-        title: 'AI chatbots and large language models in dental education: Worldwide survey of educators',
-        source: 'Uribe SE, et al. European Journal of Dental Education 28(4):865–876', year: '2024',
-        url: 'https://doi.org/10.1111/eje.13009',
-        summary: '428 dental educators from many countries: about a third already used AI chatbots and most saw potential for learning, research and clinical decisions, but the main concern was the lack of clear guidelines and training.',
-      },
-      {
-        title: 'Dental students\' knowledge, perceptions, and educational needs regarding AI: a multinational survey',
-        source: 'Kavadella A, et al. BMC Medical Education 26:401', year: '2026',
-        url: 'https://link.springer.com/article/10.1186/s12909-026-08699-6',
-        summary: 'Dental students in several countries want AI in their undergraduate education, prefer case-based teaching, and most feel their current education has not prepared them for AI.',
-      },
-      {
-        title: 'Artificial Intelligence in Dental Education: A Scoping Review of Applications, Challenges, and Gaps',
-        source: 'El-Hakim M, Anthonappa R, Fawzy A. Dentistry Journal 13(9):384', year: '2025',
-        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12468998/',
-        summary: '17 studies grouped into preclinical training, clinical and radiographic training, assessment and feedback, and AI-generated content. AI improved accuracy, confidence and feedback, but struggled to assess dexterity and judgment; the authors warn that virtual reality is often mislabelled as AI.',
-      },
-      {
-        title: 'Readiness to use artificial intelligence: dental faculty members and students',
-        source: 'BMC Medical Education (Ardabil, Iran)', year: '2025',
-        url: 'https://bmcmededuc.biomedcentral.com/articles/10.1186/s12909-025-07621-w',
-        summary: 'Using the Medical AI Readiness Scale, faculty scored higher than students in cognition, ability, vision and ethics, showing that faculty readiness can lead curricular change.',
-      },
-      {
-        title: 'AI integration in Brazilian master\'s curricula in dentistry',
-        source: 'Dantas JN, da Silva MAD (preprint)', year: '2023–2026',
-        url: 'https://www.researchsquare.com/article/rs-3395718/v1',
-        summary: 'Analysis of 92 Brazilian dental master\'s programs: AI content appeared in well under 1% of disciplines, mostly in higher-rated programs, with no link to region or public/private status.',
-      },
-      {
-        title: 'Preparing future dentists for AI: perceptions and educational needs in China',
-        source: 'Wu Y, et al. Frontiers in Public Health 14:1841849', year: '2026',
-        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC13225991/',
-        summary: '343 undergraduate, master\'s and doctoral students at Wuhan University: almost 90% support AI in dental care and most want AI education, with different views by training stage; the authors propose stage-specific AI teaching.',
-      },
-      {
-        title: 'Dental students\' perceptions toward AI and mobile medical learning apps (Chongqing, China)',
-        source: 'BMC Medical Education', year: '2026',
-        url: 'https://link.springer.com/article/10.1186/s12909-026-10709-6',
-        summary: 'Survey of dental students at Chongqing Medical University on their use of AI tools and learning apps, to inform how AI is integrated into dental teaching in China.',
-      },
-      {
-        title: 'Faculty perspectives on integrating AI into orthodontic and interdisciplinary dental education (India)',
-        source: 'Cureus', year: '2025',
-        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12540188/',
-        summary: 'Faculty in North Indian dental colleges see clear opportunities for AI in teaching but report gaps in training and ethical concerns as main barriers.',
-      },
-      {
-        title: 'Evaluating large language models in dental education at a U.S. dental school',
-        source: 'Sheng C, et al. Frontiers in Digital Health 8:1786363', year: '2026',
-        url: 'https://www.frontiersin.org/journals/digital-health/articles/10.3389/fdgth.2026.1786363/full',
-        summary: '243 faculty, residents and students at UTHealth Houston: two-thirds of faculty and three-quarters of students use AI language tools, mainly for writing and study; faculty report a stronger need for AI training.',
-      },
-      {
-        title: 'Dental students\' and educators\' perceptions toward the adoption of AI in dental education',
-        source: 'Rifaat S, et al. International Journal of Dentistry 2026:3313083', year: '2026',
-        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC13359483/',
-        summary: '388 students and faculty in Saudi Arabia: faculty reported much more AI knowledge than students, and both groups want formal AI training.',
-      },
-      {
-        title: 'Global student survey on AI in medical, dental, and veterinary education at 192 faculties',
-        source: 'Busch F, et al. BMC Medical Education', year: '2024',
-        url: 'https://pubmed.ncbi.nlm.nih.gov/39342231/',
-        summary: 'More than 4,500 students in 48 countries are positive about AI and want more AI teaching; dental students were a small part of the sample.',
-      },
-      {
-        title: 'Health care students\' perspectives on AI: countrywide survey in Canada',
-        source: 'Teng M, et al. JMIR Medical Education 8(1):e33390', year: '2022',
-        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8845000/',
-        summary: 'Canadian students across health professions want AI included in their curricula; a Canadian baseline for comparison.',
-      },
-      {
-        title: 'AI in medicine: a multinational multi-center survey on medical and dental students\' perception',
-        source: 'Bisdas S, et al. Frontiers in Public Health 9:795284', year: '2021',
-        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8739771/',
-        summary: 'More than 3,000 students in 63 countries; most see AI as a partner rather than a competitor and call for AI teaching.',
       },
     ],
   },

@@ -14,8 +14,8 @@ random.seed(2026)
 
 codebook = pd.read_csv(ROOT / "docs" / "codebook.csv", dtype=str).fillna("")
 codebook = codebook[codebook["pii"] != "true"]
-countries = ["CA", "US", "BR", "CN", "IN"]
-schools = {c: [f"{c} Dental School {i}" for i in range(1, 6)] for c in countries}
+states = ["CA", "NY", "TX", "FL", "MA", "IL", "OH", "WA"]
+schools = {s: [f"{s} Dental School {i}" for i in range(1, 4)] for s in states}
 departments = ["Oral Radiology", "Prosthodontics", "Orthodontics", "Periodontics", "Restorative Dentistry"]
 
 
@@ -34,13 +34,13 @@ def value(row):
 rows = []
 n = int(sys.argv[1]) if len(sys.argv) > 1 else 120
 for i in range(n):
-    c = random.choice(countries)
+    st = random.choice(states)
     r = {"code": f"SYN-{i:03d}", "status": "submitted", "version": "synthetic"}
     for _, col in codebook.iterrows():
         if col["section"] and col["section"] != "A":
             r[col["name"]] = value(col)
-    r.update(A01=c, A03=random.choice(schools[c]), A06=random.choice(departments),
-             A07=f"COURSE-{i:03d}", A08="1", B05="1" if c == "IN" else "2",
+    r.update(A01="US", A02=st, A03=random.choice(schools[st]), A06=random.choice(departments),
+             A07=f"COURSE-{i:03d}", A08="1", B05=random.choice(["2", "2", "3", "4"]),
              A15=random.choice(["2026", "2027"]))
     rows.append(r)
 

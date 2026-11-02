@@ -13,7 +13,7 @@ const ADMIN_KEY = 'ai-ds-2026-admin'
 const error = ref('')
 const busy = ref(false)
 const thisYear = String(new Date().getFullYear())
-const answers = reactive({ A15: thisYear })
+const answers = reactive({ A01: 'US', A15: thisYear })
 const issued = ref(null)
 const codes = ref([])
 const copied = ref(false)
@@ -63,6 +63,7 @@ async function issue() {
     const code = await storage.createCode({ ...answers })
     issued.value = { code, institution: answers.A03, department: answers.A06, name: answers.A10 }
     for (const k of Object.keys(answers)) delete answers[k]
+    answers.A01 = 'US'
     answers.A15 = thisYear
     copied.value = false
     refresh()

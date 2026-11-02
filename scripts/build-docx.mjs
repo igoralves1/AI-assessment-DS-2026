@@ -57,7 +57,7 @@ function questionBlocks(q) {
     ],
   }))
   out.push(p([new TextRun({ text: 'Captures: ', bold: true, size: 18, color: ACCENT }), new TextRun({ text: q.captures, size: 18, color: '4A5552' })], { indent: { left: 360 }, keepNext: true, spacing: { after: 60 } }))
-  if (q.countryHint) out.push(p([new TextRun({ text: `Country adaptation: see table "Country context", row "${HINT_ROW[q.countryHint]}".`, italics: true, size: 18, color: '6B7672' })], { indent: { left: 360 } }))
+  if (q.countryHint) out.push(p([new TextRun({ text: `US reference: see table "US context", row "${HINT_ROW[q.countryHint]}".`, italics: true, size: 18, color: '6B7672' })], { indent: { left: 360 } }))
   if (q.type === 'multi' && q.max) out.push(p([new TextRun({ text: `Select up to ${q.max}.`, italics: true, size: 18 })], { indent: { left: 360 } }))
 
   switch (q.type) {
@@ -114,7 +114,7 @@ children.push(
   new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: 'Dental School Departments and Courses', bold: true, size: 48 })] }),
   p([new TextRun({ text: 'Artificial intelligence · Health informatics · Robotics · Bioinformatics', size: 26, color: ACCENT })]),
   new Paragraph({ children: [new TextRun({ text: '', size: 2 })] }),
-  p([new TextRun({ text: 'Canada · United States · Brazil · China · India', size: 28 })]),
+  p([new TextRun({ text: 'United States · national benchmark of dental schools', size: 28 })]),
   p([new TextRun({ text: `Department/course-specific annual questionnaire · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
   new Paragraph({ spacing: { before: 600, after: 120 }, children: [new TextRun({ text: 'Proposed article title', bold: true })] }),
   p([new TextRun({ text: STUDY.titles[0], italics: true })]),
@@ -134,11 +134,11 @@ STUDY.procedure.forEach((o, i) => children.push(bullet([new TextRun({ text: `Ste
 children.push(h2('Respondent instructions'))
 STUDY.instructions.forEach((o) => children.push(bullet(o)))
 
-children.push(h2('Country context'))
-children.push(p('Items marked "Country adaptation" are read with the national references below. Option lists that are specific to a country are tagged with the country code (CA, US, BR, CN, IN).'))
+children.push(h2('US context'))
+children.push(p('Items marked "US reference" are read with the US laws and bodies below.'))
 const ctxRows = [['Degree', 'degree'], ['Curriculum / accreditation body', 'accreditation'], ['Professional and regulatory bodies', 'professional'], ['Privacy law', 'privacy'], ['AI device regulator', 'deviceRegulator'], ['Academic calendar', 'calendarNote'], ['Languages', 'languages']]
-const cw = Math.floor((CONTENT_W - 1700) / 5)
-children.push(table(['', ...COUNTRIES.map((c) => c.l)], ctxRows.map(([label, key]) => [label, ...COUNTRIES.map((c) => COUNTRY_CONTEXT[c.v][key])]), [CONTENT_W - cw * 5, cw, cw, cw, cw, cw]))
+const cw = Math.floor((CONTENT_W - 2600) / COUNTRIES.length)
+children.push(table(['', ...COUNTRIES.map((c) => c.l)], ctxRows.map(([label, key]) => [label, ...COUNTRIES.map((c) => COUNTRY_CONTEXT[c.v][key])]), [CONTENT_W - cw * COUNTRIES.length, ...COUNTRIES.map(() => cw)]))
 children.push(spacer())
 
 children.push(h2('Readiness domains and scale'))

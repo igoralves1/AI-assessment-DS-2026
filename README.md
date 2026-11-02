@@ -1,24 +1,24 @@
 # ICARB-D Annual Survey of Dental Schools
 
-**An annual, course-level survey of the maturity of artificial intelligence, health informatics, robotics and bioinformatics in dental schools in Canada, the United States, Brazil, China and India.**
+**An annual, course-level survey of the maturity of artificial intelligence, health informatics, robotics and bioinformatics in US dental schools: a national benchmark of digital maturity, repeated every year.**
 
-This is the survey of **ICARB-D — International Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium is an international hub that connects universities and dentists to strengthen initiatives in these fields; its main goal is to build a free dental AI model, through joint collaborative work, that can be used across every field of dentistry. This repository holds the questionnaire, the data-collection website and the analysis code.
+This is the survey of **ICARB-D — Innovation Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium is a national hub that connects US dental schools and dentists to strengthen initiatives in these fields; its main goal is to build a free dental AI model, through joint collaborative work, that can be used across every field of dentistry. This repository holds the questionnaire, the data-collection website and the analysis code.
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
-- **References** (PAHO/WHO documents, dental associations, universities, studies, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
+- **References** (US standards and research bodies, US dental schools, studies and PAHO/WHO frameworks, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
 - Questionnaire (Word): [docs/ICARB-D-Annual-Survey-Dental-Schools.docx](docs/ICARB-D-Annual-Survey-Dental-Schools.docx)
 - Questionnaire (PDF): [docs/ICARB-D-Annual-Survey-Dental-Schools.pdf](docs/ICARB-D-Annual-Survey-Dental-Schools.pdf)
 - Codebook (one line per data column): [docs/codebook.csv](docs/codebook.csv)
 
 ## Proposed article title
 
-> **Mapping the Digital Maturity of Dental Education: An Annual, Course-Level Survey of Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in Canada, the United States, Brazil, China and India**
+> **Mapping the Digital Maturity of US Dental Education: A National, Annual, Course-Level Survey of Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in US Dental Schools**
 
 Alternatives:
 
-- *Which Course, Which Department? Physical and Human Resources for Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in Dental Schools of the Americas and Asia — Baseline Results of the ICARB-D Annual Survey*
-- *From Awareness to Implementation: Department-Level Maturity of Digital Technologies in Dental Education in Five Countries — A Cross-Sectional Study Using an Adapted PAHO/WHO Readiness Framework*
+- *Which Course, Which Department? Physical and Human Resources for Artificial Intelligence, Health Informatics, Robotics and Bioinformatics in US Dental Schools — Baseline Results of the ICARB-D Annual Survey*
+- *From Awareness to Implementation: Department-Level Maturity of Digital Technologies in US Dental Education — A National Cross-Sectional Study Aligned with ADA AI Standards and CODA Accreditation*
 
 ## What the survey measures
 
@@ -33,7 +33,17 @@ The survey gives a comprehensive overview of the maturity of each department or 
 
 For every domain it captures **physical resources** (equipment, infrastructure, data) and **human resources** (faculty, technical staff, partners), plus teaching, governance, implementation and sustainability. It also maps each department's capacity to contribute to the consortium's open dental AI model.
 
-The survey is **annual**: each wave maps the state of the art across universities and courses, and linking waves shows how each department develops.
+The survey is **annual**: each wave maps the state of the art across US dental schools and courses, and linking waves shows how each department develops.
+
+## Why it matters for the United States
+
+| US body | How the survey connects |
+|---|---|
+| American Dental Association (ADA) | Shows how schools teach and apply the ADA standards on dental AI (Technical Report 1109, ANSI/ADA Standard 1110-1:2025) |
+| Commission on Dental Accreditation (CODA) | Gives schools evidence on the technology content of their curricula for accreditation planning |
+| National Institute of Dental and Craniofacial Research (NIDCR) | Identifies departments ready for the health informatics and data-science research and training its strategic plan calls for |
+| Oral health workforce | Shows where training and equipment are missing, in line with the NIH report *Oral Health in America* (2021) |
+| FDA, NIST, HIPAA/FERPA | Governance items check how AI devices, AI risk and student and patient data are handled |
 
 ## Framework
 
@@ -43,15 +53,16 @@ The survey is **annual**: each wave maps the state of the art across universitie
 | PAHO/WHO–IDB *AI-GUARD* (2026) | Yes/Partial/No governance checklist for AI tools (J11) and generative-AI safeguards (F06) |
 | PAHO *Bias-free AI in Health* (2026) | Data representativeness (C15), subgroup-performance teaching (J06) |
 | PAHO *AI Prompt Design for Public Health* (2025) | Prompt-design and output-verification teaching (F04–F05) |
-| IADR / ITU-WHO core curriculum for dental AI (Schwendicke et al., 2023) | Curriculum alignment (E20) |
+| IADR / ITU-WHO core curriculum for dental AI (Schwendicke et al., 2023); ADEA competencies; CODA standards | Curriculum alignment (E20) |
+| ADA AI standards, CODA, HIPAA/FERPA, FDA, NIST AI RMF | US guidance used in teaching and clinics (J08) |
 
 ## Questionnaire structure
 
-174 questions in 13 parts, stored as 482 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
+174 questions in 13 parts, stored as 467 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
 
 | Part | Content | Filled by |
 |---|---|---|
-| A | Profile: country, school, department, course, level, role, consent, **survey year**, previous year's code | Research team |
+| A | Profile: state, school, department, course, level, role, consent, **survey year**, previous year's code | Research team |
 | B | Context: enrollment, faculty, calendar, course hours, domains addressed | Respondent |
 | C | Physical resources: computing, software, AI tools used by students, datasets, data quality, privacy, connectivity | Respondent |
 | D | Human resources: faculty able to teach AI, researchers, training, partners, technical staff, barriers | Respondent |
@@ -67,18 +78,19 @@ The survey is **annual**: each wave maps the state of the art across universitie
 
 Maturity items use a 1–4 anchored scale (1 = absent … 4 = established) plus "Don't know / Not applicable" (coded −1, treated as missing). Each one belongs to one of ten domains: Infrastructure (INF), Data (DAT), Human resources (HUM), AI curriculum (CUR), Generative AI (GEN), Health informatics (HIN), Robotics and digital dentistry (ROB), Bioinformatics (BIO), Governance & ethics (GOV), Implementation & sustainability (IMP).
 
-### Country adaptation
+### US references
 
-The form adapts examples and option lists to the country chosen in Part A:
+Some items show the matching US law or body next to the question:
 
-| | Canada | USA | Brazil | China | India |
-|---|---|---|---|---|---|
-| Degree | DDS/DMD | DDS/DMD | Bacharelado em Odontologia | 口腔医学 Bachelor (5-yr) / 8-yr | BDS |
-| Curriculum body | CDAC | CODA | MEC/INEP (DCN 2021), CAPES | Ministry of Education | DCI / National Dental Commission |
-| Privacy law | PIPEDA, PHIPA, Quebec Law 25 | HIPAA, FERPA | LGPD | PIPL, Data Security Law | DPDP Act 2023 |
-| AI device regulator | Health Canada | FDA | ANVISA | NMPA | CDSCO |
+| | United States |
+|---|---|
+| Degree | DDS/DMD |
+| Accreditation | CODA |
+| Professional and regulatory bodies | ADA, ADEA, state dental boards |
+| Privacy law | HIPAA, FERPA |
+| AI device regulator | FDA |
 
-Hours are asked **per term**, and item B05 (terms per year) converts them into hours per year, because Indian BDS programs often use an annual system.
+Hours are asked **per term**, and item B05 (terms per year) converts them into hours per year, because schools use semesters, trimesters or quarters.
 
 ## How data collection works
 
@@ -157,18 +169,17 @@ python3 -m venv .venv && .venv/bin/pip install pandas numpy
 3. **Hours per year** for AI, health informatics, robotics and bioinformatics, plus programming hours; **equipment units** and students per unit.
 4. **Department roll-up** per year, with the number of contributing courses (n).
 5. **School roll-up**: department scores weighted by the number of courses each contributed.
-6. **Country summary** per year.
+6. **State and national summary** per year (`state_scores.csv`, `national_scores.csv`).
 7. **Annual trends**: each department's overall index by survey year (`department_trends.csv`).
 8. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
-9. **Hours by topic** per year and country (`hours_by_topic.csv`).
+9. **Hours by topic** per year (`hours_by_topic.csv`).
 
 ## Methods checklist (before fieldwork)
 
-- [ ] Ethics approval (coordinating center plus local approvals, e.g., CONEP in Brazil)
-- [ ] Forward–backward translation: French (Quebec), Portuguese, Chinese
-- [ ] Content validity with an expert panel per domain (I-CVI ≥ 0.78) and cognitive interviews in each country
+- [ ] IRB approval (coordinating center plus local IRBs where required)
+- [ ] Content validity with an expert panel per domain (I-CVI ≥ 0.78) and cognitive interviews with department heads
 - [ ] Pilot with about 10 departments; reliability (Cronbach's α / ω per domain, test–retest subsample)
-- [ ] Sampling frame from national lists (ADEA/CODA, ACFD, e-MEC/ABENO, MOE/CSA, DCI/NDC); invite the same departments every year
+- [ ] Sampling frame from the CODA list of accredited US dental schools and ADEA members; invite the same departments every year
 - [ ] Report with STROBE and CHERRIES
 
 ## Related studies
@@ -179,13 +190,8 @@ python3 -m venv .venv && .venv/bin/pip install pandas numpy
 | Uribe et al., *Eur J Dent Educ* 2024 | 428 educators worldwide | 31% used AI chatbots; main concern was lack of guidelines and training |
 | Kavadella et al., *BMC Med Educ* 2026 | Multinational dental-student survey | Students want AI education; most feel unprepared |
 | El-Hakim et al., *Dent J* 2025 | Scoping review, 17 studies | AI helps feedback and accuracy; weak on dexterity and judgment |
-| Ardabil (Iran), *BMC Med Educ* 2025 | MAIRS, faculty vs students | Faculty readiness higher than students' |
-| Dantas & da Silva, *Int J Dent* 2026 | 92 Brazilian master's programs | AI in well under 1% of disciplines |
-| Wu et al., *Front Public Health* 2026 | 343 students, Wuhan (China) | 89.8% support AI; 84.2% want AI education |
-| Sheng et al., *Front Digit Health* 2026 | 243 respondents, UTHealth Houston (USA) | 66% of faculty and 73% of students use LLMs |
-| Rifaat et al., *Int J Dent* 2026 | 388 students and faculty (Saudi Arabia) | Faculty know far more about AI than students |
+| Sheng et al., *Front Digit Health* 2026 | 243 respondents, UTHealth Houston | 66% of faculty and 73% of students use LLMs |
 | Busch et al., *BMC Med Educ* 2024 | 4,596 students, 192 faculties, 48 countries | Strong demand for more AI teaching |
-| Teng et al., *JMIR Med Educ* 2022 | Health-care students (Canada) | Students want AI in curricula |
 
 Full references (with DOIs) are in the Word/PDF document, section 4. Citations marked "verify" there could not be fully confirmed online and should be checked before submission.
 
