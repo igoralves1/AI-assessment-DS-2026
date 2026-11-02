@@ -19,7 +19,7 @@ The survey is run independently of the ICARB-D consortium website (https://igora
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
 - **References** (US standards and research bodies, US dental schools, studies and PAHO/WHO frameworks, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
-- **Teacher slides** (summary of the main idea and the goal of each group of questions): [PDF](public/downloads/ICARB-D-Survey-Teacher-Slides.pdf) · [PowerPoint](public/downloads/ICARB-D-Survey-Teacher-Slides.pptx), also linked at the top of the questions guide
+- **Guide for teachers and decision makers in dentistry** (slides: the main goal, health informatics and its areas, who answers, and the goal of each group of questions): [PDF](public/downloads/ICARB-D-Survey-Teacher-Slides.pdf) · [PowerPoint](public/downloads/ICARB-D-Survey-Teacher-Slides.pptx), also linked at the top of the questions guide
 - **Maturity checklist:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions?go=checklist (also chapter 4 of the Word/PDF questionnaire)
 - Questionnaire (Word): [docs/ICARB-D-Annual-Survey-Dental-Schools.docx](docs/ICARB-D-Annual-Survey-Dental-Schools.docx)
 - Questionnaire (PDF): [docs/ICARB-D-Annual-Survey-Dental-Schools.pdf](docs/ICARB-D-Annual-Survey-Dental-Schools.pdf)
@@ -175,7 +175,7 @@ Regenerate the documents after editing the questionnaire (`src/questionnaire/que
 ```bash
 npm run codebook   # docs/codebook.csv
 npm run docs       # docs/*.docx and *.pdf, copied to public/downloads (needs LibreOffice)
-npm run slides     # public/downloads teacher slides (.pptx and .pdf)
+npm run slides     # public/downloads guide slides for teachers and decision makers (.pptx and .pdf)
 ```
 
 ## Analysis

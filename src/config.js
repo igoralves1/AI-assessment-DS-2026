@@ -11,8 +11,8 @@ export const CONSORTIUM_URL = 'https://igoralves1.github.io/ICARB-D/'
 // Files served from public/downloads (copied there by `npm run docs` and `npm run slides`).
 const base = import.meta.env.BASE_URL + 'downloads/'
 export const DOWNLOADS = [
-  { label: 'Teacher slides (PDF)', file: 'ICARB-D-Survey-Teacher-Slides.pdf' },
-  { label: 'Teacher slides (PowerPoint)', file: 'ICARB-D-Survey-Teacher-Slides.pptx' },
+  { label: 'Guide for teachers and decision makers (PDF slides)', file: 'ICARB-D-Survey-Teacher-Slides.pdf' },
+  { label: 'Guide for teachers and decision makers (PowerPoint)', file: 'ICARB-D-Survey-Teacher-Slides.pptx' },
   { label: 'Full questionnaire (PDF)', file: 'ICARB-D-Annual-Survey-Dental-Schools.pdf' },
   { label: 'Full questionnaire (Word)', file: 'ICARB-D-Annual-Survey-Dental-Schools.docx' },
 ].map((d) => ({ ...d, href: base + d.file }))

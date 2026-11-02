@@ -1,4 +1,4 @@
-// Teacher slides: the main goal of the survey (a health informatics benchmark) and the goal of each group of questions.
+// Slides for teachers and decision makers in dentistry: the main goal of the survey (a health informatics benchmark) and the goal of each group of questions.
 // Output: public/downloads/ICARB-D-Survey-Teacher-Slides.pptx (the PDF is made by `npm run slides`).
 import fs from 'node:fs'
 import pptxgen from 'pptxgenjs'
@@ -55,7 +55,7 @@ const familyOf = (id) => FAMILY.find((f) => f.parts.includes(id))
 
 const pres = new pptxgen()
 pres.layout = 'LAYOUT_WIDE' // 13.33 x 7.5 in
-pres.title = 'ICARB-D Annual Survey: guide for teachers'
+pres.title = 'ICARB-D Annual Survey: guide for teachers and decision makers in dentistry'
 pres.subject = 'Main idea of the survey and the goal of each group of questions'
 pres.author = 'ICARB-D survey team'
 pres.theme = { headFontFace: HEAD, bodyFontFace: BODY }
@@ -78,7 +78,7 @@ pres.defineSlideMaster({
   margin: [0.5, 0.6, 0.6, 0.6],
   objects: [
     { placeholder: { options: { name: 'title', type: 'title', x: M, y: 0.45, w: W - 2 * M, h: 0.9, fontFace: HEAD, fontSize: 36, bold: true, color: INK, valign: 'top', align: 'left', margin: 0 }, text: '' } },
-    { text: { text: 'ICARB-D Annual Survey of Dental Schools · guide for teachers', options: { x: M, y: 7.0, w: 8, h: 0.3, fontFace: BODY, fontSize: 10, color: MUTED, margin: 0 } } },
+    { text: { text: 'ICARB-D Annual Survey of Dental Schools · guide for teachers and decision makers in dentistry', options: { x: M, y: 7.0, w: 8, h: 0.3, fontFace: BODY, fontSize: 10, color: MUTED, margin: 0 } } },
   ],
   slideNumber: { x: W - M - 0.6, y: 7.0, w: 0.6, h: 0.3, fontFace: BODY, fontSize: 10, color: MUTED, align: 'right' },
 })
@@ -107,7 +107,7 @@ pres.addSection({ title: 'The main idea' })
   const s = pres.addSlide({ masterName: 'DARK', sectionTitle: 'The main idea' })
   T(s, 'ICARB-D ANNUAL SURVEY OF DENTAL SCHOOLS', { x: M, y: 1.4, w: 8, h: 0.4, fontSize: 14, bold: true, color: 'BFE3E5', charSpacing: 2 })
   s.addText('A benchmark of health informatics in dental schools', { placeholder: 'title' })
-  s.addText('Health informatics in dentistry: AI · Robotics · Bioinformatics · Software development\nA guide for teachers', { placeholder: 'body' })
+  s.addText('Health informatics in dentistry: AI · Robotics · Bioinformatics · Software development\nA guide for teachers and decision makers in dentistry', { placeholder: 'body' })
   umbrellaMotif(s, 8.75, 1.7)
   T(s, `Questionnaire version ${VERSION}`, { x: M, y: 6.7, w: 6, h: 0.3, fontSize: 11, color: '8FBFC2' })
   s.addNotes('This deck explains what the survey is for, what health informatics covers, who answers, and what each group of questions is meant to achieve. It ends with how the benchmark and the checklist are used.')

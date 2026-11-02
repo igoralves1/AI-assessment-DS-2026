@@ -1,6 +1,6 @@
 // Maturity checklist built from the questionnaire: for every 1–4 item, level 4 ("established") is the target
 // and level 3 ("developing") is the next step. AI-GUARD style Yes / Partial / No grids add their rows as targets.
-// Used by the public guide (#/questions), the Word/PDF document and the teacher slides.
+// Used by the public guide (#/questions), the Word/PDF document and the slides for teachers and decision makers.
 import { SECTIONS } from './questionnaire.js'
 
 export const LEVELS = [
