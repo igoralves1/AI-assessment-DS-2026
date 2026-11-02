@@ -7,6 +7,7 @@ import { QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { COUNTRIES } from '../questionnaire/countries.js'
 import { storage } from '../storage/index.js'
 import { session, setSession, clearSession } from '../session.js'
+import { DEMO_CODE } from '../lib/demo.js'
 
 const router = useRouter()
 const sections = SECTIONS.filter((s) => s.filledBy === 'respondent')
@@ -104,12 +105,14 @@ function exit() {
       <dl class="profile-grid">
         <template v-for="[k, v] in profile" :key="k"><dt>{{ k }}</dt><dd>{{ v || '—' }}</dd></template>
       </dl>
-      <p class="hint">Answer every item only for this department/course. Your answers are saved each time you move between sections.</p>
+      <p class="hint">Answer every item for this course. Your answers are saved each time you move between sections.</p>
+      <p v-if="session.code === DEMO_CODE" class="demo-note"><strong>Demonstration form.</strong> You opened a sample course with the public demonstration code. Try any answers: they stay in this browser and are not part of the study.</p>
     </div>
 
     <div v-if="submitted" class="card done">
       <h2>Thank you — your answers were submitted.</h2>
       <p>Submitted on {{ new Date(record.submitted_at).toLocaleString() }}. If you need to correct something, contact the research team and quote your code.</p>
+      <p v-if="session.code === DEMO_CODE" class="demo-note">This was the demonstration form: your answers stayed in this browser and are not part of the study. Enter <strong>{{ DEMO_CODE }}</strong> again to start over.</p>
       <p>Next: use the <router-link :to="{ path: '/questions', query: { go: 'checklist' } }">maturity checklist</router-link> to see which steps lead your school, department or course to the level of maturity you want to reach.</p>
     </div>
 

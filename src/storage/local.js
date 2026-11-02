@@ -5,6 +5,7 @@ import { generateCode, normalizeCode } from '../lib/code.js'
 import { RESPONSE_COLUMNS, ACCESS_COLUMNS, QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { missingIntake, newRecordRows, applyAnswers, publicRecord } from '../lib/records.js'
 import { ADMIN_CODE_HASH } from '../config.js'
+import { DEMO_CODE, demoIntake } from '../lib/demo.js'
 
 const KEY = 'ai-assessment-ds-2026'
 
@@ -34,7 +35,7 @@ export function localStorageBackend() {
       const missing = missingIntake(intake)
       if (missing.length) throw new Error(`Missing required fields: ${missing.join(', ')}`)
       const db = read()
-      const code = generateCode(randomInt, (c) => !!db.responses[c])
+      const code = generateCode(randomInt, (c) => c === DEMO_CODE || !!db.responses[c])
       const rows = newRecordRows(code, intake)
       db.responses[code] = rows.response
       db.access[code] = rows.access
@@ -43,13 +44,23 @@ export function localStorageBackend() {
     },
     async listCodes() {
       const db = read()
-      return Object.values(db.responses).map((r) => ({
+      return Object.values(db.responses).filter((r) => r.code !== DEMO_CODE).map((r) => ({
         code: r.code, wave: r.A15, status: r.status, created_at: r.created_at, updated_at: r.updated_at,
         country: r.A01 === '99' ? r.A01_other || 'Other' : r.A01, institution: r.A03, department: r.A06, course: r.A07, contact: db.access[r.code]?.A10 || '',
       }))
     },
     async login(code) {
-      const row = read().responses[normalizeCode(code)]
+      const c = normalizeCode(code)
+      if (c === DEMO_CODE) {
+        // The demonstration form starts fresh the first time and after each submission.
+        const db = read()
+        if (!db.responses[c] || db.responses[c].status === 'submitted') {
+          db.responses[c] = newRecordRows(c, demoIntake()).response
+          write(db)
+        }
+        return publicRecord(db.responses[c])
+      }
+      const row = read().responses[c]
       if (!row) throw Object.assign(new Error('Code not found.'), { status: 404 })
       return publicRecord(row)
     },
@@ -62,8 +73,8 @@ export function localStorageBackend() {
       write(db)
       return publicRecord(row)
     },
-    async exportResponses() { return toCsv(RESPONSE_COLUMNS.map((c) => c.name), Object.values(read().responses)) },
-    async exportAccess() { return toCsv(ACCESS_COLUMNS.map((c) => c.name), Object.values(read().access)) },
+    async exportResponses() { return toCsv(RESPONSE_COLUMNS.map((c) => c.name), Object.values(read().responses).filter((r) => r.code !== DEMO_CODE)) },
+    async exportAccess() { return toCsv(ACCESS_COLUMNS.map((c) => c.name), Object.values(read().access).filter((r) => r.code !== DEMO_CODE)) },
     async exportCodebook() {
       return toCsv(['name', 'qid', 'section', 'domain', 'type', 'label', 'values', 'pii'], QUESTION_COLUMNS)
     },

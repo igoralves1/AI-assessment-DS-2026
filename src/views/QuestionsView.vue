@@ -7,6 +7,7 @@ import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION, MAIN_GOAL
 import { CHECKLIST, CHECKLIST_COUNT, LEVELS } from '../questionnaire/checklist.js'
 import { DOWNLOADS } from '../config.js'
 import { PAHO_BOOKS } from '../questionnaire/inspiration.js'
+import { DEMO_CODE } from '../lib/demo.js'
 const coverSrc = (key) => import.meta.env.BASE_URL + 'covers/' + key + '.jpg'
 import { QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { COUNTRY_CONTEXT } from '../questionnaire/countries.js'
@@ -61,6 +62,12 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
       <div class="q-actions">
         <router-link class="btn primary" to="/">I have an access code</router-link>
         <button class="btn" @click="printPage">Print this guide</button>
+      </div>
+      <div class="demo-box" id="demo">
+        <div class="eyebrow">Try the form</div>
+        <p>Demonstration code: <span class="demo-code">{{ DEMO_CODE }}</span></p>
+        <p><strong>This is only a demonstration code.</strong> It opens a sample course ("Demo University", Department of Oral Radiology) so anyone can see how the form works. Answers given with it stay in your own browser, are not saved for the study and are never analysed. It is not the research team's admin code, and it gives no access to the admin page. Real participants receive a personal code from the research team.</p>
+        <router-link class="btn" :to="{ path: '/', query: { code: DEMO_CODE } }">Open the form with the demonstration code</router-link>
       </div>
       <div class="downloads" aria-label="Downloads">
         <span class="muted">Download:</span>

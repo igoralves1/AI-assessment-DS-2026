@@ -8,7 +8,12 @@ import { PAHO_BOOKS } from '../src/questionnaire/inspiration.js'
 
 const OUT_DIR = 'public/downloads'
 const OUT = `${OUT_DIR}/ICARB-D-Survey-Teacher-Slides.pptx`
+const SITE = 'https://igoralves1.github.io/AI-assessment-DS-2026/'
 const GUIDE = 'igoralves1.github.io/AI-assessment-DS-2026/#/questions'
+const GUIDE_URL = SITE + '#/questions'
+const CHECKLIST_URL = SITE + '#/questions?go=checklist'
+import { DEMO_CODE } from '../src/lib/demo.js'
+const DEMO_URL = SITE + '#/?code=' + DEMO_CODE
 
 // Palette (matches the survey website)
 const DEEP = '0B3B40'
@@ -364,7 +369,7 @@ pres.addSection({ title: 'Using the results' })
     T(s, b, { x: x + 0.2, y: 4.15, w: cw - 0.4, h: 1.2, fontSize: 14, align: 'center' })
   })
   card(s, M, 5.75, W - 2 * M, 0.85, 'F4F6F5')
-  T(s, `The full checklist is online at ${GUIDE}?go=checklist and in chapter 4 of the questionnaire (PDF).`,
+  T(s, [{ text: 'The full checklist is online in the ' }, { text: 'questions guide', options: { hyperlink: { url: CHECKLIST_URL }, color: TEAL, bold: true } }, { text: ' and in chapter 4 of the questionnaire (PDF).' }],
     { x: M + 0.3, y: 5.75, w: W - 2 * M - 0.6, h: 0.85, fontSize: 15, valign: 'middle' })
   s.addNotes('Encourage schools to use the checklist in curriculum or strategy meetings, and to set a realistic target level for each field.')
 }
@@ -373,7 +378,14 @@ pres.addSection({ title: 'Using the results' })
 {
   const s = pres.addSlide({ masterName: 'DARK', sectionTitle: 'Using the results' })
   s.addText('One number, every year', { placeholder: 'title' })
-  s.addText(`Every question, what it captures and how it is scored:\n${GUIDE}`, { placeholder: 'body' })
+  T(s, [
+    { text: 'Open the form', options: { color: 'BFE3E5', fontSize: 15, breakLine: true } },
+    { text: 'igoralves1.github.io/AI-assessment-DS-2026', options: { hyperlink: { url: DEMO_URL, tooltip: 'Open the form with the demonstration code' }, color: WHITE, bold: true, breakLine: true } },
+    { text: `Demonstration code ${DEMO_CODE}: for trying the form only, answers are not part of the study`, options: { color: '8FBFC2', fontSize: 14, breakLine: true } },
+    { text: ' ', options: { fontSize: 8, breakLine: true } },
+    { text: 'Every question explained', options: { color: 'BFE3E5', fontSize: 15, breakLine: true } },
+    { text: GUIDE, options: { hyperlink: { url: GUIDE_URL }, color: WHITE, bold: true } },
+  ], { x: M, y: 4.15, w: 7.8, h: 2.6, fontSize: 18 })
   umbrellaMotif(s, 8.75, 1.7)
   s.addNotes('Respondents receive a personal access code from the research team. Questions about the survey go to the team member who sent the invitation.')
 }

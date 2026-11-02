@@ -15,6 +15,7 @@ import { toCsv, parseCsv } from '../src/lib/csv.js'
 import { generateCode, isValidCode, normalizeCode } from '../src/lib/code.js'
 import { RESPONSE_COLUMNS, ACCESS_COLUMNS, QUESTION_COLUMNS } from '../src/questionnaire/columns.js'
 import { missingIntake, newRecordRows, applyAnswers, publicRecord } from '../src/lib/records.js'
+import { DEMO_CODE, demoIntake } from '../src/lib/demo.js'
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, 'data')
@@ -99,6 +100,8 @@ async function handle(req, res) {
     if (tooManyAttempts(ip)) return send(res, 429, { error: 'Too many attempts. Try again in 10 minutes.' })
     const { code } = await readBody(req)
     const c = normalizeCode(code)
+    // Demonstration code: a fresh sample form every time, never stored in the data files.
+    if (c === DEMO_CODE) return send(res, 200, { record: publicRecord(newRecordRows(c, demoIntake()).response) })
     const row = isValidCode(c) && responses.get(c)
     if (!row) return send(res, 404, { error: 'Code not found.' })
     return send(res, 200, { record: publicRecord(row) })
@@ -106,6 +109,10 @@ async function handle(req, res) {
 
   const m = p.match(/^\/api\/responses\/([A-Z0-9-]{7})$/)
   if (req.method === 'PUT' && m) {
+    if (m[1] === DEMO_CODE) {
+      const { answers, submit } = await readBody(req)
+      return send(res, 200, { record: publicRecord(applyAnswers(newRecordRows(DEMO_CODE, demoIntake()).response, answers, !!submit)) })
+    }
     const row = responses.get(m[1])
     if (!row) return send(res, 404, { error: 'Code not found.' })
     if (row.status === 'submitted') return send(res, 409, { error: 'This form was already submitted.' })
@@ -126,7 +133,7 @@ async function handle(req, res) {
     const { intake } = await readBody(req)
     const missing = missingIntake(intake || {})
     if (missing.length) return send(res, 400, { error: `Missing required fields: ${missing.join(', ')}` })
-    const code = generateCode((n) => crypto.randomInt(n), (c) => responses.has(c))
+    const code = generateCode((n) => crypto.randomInt(n), (c) => c === DEMO_CODE || responses.has(c))
     const rows = newRecordRows(code, intake)
     responses.set(code, rows.response)
     access.set(code, rows.access)
