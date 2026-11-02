@@ -263,15 +263,16 @@ onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(rout
 .units th, .units td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
 .downloads { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 12px; font-size: .92rem; }
 .downloads a { color: var(--accent); font-weight: 600; }
-.books { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 12px 0 6px; }
-.book { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+.books { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 12px 0 6px; }
+.book { min-width: 0; overflow-wrap: anywhere; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
 .book:hover { border-color: var(--accent); }
 .book img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.18); margin-bottom: 6px; }
 .book-title { font-weight: 700; font-size: .86rem; line-height: 1.3; color: var(--accent); }
 .book-meta { font-size: .76rem; }
 .book-role { font-size: .8rem; line-height: 1.4; }
 .small-print { font-size: .78rem; }
-@media (max-width: 720px) { .books { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .books { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .books { grid-template-columns: minmax(0, 1fr); } .book img { max-width: 180px; } }
 .goal-small { font-size: .8rem; color: var(--muted); margin-top: 2px; }
 .goal { margin: 6px 0; }
 .levels { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin: 10px 0 14px; font-size: .88rem; }
