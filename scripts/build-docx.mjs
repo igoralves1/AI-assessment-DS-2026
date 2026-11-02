@@ -5,7 +5,8 @@ import {
   Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ShadingType,
   AlignmentType, LevelFormat, PageBreak, Footer, PageNumber, BorderStyle, TableOfContents,
 } from 'docx'
-import { SECTIONS, DOMAINS, VERSION, DK } from '../src/questionnaire/questionnaire.js'
+import { SECTIONS, DOMAINS, VERSION, DK, MAIN_QUESTION, UNITS } from '../src/questionnaire/questionnaire.js'
+import { CHECKLIST, CHECKLIST_COUNT, LEVELS } from '../src/questionnaire/checklist.js'
 import { COUNTRIES, COUNTRY_CONTEXT } from '../src/questionnaire/countries.js'
 import { QUESTION_COLUMNS } from '../src/questionnaire/columns.js'
 import { STUDY, REFERENCES } from './study-text.mjs'
@@ -111,11 +112,13 @@ const children = []
 // Title page
 children.push(
   new Paragraph({ spacing: { before: 2400, after: 200 }, children: [new TextRun({ text: 'ICARB-D ANNUAL MATURITY SURVEY', bold: true, size: 26, color: ACCENT })] }),
-  new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: 'Dental School Departments and Courses', bold: true, size: 48 })] }),
+  new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: 'Dental Schools, Departments and Courses', bold: true, size: 48 })] }),
   p([new TextRun({ text: 'Artificial intelligence · Health informatics · Robotics · Bioinformatics', size: 26, color: ACCENT })]),
   new Paragraph({ children: [new TextRun({ text: '', size: 2 })] }),
   p([new TextRun({ text: 'United States · national benchmark of dental schools', size: 28 })]),
-  p([new TextRun({ text: `Department/course-specific annual questionnaire · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
+  p([new TextRun({ text: `Annual questionnaire for a whole school, a department or a course · version ${VERSION} · ${new Date().toISOString().slice(0, 10)}`, size: 22, color: '6B7672' })]),
+  new Paragraph({ spacing: { before: 400, after: 120 }, children: [new TextRun({ text: 'Main question', bold: true })] }),
+  p([new TextRun({ text: MAIN_QUESTION, size: 24, color: ACCENT })]),
   new Paragraph({ spacing: { before: 600, after: 120 }, children: [new TextRun({ text: 'Proposed article title', bold: true })] }),
   p([new TextRun({ text: STUDY.titles[0], italics: true })]),
   p([new TextRun({ text: 'Built on the PAHO/WHO–IDB AI Readiness Assessment Toolkit (2024), AI-GUARD (2026), Bias-free AI in Health (2026) and AI Prompt Design for Public Health (2025).', size: 20, color: '6B7672' })], { spacing: { before: 600 } }),
@@ -127,6 +130,10 @@ children.push(
 // Study overview
 children.push(h1('1. About the study'))
 for (const para of STUDY.overview) children.push(p(para))
+children.push(h2('Who answers'))
+children.push(p('Each form describes one unit and is answered by the person closest to it. A school can send one school-wide form and as many department and course forms as it wishes.'))
+children.push(table(['Unit described', 'Who answers'], UNITS.map((u) => [u.l, u.who]), [3600, CONTENT_W - 3600]))
+children.push(spacer())
 children.push(h2('Objectives'))
 STUDY.objectives.forEach((o) => children.push(bullet(o)))
 children.push(h2('How the questionnaire is applied'))
@@ -150,6 +157,7 @@ children.push(new Paragraph({ children: [new PageBreak()] }))
 children.push(h1('2. Questionnaire'))
 for (const s of SECTIONS) {
   children.push(h2(s.title))
+  children.push(p([new TextRun({ text: 'Goal. ', bold: true }), new TextRun(s.goal)]))
   children.push(p([new TextRun({ text: 'What this part captures. ', bold: true }), new TextRun(s.purpose)]))
   if (s.intro) children.push(p([new TextRun({ text: s.intro, italics: true })]))
   for (const q of s.questions) children.push(...questionBlocks(q))
@@ -164,8 +172,25 @@ children.push(p(`Answers are stored in a flat file with one row per department/c
 children.push(h2('Methodological recommendations'))
 STUDY.methods.forEach((o) => children.push(bullet(o)))
 
+// Maturity checklist
+children.push(new Paragraph({ children: [new PageBreak()] }))
+children.push(h1('4. Maturity checklist'))
+children.push(p(`After answering, the same items work as a guide. Each of the ${CHECKLIST_COUNT} points below comes from a 1–4 item of the survey (or a row of an AI-GUARD checklist). The target is level 4 (established); the next step is level 3 (developing). A school, department or course can tick what is already true and plan the steps that lead to the level it wants to reach.`))
+children.push(table(['Level', 'Meaning'], LEVELS.map((l) => [`${l.v} · ${l.l}`, l.d]), [2400, CONTENT_W - 2400]))
+children.push(spacer())
+for (const g of CHECKLIST) {
+  children.push(h2(`Part ${g.id}. ${g.title}`))
+  children.push(p([new TextRun({ text: 'Goal. ', bold: true }), new TextRun(g.goal)]))
+  for (const it of g.items) {
+    children.push(new Paragraph({ indent: { left: 360, hanging: 360 }, spacing: { before: 60, after: 0 }, keepNext: true, children: [new TextRun({ text: '☐  ', font: 'Segoe UI Symbol' }), new TextRun({ text: it.title, bold: true }), new TextRun({ text: `  (${it.id})`, size: 16, color: '6B7672' })] }))
+    children.push(new Paragraph({ indent: { left: 360 }, spacing: { after: 0 }, children: [new TextRun({ text: 'Target: ', bold: true, size: 18, color: ACCENT }), new TextRun({ text: it.target, size: 18 })] }))
+    children.push(new Paragraph({ indent: { left: 360 }, spacing: { after: 60 }, children: [new TextRun({ text: 'Next step: ', bold: true, size: 18, color: '6B7672' }), new TextRun({ text: it.next, size: 18, color: '4A5552' })] }))
+  }
+}
+children.push(new Paragraph({ children: [new PageBreak()] }))
+
 // Literature
-children.push(h1('4. Related studies'))
+children.push(h1('5. Related studies'))
 children.push(p(STUDY.gap))
 children.push(table(['Study', 'Setting / design', 'Key finding'], REFERENCES.filter((r) => r.finding).map((r) => [r.short, r.design, r.finding]), [2600, 2700, CONTENT_W - 5300]))
 children.push(h2('Suggested article titles'))
@@ -177,7 +202,7 @@ REFERENCES.forEach((r, i) => children.push(new Paragraph({ spacing: { after: 80 
 
 const doc = new Document({
   creator: 'AI-assessment-DS-2026',
-  title: 'ICARB-D Annual Maturity Survey — Dental School Departments and Courses',
+  title: 'ICARB-D Annual Maturity Survey — Dental Schools, Departments and Courses',
   styles: {
     default: { document: { run: { font: { ascii: 'Arial', hAnsi: 'Arial', cs: 'Arial', eastAsia: 'Heiti SC' }, size: 21 } } },
     paragraphStyles: [

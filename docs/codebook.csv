@@ -5,16 +5,18 @@ created_at,,,,meta,Code issued (ISO time),,
 updated_at,,,,meta,Last saved (ISO time),,
 submitted_at,,,,meta,Submitted (ISO time),,
 version,,,,meta,Questionnaire version,,
-A01,A01,A,,single,Country,US=United States,false
-A02,A02,A,,text,State,,false
+A01,A01,A,,single,Country,US=United States | 99=Other country,false
+A01_other,A01,A,,text,Country — other (text),,false
+A02,A02,A,,text,State / region,,false
 A03,A03,A,,text,Institution,,false
+A17,A17,A,,single,Unit reported,1=Whole dental school (school-wide) | 2=One department | 3=One course taught in a department,false
 A04,A04,A,,single,Institution type,"1=Public (federal) | 2=Public (state / municipal) | 3=Private, non-profit | 4=Private, for-profit",false
 A05,A05,A,,text,City,,false
 A06,A06,A,,text,Department,,false
 A07,A07,A,,text,Course,,false
-A08,A08,A,,single,Level,"1=Predoctoral first professional degree (DDS/DMD) | 2=Research master's (MS/MSc) | 3=Professional/clinical master's or specialty certificate | 4=Doctoral (PhD/DSc) | 5=Residency / advanced education (e.g., AEGD, GPR, specialty residency) | 6=Integrated long-track program (e.g., DDS/DMD-PhD) | 7=Continuing education / CPD | 99=Other",false
-A08_other,A08,A,,text,Level — other (text),,false
-A09,A09,A,,single,Respondent role,1=Department head / chair | 2=Course director / coordinator | 3=Program director (graduate / residency) | 4=Curriculum committee member | 5=Faculty representative | 6=Dean / associate dean | 99=Other,false
+A08,A08,A,,single,Training level,"1=Predoctoral first professional degree (DDS/DMD) | 2=Research master's (MS/MSc) | 3=Professional/clinical master's or specialty certificate | 4=Doctoral (PhD/DSc) | 5=Residency / advanced education (e.g., AEGD, GPR, specialty residency) | 6=Integrated long-track program (e.g., DDS/DMD-PhD) | 7=Continuing education / CPD | 8=Several levels (school-wide or department-wide form) | 99=Other",false
+A08_other,A08,A,,text,Training level — other (text),,false
+A09,A09,A,,single,Respondent role,1=Department head / chair | 2=Course director / coordinator | 3=Program director (graduate / residency) | 4=Curriculum committee member | 5=Faculty representative | 6=Dean / associate dean | 7=Chief information or informatics officer | 99=Other,false
 A09_other,A09,A,,text,Respondent role — other (text),,false
 A10,A10,A,,text,Respondent name,,true
 A11,A11,A,,text,Respondent email,,true
@@ -125,7 +127,7 @@ C15,C15,C,DAT,scale,Data representativeness,1=Never assessed | 2=Discussed infor
 C16,C16,C,DAT,scale,Privacy and security,"1=No systems | 2=Basic password protection only | 3=Systems exist but are inconsistent | 4=Comprehensive systems with encryption, audit trails and a named person responsible | -1=Don't know / N/A",false
 C17,C17,C,DAT,scale,De-identification,"1=No procedures | 2=Informal practice only | 3=Written procedures, inconsistently applied | 4=Written procedures, routinely applied and audited | -1=Don't know / N/A",false
 C18,C18,C,DAT,scale,Secure research environment,1=Not available | 2=Planned | 3=Available on request with delays | 4=Available and routinely used | -1=Don't know / N/A,false
-C19,C19,C,INF,scale,Connectivity and IT support,1=Neither reliable connectivity nor specific support | 2=Basic IT support exists but does not cover these tools | 3=Partial support (software installation only) | 4=Dedicated educational-technology support assigned to the department/course | -1=Don't know / N/A,false
+C19,C19,C,INF,scale,Connectivity and IT support,1=Neither reliable connectivity nor specific support | 2=Basic IT support exists but does not cover these tools | 3=Partial support (software installation only) | 4=Dedicated educational-technology support assigned to the unit | -1=Don't know / N/A,false
 C20,C20,C,INF,scale,Interoperability,1=No interoperability | 2=Some standards under development | 3=Standards exist but implementation is inconsistent | 4=Well-established standards enabling seamless integration | -1=Don't know / N/A,false
 C21,C21,C,INF,scale,Cybersecurity,1=None | 2=Basic institutional measures only | 3=Measures exist but not specific to these tools | 4=Specific security review before adoption and periodic audit | -1=Don't know / N/A,false
 C22,C22,C,INF,scale,Equitable student access,1=No — access depends on personal devices/subscriptions | 2=Limited institutional access | 3=Access during scheduled sessions only | 4=Equal access during and outside class hours | -1=Don't know / N/A,false
@@ -153,7 +155,7 @@ D10_2_type,D10,D,,single,Interdisciplinary partners #2: Type,1=Same university �
 D10_3_name,D10,D,,text,Interdisciplinary partners #3: Partner unit,,false
 D10_3_type,D10,D,,single,Interdisciplinary partners #3: Type,1=Same university — computer science / engineering | 2=Same university — medicine / public health / biology / other | 3=Other university (national) | 4=Other university (international) | 5=Industry / company | 6=Government / hospital / other,false
 D11,D11,D,HUM,scale,Partnership depth,1=No partners | 2=Informal individual collaboration only | 3=Formal project-based collaboration | 4=Long-term institutional partnership with joint funding or appointments | -1=Don't know / N/A,false
-D12,D12,D,HUM,scale,Technical staff,"1=No access | 2=Shared across the school, high demand | 3=Adequate access for most needs | 4=Dedicated technical staff embedded in the department/course | -1=Don't know / N/A",false
+D12,D12,D,HUM,scale,Technical staff,"1=No access | 2=Shared across the school, high demand | 3=Adequate access for most needs | 4=Dedicated technical staff embedded in the unit | -1=Don't know / N/A",false
 D13,D13,D,,number,Technical staff FTE (FTE),,false
 D14,D14,D,HUM,scale,Hiring plans,"1=Not planned | 2=Discussed, no approved position | 3=Position approved or recruitment underway | 4=Expertise already recruited and further positions planned | -1=Don't know / N/A",false
 D15,D15,D,HUM,scale,Faculty openness,1=Mostly resistant | 2=Mixed / indifferent | 3=Mostly supportive | 4=Strongly supportive with active champions | -1=Don't know / N/A,false
@@ -410,7 +412,7 @@ K11_3_type,K11,K,,single,Funding sources #3: Type,"1=Institutional budget | 2=Na
 K12,K12,K,IMP,scale,Funding adequacy,"1=No funding | 2=Limited funding with significant gaps | 3=Funding available but inconsistent or insufficient | 4=Sufficient, reliable funding | -1=Don't know / N/A",false
 K13,K13,K,,single,Annual budget,"0=None | 1=Less than 5,000 | 2=5,000 – 25,000 | 3=25,001 – 100,000 | 4=More than 100,000 | -1=Don't know",false
 K14,K14,K,,number,Grants (3 y) (grants),,false
-L01,L01,L,,single,Interest in ICARB-D projects,1=Not interested | 2=Would like more information | 3=Interested in participating | 4=Already involved,false
+L01,L01,L,,single,Interest in multi-institution projects,1=Not interested | 2=Would like more information | 3=Interested in participating | 4=Already involved,false
 L02__periapical,L02,L,,binary,Data that could be contributed: Periapical / bitewing radiographs,1=selected | 0=not selected,false
 L02__panoramic,L02,L,,binary,Data that could be contributed: Panoramic radiographs,1=selected | 0=not selected,false
 L02__cbct,L02,L,,binary,Data that could be contributed: CBCT,1=selected | 0=not selected,false

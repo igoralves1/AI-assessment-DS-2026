@@ -1,12 +1,18 @@
 # ICARB-D Annual Survey of Dental Schools
 
-**An annual, course-level survey of the maturity of artificial intelligence, health informatics, robotics and bioinformatics in US dental schools: a national benchmark of digital maturity, repeated every year.**
+**Main question: which dental schools in the United States are best prepared to adopt and lead innovation in health informatics, artificial intelligence, robotics and bioinformatics, and how do they compare with dental schools in other countries?**
 
-This is the survey of **ICARB-D — Innovation Consortium for AI, Robotics, and Bioinformatics in Dentistry** (https://igoralves1.github.io/ICARB-D/). The consortium is a national hub that connects US dental schools and dentists to strengthen initiatives in these fields; its main goal is to build a free dental AI model, through joint collaborative work, that can be used across every field of dentistry. This repository holds the questionnaire, the data-collection website and the analysis code.
+This annual survey answers it by mapping the state of the art of maturity of a **whole dental school, one department, or one course** taught in a department. The reader gets a complete, clear picture of what each unit has, who can do the work, what students learn, how technology is governed, and whether projects last. After answering, the same items work as a **maturity checklist** that shows the steps to the level a school wants to reach.
+
+The idea comes from the Pan American Health Organization (PAHO), which created a questionnaire to measure how ready public health institutions are for AI (*Artificial Intelligence in Public Health: Readiness Assessment Toolkit*, PAHO and IDB, 2024). This survey adapts its dimensions and 1–4 maturity scale to dental schools.
+
+The survey is run independently of the ICARB-D consortium website (https://igoralves1.github.io/ICARB-D/). This repository holds the questionnaire, the data-collection website, the documents and the analysis code.
 
 - Website (questionnaire): https://igoralves1.github.io/AI-assessment-DS-2026/
 - **All questions explained:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions
 - **References** (US standards and research bodies, US dental schools, studies and PAHO/WHO frameworks, with summaries): end of the questions guide, data in `src/questionnaire/references.js`
+- **Teacher slides** (summary of the main idea and the goal of each group of questions): [PDF](public/downloads/ICARB-D-Survey-Teacher-Slides.pdf) · [PowerPoint](public/downloads/ICARB-D-Survey-Teacher-Slides.pptx), also linked at the top of the questions guide
+- **Maturity checklist:** https://igoralves1.github.io/AI-assessment-DS-2026/#/questions?go=checklist (also chapter 4 of the Word/PDF questionnaire)
 - Questionnaire (Word): [docs/ICARB-D-Annual-Survey-Dental-Schools.docx](docs/ICARB-D-Annual-Survey-Dental-Schools.docx)
 - Questionnaire (PDF): [docs/ICARB-D-Annual-Survey-Dental-Schools.pdf](docs/ICARB-D-Annual-Survey-Dental-Schools.pdf)
 - Codebook (one line per data column): [docs/codebook.csv](docs/codebook.csv)
@@ -22,7 +28,7 @@ Alternatives:
 
 ## What the survey measures
 
-The survey gives a comprehensive overview of the maturity of each department or course in four technology domains:
+The survey gives a comprehensive overview of the maturity of each unit (school, department or course) in four technology domains:
 
 | Domain | What is pictured |
 |---|---|
@@ -31,9 +37,19 @@ The survey gives a comprehensive overview of the maturity of each department or 
 | Robotics and digital dentistry | Counts of robots, navigation systems, haptic/VR simulators, scanners, CBCT, milling units, 3D printers; student access, digital workflow, maintenance, teaching hours, trained faculty |
 | Bioinformatics and omics | Laboratories, sequencers, biobanks, HPC, pipelines, bioinformaticians, teaching hours, research areas, FAIR data sharing |
 
-For every domain it captures **physical resources** (equipment, infrastructure, data) and **human resources** (faculty, technical staff, partners), plus teaching, governance, implementation and sustainability. It also maps each department's capacity to contribute to the consortium's open dental AI model.
+For every domain it captures **physical resources** (equipment, infrastructure, data) and **human resources** (faculty, technical staff, partners), plus teaching, governance, implementation and sustainability. It also maps each unit's readiness to share data and collaborate on multi-institution AI projects.
 
-The survey is **annual**: each wave maps the state of the art across US dental schools and courses, and linking waves shows how each department develops.
+The survey is **annual**: each wave maps the state of the art across dental schools, and linking waves shows how each school, department and course develops.
+
+## Who answers
+
+| Unit described (item A17) | Who answers |
+|---|---|
+| Whole dental school (school-wide) | Dean or associate dean (academic affairs, research, clinical affairs or informatics) |
+| One department | Department chair or a faculty member designated by the chair |
+| One course taught in a department | Course director or coordinator |
+
+A school can send one school-wide form and as many department and course forms as it wishes. US schools see US references (CODA, ADA, HIPAA, FDA); schools in other countries answer the same items (A01 "Other country"), so all scores share the same 0–100 scale.
 
 ## Why it matters for the United States
 
@@ -58,7 +74,7 @@ The survey is **annual**: each wave maps the state of the art across US dental s
 
 ## Questionnaire structure
 
-174 questions in 13 parts, stored as 467 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
+175 questions in 13 parts, stored as 469 answer columns (plus 3 private contact fields kept in a separate file). The [questions guide](https://igoralves1.github.io/AI-assessment-DS-2026/#/questions) explains each one.
 
 | Part | Content | Filled by |
 |---|---|---|
@@ -150,7 +166,8 @@ Regenerate the documents after editing the questionnaire (`src/questionnaire/que
 
 ```bash
 npm run codebook   # docs/codebook.csv
-npm run docs       # docs/*.docx and *.pdf (needs LibreOffice for the PDF)
+npm run docs       # docs/*.docx and *.pdf, copied to public/downloads (needs LibreOffice)
+npm run slides     # public/downloads teacher slides (.pptx and .pdf)
 ```
 
 ## Analysis
@@ -164,15 +181,15 @@ python3 -m venv .venv && .venv/bin/pip install pandas numpy
 
 `analysis/consolidate.py` writes to `analysis/output/`:
 
-1. **Course record**: each form is one record keyed by Survey year × School × Department × Course.
+1. **Form record**: each form is one record keyed by Survey year × Country × State × School × Unit level × Department × Course.
 2. **Domain index** (ten domains): mean of the domain's 1–4 items → 0–100 index `(mean − 1) / 3 × 100`. The AI-GUARD (J11) and safeguards (F06) indices score Yes = 2, Partial = 1, No = 0.
 3. **Hours per year** for AI, health informatics, robotics and bioinformatics, plus programming hours; **equipment units** and students per unit.
-4. **Department roll-up** per year, with the number of contributing courses (n).
-5. **School roll-up**: department scores weighted by the number of courses each contributed.
-6. **State and national summary** per year (`state_scores.csv`, `national_scores.csv`).
-7. **Annual trends**: each department's overall index by survey year (`department_trends.csv`).
+4. **Department roll-up** per year: course and department forms, with the number of forms (n).
+5. **School ranking** (`school_scores.csv`): departments weighted by forms, combined with any school-wide form; schools ranked overall and within their country. The script prints the most prepared US schools of the latest year.
+6. **State and country summaries** per year (`state_scores.csv`, `country_scores.csv`, US first).
+7. **Annual trends**: each school's and department's overall index by survey year (`school_trends.csv`, `department_trends.csv`).
 8. **Transparency list**: the named courses behind each school's curriculum score (`curriculum_courses.csv`).
-9. **Hours by topic** per year (`hours_by_topic.csv`).
+9. **Hours by topic** per year and country (`hours_by_topic.csv`).
 
 ## Methods checklist (before fieldwork)
 
@@ -193,7 +210,7 @@ python3 -m venv .venv && .venv/bin/pip install pandas numpy
 | Sheng et al., *Front Digit Health* 2026 | 243 respondents, UTHealth Houston | 66% of faculty and 73% of students use LLMs |
 | Busch et al., *BMC Med Educ* 2024 | 4,596 students, 192 faculties, 48 countries | Strong demand for more AI teaching |
 
-Full references (with DOIs) are in the Word/PDF document, section 4. Citations marked "verify" there could not be fully confirmed online and should be checked before submission.
+Full references (with DOIs) are in the Word/PDF document, section 5. Citations marked "verify" there could not be fully confirmed online and should be checked before submission.
 
 ## Repository layout
 

@@ -7,3 +7,12 @@
 export const ADMIN_CODE_HASH = import.meta.env.VITE_ADMIN_CODE_HASH || '1a52cea5bfd5ea33995ffdf6d3a48efa6169d8845bcfc5ed1c340366f6783cda'
 
 export const CONSORTIUM_URL = 'https://igoralves1.github.io/ICARB-D/'
+
+// Files served from public/downloads (copied there by `npm run docs` and `npm run slides`).
+const base = import.meta.env.BASE_URL + 'downloads/'
+export const DOWNLOADS = [
+  { label: 'Teacher slides (PDF)', file: 'ICARB-D-Survey-Teacher-Slides.pdf' },
+  { label: 'Teacher slides (PowerPoint)', file: 'ICARB-D-Survey-Teacher-Slides.pptx' },
+  { label: 'Full questionnaire (PDF)', file: 'ICARB-D-Annual-Survey-Dental-Schools.pdf' },
+  { label: 'Full questionnaire (Word)', file: 'ICARB-D-Annual-Survey-Dental-Schools.docx' },
+].map((d) => ({ ...d, href: base + d.file }))

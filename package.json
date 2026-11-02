@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "codebook": "node scripts/build-codebook.mjs",
-    "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf ICARB-D-Annual-Survey-Dental-Schools.docx >/dev/null"
+    "docs": "node scripts/build-docx.mjs && cd docs && soffice --headless --convert-to pdf ICARB-D-Annual-Survey-Dental-Schools.docx >/dev/null && mkdir -p ../public/downloads && cp ICARB-D-Annual-Survey-Dental-Schools.docx ICARB-D-Annual-Survey-Dental-Schools.pdf ../public/downloads/",
+    "slides": "node scripts/build-slides.mjs && cd public/downloads && soffice --headless --convert-to pdf ICARB-D-Survey-Teacher-Slides.pptx >/dev/null"
   },
   "dependencies": {
     "vue": "^3.5.44",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
     "docx": "^9.15.0",
+    "pptxgenjs": "^4.0.1",
     "vite": "^6.4.5"
   }
 }

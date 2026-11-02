@@ -1,7 +1,13 @@
 <script setup>
 // Public page: every part and question of the survey, what it captures and how it is scored.
 // Generated from the questionnaire definition, so it always matches the live form.
-import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION } from '../questionnaire/questionnaire.js'
+import { onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import { SECTIONS, DOMAINS, DK, SURVEY_NAME, SURVEY_SUBTITLE, VERSION, MAIN_QUESTION, UNITS } from '../questionnaire/questionnaire.js'
+import { CHECKLIST, CHECKLIST_COUNT, LEVELS } from '../questionnaire/checklist.js'
+import { DOWNLOADS } from '../config.js'
+import { PAHO_BOOKS } from '../questionnaire/inspiration.js'
+const coverSrc = (key) => import.meta.env.BASE_URL + 'covers/' + key + '.jpg'
 import { QUESTION_COLUMNS } from '../questionnaire/columns.js'
 import { COUNTRY_CONTEXT } from '../questionnaire/countries.js'
 import { REFERENCE_GROUPS } from '../questionnaire/references.js'
@@ -42,6 +48,8 @@ const optionsOf = (q) => (q.type === 'scale' && !q.noDK ? [...q.options, { v: DK
 const ctxKeys = { privacy: 'privacy law', accreditation: 'curriculum / accreditation body', professional: 'professional and regulatory bodies', calendarNote: 'academic calendar' }
 const printPage = () => window.print()
 const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+const route = useRoute()
+onMounted(async () => { if (route.query.go) { await nextTick(); goTo(String(route.query.go)) } })
 </script>
 
 <template>
@@ -54,16 +62,58 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
         <router-link class="btn primary" to="/">I have an access code</router-link>
         <button class="btn" @click="printPage">Print this guide</button>
       </div>
+      <div class="downloads" aria-label="Downloads">
+        <span class="muted">Download:</span>
+        <a v-for="d in DOWNLOADS" :key="d.file" :href="d.href" download>{{ d.label }}</a>
+      </div>
     </header>
 
-    <section class="card">
-      <h2>What the survey is for</h2>
-      <p>The survey gives a comprehensive picture of how mature each dental school department and course is in four technology domains: <strong>artificial intelligence</strong>, <strong>health informatics</strong>, <strong>robotics and digital dentistry</strong>, and <strong>bioinformatics</strong>. It pictures the current <strong>physical resources</strong> (computers, equipment, laboratories, data) and <strong>human resources</strong> (trained faculty, technical staff, partners), as well as teaching hours, governance and sustainability.</p>
-      <p>It is answered <strong>every year</strong>. Each annual wave maps the state of the art across US dental schools and courses, and comparing waves shows how each department develops over time. Results are consolidated from course to department, school, state and the national level.</p>
+    <section class="card intro">
+      <h2>The main idea</h2>
+      <p class="main-q">{{ MAIN_QUESTION }}</p>
+      <p>To answer it, the survey maps the state of the art of maturity in four fields of innovation in dental education: <strong>artificial intelligence</strong>, <strong>health informatics</strong>, <strong>robotics and digital dentistry</strong>, and <strong>bioinformatics</strong>. A form can describe a <strong>whole dental school</strong>, <strong>one department</strong> or <strong>one course</strong> taught in a department. For each unit the reader gets a complete, clear picture of five things:</p>
+      <ul class="plain five">
+        <li><strong>What it has:</strong> computers, software, AI tools, data, laboratories and digital or robotic equipment.</li>
+        <li><strong>Who can do the work:</strong> faculty able to teach, researchers, technical staff, training and partners.</li>
+        <li><strong>What students learn:</strong> topics and hours per year, from AI basics to programming and model development.</li>
+        <li><strong>How it is governed:</strong> plans, ethics, bias, privacy, generative-AI rules and safeguards for AI tools.</li>
+        <li><strong>Whether it lasts:</strong> pilots that become routine, evaluation, funding and collaboration.</li>
+      </ul>
+      <h3>Where the idea comes from</h3>
+      <p>The survey was inspired by four publications of the Pan American Health Organization (PAHO), the World Health Organization's office for the Americas. The first is a questionnaire that measures how ready public health institutions are to use artificial intelligence. This survey adapts it to dental schools and extends it to health informatics, robotics and bioinformatics. The other three shape the items on governance, bias and generative AI.</p>
+      <div class="books">
+        <a v-for="b in PAHO_BOOKS" :key="b.key" class="book" :href="b.url" target="_blank" rel="noopener">
+          <img :src="coverSrc(b.key)" :alt="'Cover of ' + b.title" loading="lazy" width="331" height="468" />
+          <span class="book-title">{{ b.title }}</span>
+          <span class="muted book-meta">{{ b.publisher }} · {{ b.year }} · paho.org ↗</span>
+          <span class="book-role">{{ b.role }}</span>
+        </a>
+      </div>
+      <p class="muted small-print">Cover images belong to PAHO and are shown only to identify the publications. Each card opens the publication on PAHO's website or in IRIS, PAHO's official repository.</p>
+      <h3>Why it matters now</h3>
+      <p>AI is already reading radiographs, digital workflows are replacing analogue ones, and students use generative AI every day. Schools are investing at very different speeds, and there is no shared measure of who is ready, where the gaps are, or what to do next. A common, repeated measurement gives deans and faculty evidence to plan, lets schools learn from the best prepared, and shows progress from year to year.</p>
+      <h3>Comparable across countries</h3>
+      <p>The survey starts with US dental schools. Its core items are the same everywhere: US schools see the matching US references (CODA, ADA, HIPAA, FDA), and schools in other countries answer the same items. All scores use the same 0–100 scale, so a US school can be compared with schools abroad.</p>
+      <h3>Who answers</h3>
+      <table class="units">
+        <thead><tr><th>Unit described</th><th>Who answers</th></tr></thead>
+        <tbody><tr v-for="u in UNITS" :key="u.v"><td>{{ u.l }}</td><td>{{ u.who }}</td></tr></tbody>
+      </table>
+      <p class="muted">A school can send one school-wide form and as many department and course forms as it wishes. The research team completes Part A with each respondent and issues a personal access code.</p>
+      <h3>What the reader gets</h3>
+      <ul class="plain">
+        <li>A <strong>ranking of schools</strong> with a 0–100 maturity index overall and for each of ten domains.</li>
+        <li>The <strong>detail behind each score</strong>: departments, named courses, teaching hours and equipment.</li>
+        <li>The <strong>main gaps and barriers</strong>, and the schools that can serve as models.</li>
+        <li><strong>Progress over time</strong>, because the survey is repeated every year.</li>
+        <li>A <strong>comparison</strong> between states and with schools in other countries.</li>
+      </ul>
+      <h3>A checklist for improvement</h3>
+      <p>The same items also work as a guide. Each 1–4 item describes what level 4 ("established") looks like, so a school can use the <a href="#checklist" @click.prevent="goTo('checklist')">maturity checklist</a> to see where it stands and which steps lead to the level it wants to reach.</p>
       <dl class="facts">
         <div><dt>Parts</dt><dd>{{ SECTIONS.length }}</dd></div>
         <div><dt>Questions</dt><dd>{{ itemCount }}</dd></div>
-        <div><dt>Data columns</dt><dd>{{ colCount }}</dd></div>
+        <div><dt>Checklist points</dt><dd>{{ CHECKLIST_COUNT }}</dd></div>
         <div><dt>Scored domains</dt><dd>{{ Object.keys(DOMAINS).length }}</dd></div>
       </dl>
     </section>
@@ -75,7 +125,7 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
         <li><strong>Domain index 0–100.</strong> The 1–4 items of a domain are averaged and converted: (mean − 1) ÷ 3 × 100.</li>
         <li><strong>Checklists.</strong> Yes = 2, Partial = 1, No = 0, expressed as a percentage of the maximum (PAHO AI-GUARD).</li>
         <li><strong>Hours and counts.</strong> Hours per term × terms per year = hours per year. Equipment counts are divided by enrollment.</li>
-        <li><strong>Consolidation.</strong> Course → department (mean) → school (weighted by the number of courses) → state → national.</li>
+        <li><strong>Consolidation.</strong> Course forms → department (mean) → school (weighted by the number of courses). A school-wide form is combined with this picture to rank schools, then results are compared by state, nationally and across countries.</li>
         <li><strong>US references.</strong> Some items show the matching US law or body: HIPAA and FERPA, CODA, the ADA, ADEA and state dental boards.</li>
       </ul>
     </section>
@@ -87,9 +137,15 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
         <tbody>
           <tr v-for="s in SECTIONS" :key="s.id">
             <td class="mono">{{ s.id }}</td>
-            <td><a :href="'#part-' + s.id" @click.prevent="goTo('part-' + s.id)">{{ s.title.replace(/^Part [A-Z]\. /, '') }}</a></td>
+            <td><a :href="'#part-' + s.id" @click.prevent="goTo('part-' + s.id)">{{ s.title.replace(/^Part [A-Z]\. /, '') }}</a><div class="goal-small">{{ s.goal }}</div></td>
             <td>{{ s.questions.length }}</td>
             <td>{{ s.filledBy === 'team' ? 'Research team' : 'Respondent' }}</td>
+          </tr>
+          <tr>
+            <td class="mono">—</td>
+            <td><a href="#checklist" @click.prevent="goTo('checklist')">Maturity checklist</a></td>
+            <td>{{ CHECKLIST_COUNT }}</td>
+            <td>Schools</td>
           </tr>
           <tr>
             <td class="mono">—</td>
@@ -105,6 +161,7 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
 
     <section v-for="s in SECTIONS" :id="'part-' + s.id" :key="s.id" class="card part">
       <h2>{{ s.title }}</h2>
+      <p class="goal"><strong>Goal.</strong> {{ s.goal }}</p>
       <p class="purpose"><strong>What this part captures.</strong> {{ s.purpose }}</p>
       <p v-if="s.intro" class="muted">{{ s.intro }}</p>
       <div v-if="domainsOf(s).length" class="chips small"><span v-for="d in domainsOf(s)" :key="d"><b>{{ d }}</b> {{ DOMAINS[d] }}</span></div>
@@ -138,6 +195,23 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
           </ul>
         </details>
       </div>
+    </section>
+
+    <section id="checklist" class="card checklist">
+      <h2>Maturity checklist</h2>
+      <p>Use this list after answering, or before planning. Each point comes from a 1–4 item of the survey. <strong>Target</strong> is level 4 (established); <strong>next step</strong> is level 3 (developing). Tick what is already true for your school, department or course. Ticks stay on this page only and are not saved.</p>
+      <ol class="levels"><li v-for="l in LEVELS" :key="l.v"><b>{{ l.v }} · {{ l.l }}</b> {{ l.d }}</li></ol>
+      <details v-for="g in CHECKLIST" :key="g.id" class="ck-group">
+        <summary><span class="mono">{{ g.id }}</span> {{ g.title }} <span class="muted">· {{ g.items.length }} points</span></summary>
+        <p class="goal"><strong>Goal.</strong> {{ g.goal }}</p>
+        <ul class="ck">
+          <li v-for="it in g.items" :key="it.id">
+            <label><input type="checkbox" /> <span><strong>{{ it.title }}</strong> <span class="mono muted">{{ it.id }}</span><br />
+              <span class="target">Target: {{ it.target }}</span><br />
+              <span class="muted">Next step: {{ it.next }}</span></span></label>
+          </li>
+        </ul>
+      </details>
     </section>
 
     <section id="references" class="card refs">
@@ -182,6 +256,33 @@ const goTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'sm
 .chips span { font-size: .85rem; background: var(--accent-soft); border-radius: 6px; padding: 3px 8px; }
 .chips.small span { font-size: .78rem; }
 .part h2 { color: var(--accent); }
+.main-q { font-size: 1.2rem; font-weight: 700; color: var(--accent); line-height: 1.4; margin: 4px 0 14px; }
+.intro h3 { margin: 18px 0 6px; font-size: 1.02rem; }
+.five li { margin-bottom: 6px; }
+.units { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.units th, .units td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.downloads { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 12px; font-size: .92rem; }
+.downloads a { color: var(--accent); font-weight: 600; }
+.books { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 12px 0 6px; }
+.book { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+.book:hover { border-color: var(--accent); }
+.book img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.18); margin-bottom: 6px; }
+.book-title { font-weight: 700; font-size: .86rem; line-height: 1.3; color: var(--accent); }
+.book-meta { font-size: .76rem; }
+.book-role { font-size: .8rem; line-height: 1.4; }
+.small-print { font-size: .78rem; }
+@media (max-width: 720px) { .books { grid-template-columns: repeat(2, 1fr); } }
+.goal-small { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+.goal { margin: 6px 0; }
+.levels { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin: 10px 0 14px; font-size: .88rem; }
+.levels li { background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; }
+.levels b { display: block; color: var(--accent); }
+.ck-group { margin: 0 0 8px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; }
+.ck { list-style: none; padding: 0; margin: 6px 0; }
+.ck li { padding: 8px 0; border-top: 1px solid var(--border); font-size: .92rem; }
+.ck label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.ck input { margin-top: 4px; }
+.target { color: var(--accent); }
 .purpose { background: var(--bg); border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: 0 8px 8px 0; }
 .q-item { border-top: 1px solid var(--border); padding: 16px 0 10px; }
 .q-head { display: flex; gap: 10px; }

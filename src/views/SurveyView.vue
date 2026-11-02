@@ -38,6 +38,7 @@ const optionLabel = (qid, v) => intake.questions.find((q) => q.id === qid)?.opti
 const profile = computed(() => [
   ['Country', COUNTRIES.find((c) => c.v === record.value.A01)?.l || record.value.A01],
   ['Institution', record.value.A03],
+  ['Unit', optionLabel('A17', record.value.A17)],
   ['Department', record.value.A06],
   ['Course', record.value.A07],
   ['Level', optionLabel('A08', record.value.A08)],
@@ -110,6 +111,7 @@ function exit() {
     <div v-if="submitted" class="card done">
       <h2>Thank you — your answers were submitted.</h2>
       <p>Submitted on {{ new Date(record.submitted_at).toLocaleString() }}. If you need to correct something, contact the research team and quote your code.</p>
+      <p>Next: use the <router-link :to="{ path: '/questions', query: { go: 'checklist' } }">maturity checklist</router-link> to see which steps lead your school, department or course to the level of maturity you want to reach.</p>
     </div>
 
     <template v-else>
