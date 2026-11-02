@@ -5,10 +5,12 @@ import * as d3 from 'd3'
 import { LEVEL_NAMES, levelOf } from './scoring.js'
 
 const LEVEL_VAR = (l) => `var(--viz-l${l})`
-const LEVEL_INK = (l) => (l >= 3 ? '#ffffff' : '#0b0b0b')
-// Sequential blue ramp (100 -> 700) for 0–100 indices.
-const SEQ = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95', '#0d366b']
-export const seqColor = d3.scaleSequential(d3.interpolateRgbBasis(SEQ)).domain([0, 100])
+const LEVEL_INK = (l) => (l === 1 || l === 4 ? '#ffffff' : '#0b0b0b')
+export const levelInk = LEVEL_INK
+// Red (level 1, worst) -> yellow -> green (level 4, best) for 0–100 indices.
+const RDYLGN = ['#b2182b', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#d9ef8b', '#9fd264', '#66bd63', '#1a9850', '#0e7a3d']
+export const seqColor = d3.scaleSequential(d3.interpolateRgbBasis(RDYLGN)).domain([0, 100])
+const seqInk = (v) => (v < 22 || v > 82 ? '#ffffff' : '#0b0b0b')
 const fmt = (v) => (v == null ? '—' : Math.round(v))
 const BANDS = [[0, 25, 1], [25, 50, 2], [50, 75, 3], [75, 100, 4]]
 
@@ -26,6 +28,8 @@ function hover(sel, html) {
 }
 const svgIn = (el, w, h) => d3.select(el).html('').append('svg').attr('viewBox', `0 0 ${w} ${h}`).attr('width', '100%').attr('role', 'img')
 const widthOf = (el, min = 320) => Math.max(min, el.clientWidth || 640)
+// Shorten a label to fit `px` at 12px text; the full text stays in the tooltip.
+const fit = (t, px) => { const n = Math.floor(px / 6.4); return t.length > n ? `${t.slice(0, n - 1)}…` : t }
 const axisStyle = (g) => {
   g.selectAll('text').attr('fill', 'var(--viz-muted)').style('font-size', '11px')
   g.selectAll('line,path').attr('stroke', 'var(--viz-axis)')
@@ -59,24 +63,24 @@ export function benchmarkBars(el, rows, { selected, onPick } = {}) {
 }
 
 // ---- heatmap: rows × columns of 0–100 values ------------------------------
-export function heatmap(el, rows, cols, value, { onPick } = {}) {
+export function heatmap(el, rows, cols, value, { onPick, color = seqColor, ink = seqInk, format = fmt, tipNote = (d) => `(level ${levelOf(d.v) ?? '—'})`, label = 'Heatmap of indices by university' } = {}) {
   const w = widthOf(el, 560), m = { t: 96, r: 40, b: 8, l: 170 }
   const cw = (w - m.l - m.r) / cols.length, ch = 26
   const h = m.t + m.b + rows.length * ch
-  const svg = svgIn(el, w, h).attr('aria-label', 'Heatmap of indices by university')
+  const svg = svgIn(el, w, h).attr('aria-label', label)
   svg.append('g').selectAll('text').data(cols).join('text')
     .attr('transform', (c, i) => `translate(${m.l + i * cw + cw / 2},${m.t - 8}) rotate(-40)`)
     .attr('fill', (c) => (c.strong ? 'var(--viz-ink)' : 'var(--viz-ink2)')).style('font-size', '11px').style('font-weight', (c) => (c.strong ? 700 : 400)).text((c) => c.label)
   svg.append('g').selectAll('text').data(rows).join('text').attr('x', m.l - 8).attr('y', (r, i) => m.t + i * ch + ch / 2).attr('dy', '0.35em')
     .attr('text-anchor', 'end').attr('fill', 'var(--viz-ink)').style('font-size', '12px').attr('cursor', onPick ? 'pointer' : null)
-    .text((r) => r.name).on('click', (e, r) => onPick && onPick(r.id))
+    .text((r) => fit(r.name, m.l - 12)).on('click', (e, r) => onPick && onPick(r.id))
   const cells = rows.flatMap((r, i) => cols.map((c, j) => ({ r, c, i, j, v: value(r, c) })))
   const g = svg.append('g').selectAll('g').data(cells).join('g')
   g.append('rect').attr('x', (d) => m.l + d.j * cw + 1).attr('y', (d) => m.t + d.i * ch + 1).attr('width', cw - 2).attr('height', ch - 2).attr('rx', 3)
-    .attr('fill', (d) => (d.v == null ? 'var(--viz-grid)' : seqColor(d.v)))
+    .attr('fill', (d) => (d.v == null ? 'var(--viz-grid)' : color(d.v)))
   g.append('text').attr('x', (d) => m.l + d.j * cw + cw / 2).attr('y', (d) => m.t + d.i * ch + ch / 2).attr('dy', '0.35em').attr('text-anchor', 'middle')
-    .attr('fill', (d) => (d.v > 45 ? '#ffffff' : '#0b0b0b')).style('font-size', '11px').style('font-variant-numeric', 'tabular-nums').text((d) => fmt(d.v))
-  hover(g, (d) => `<b>${d.r.name}</b><br>${d.c.full || d.c.label}: ${fmt(d.v)} (level ${levelOf(d.v) ?? '—'})`)
+    .attr('fill', (d) => (d.v == null ? 'var(--viz-ink)' : ink(d.v))).style('font-size', '11px').style('font-variant-numeric', 'tabular-nums').text((d) => format(d.v))
+  hover(g, (d) => `<b>${d.r.name}</b><br>${d.c.full || d.c.label}: ${format(d.v)} ${tipNote(d)}`)
 }
 
 // ---- boxplots with points ----------------------------------------------------
@@ -93,7 +97,7 @@ export function boxplots(el, groups) {
   const g = svg.append('g').selectAll('g').data(groups).join('g').attr('transform', (d) => `translate(${x(d.key)},0)`)
   g.append('line').attr('x1', bw / 2).attr('x2', bw / 2).attr('y1', (d) => y(d.stats.min)).attr('y2', (d) => y(d.stats.max)).attr('stroke', 'var(--viz-ink2)')
   g.append('rect').attr('x', 0).attr('width', bw).attr('y', (d) => y(d.stats.q3)).attr('height', (d) => Math.max(1, y(d.stats.q1) - y(d.stats.q3)))
-    .attr('rx', 4).attr('fill', 'var(--viz-s1-soft)').attr('stroke', 'var(--viz-s1)')
+    .attr('rx', 4).attr('fill', 'var(--viz-box)').attr('stroke', 'var(--viz-axis)')
   g.append('line').attr('x1', 0).attr('x2', bw).attr('y1', (d) => y(d.stats.median)).attr('y2', (d) => y(d.stats.median)).attr('stroke', 'var(--viz-ink)').attr('stroke-width', 2)
   hover(g.select('rect'), (d) => `<b>${d.label}</b><br>Median ${fmt(d.stats.median)} · IQR ${fmt(d.stats.q1)}–${fmt(d.stats.q3)}<br>Min ${fmt(d.stats.min)} · Max ${fmt(d.stats.max)} · n ${d.stats.n}`)
   const pts = g.selectAll('circle').data((d) => d.values.map((v, i) => ({ ...v, label: d.label, i }))).join('circle')
@@ -103,22 +107,27 @@ export function boxplots(el, groups) {
 }
 
 // ---- scatter: benchmark vs funding readiness -------------------------------
-export function scatter(el, pts, { onPick } = {}) {
+export function scatter(el, pts, { onPick, xLabel = 'Benchmark (health informatics maturity)', yLabel = 'Funding readiness (foundations)', quadrant = 'Best placed to use a grant', diagonal = false, tip } = {}) {
   const w = widthOf(el, 420), h = 380, m = { t: 16, r: 16, b: 44, l: 48 }
   const svg = svgIn(el, w, h).attr('aria-label', 'Benchmark versus funding readiness')
   const x = d3.scaleLinear().domain([0, 100]).range([m.l, w - m.r])
   const y = d3.scaleLinear().domain([0, 100]).range([h - m.b, m.t])
-  svg.append('rect').attr('x', x(50)).attr('y', y(100)).attr('width', x(100) - x(50)).attr('height', y(50) - y(100)).attr('fill', 'var(--viz-s1-soft)')
-  svg.append('text').attr('x', x(98)).attr('y', y(97)).attr('text-anchor', 'end').attr('fill', 'var(--viz-ink2)').style('font-size', '12px').text('Best placed to use a grant')
+  if (quadrant) {
+    svg.append('rect').attr('x', x(50)).attr('y', y(100)).attr('width', x(100) - x(50)).attr('height', y(50) - y(100)).attr('fill', 'rgba(26,152,80,.14)')
+    svg.append('text').attr('x', x(98)).attr('y', y(97)).attr('text-anchor', 'end').attr('fill', 'var(--viz-ink2)').style('font-size', '12px').text(quadrant)
+  }
+  if (diagonal) {
+    svg.append('line').attr('x1', x(0)).attr('y1', y(0)).attr('x2', x(100)).attr('y2', y(100)).attr('stroke', 'var(--viz-axis)').attr('stroke-dasharray', '4 4')
+  }
   svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5)).call(axisStyle)
   svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5)).call(axisStyle)
-  svg.append('text').attr('x', (m.l + w - m.r) / 2).attr('y', h - 8).attr('text-anchor', 'middle').attr('fill', 'var(--viz-muted)').style('font-size', '12px').text('Benchmark (health informatics maturity)')
-  svg.append('text').attr('transform', `translate(14,${(m.t + h - m.b) / 2}) rotate(-90)`).attr('text-anchor', 'middle').attr('fill', 'var(--viz-muted)').style('font-size', '12px').text('Funding readiness (foundations)')
+  svg.append('text').attr('x', (m.l + w - m.r) / 2).attr('y', h - 8).attr('text-anchor', 'middle').attr('fill', 'var(--viz-muted)').style('font-size', '12px').text(xLabel)
+  svg.append('text').attr('transform', `translate(14,${(m.t + h - m.b) / 2}) rotate(-90)`).attr('text-anchor', 'middle').attr('fill', 'var(--viz-muted)').style('font-size', '12px').text(yLabel)
   const g = svg.append('g').selectAll('g').data(pts).join('g').attr('cursor', onPick ? 'pointer' : null).on('click', (e, p) => onPick && onPick(p.id))
   g.append('circle').attr('cx', (p) => x(p.x)).attr('cy', (p) => y(p.y)).attr('r', 9).attr('fill', (p) => LEVEL_VAR(p.level)).attr('stroke', 'var(--viz-surface)').attr('stroke-width', 2)
   g.append('text').attr('x', (p) => x(p.x)).attr('y', (p) => y(p.y)).attr('dy', '0.35em').attr('text-anchor', 'middle')
     .attr('fill', (p) => LEVEL_INK(p.level)).style('font-size', '10px').style('font-weight', 700).text((p) => p.id)
-  hover(g, (p) => `<b>${p.name}</b><br>Benchmark ${fmt(p.x)} · Funding readiness ${fmt(p.y)}`)
+  hover(g, tip || ((p) => `<b>${p.name}</b><br>${xLabel}: ${fmt(p.x)}<br>${yLabel}: ${fmt(p.y)}`))
 }
 
 // ---- gauge -------------------------------------------------------------------
@@ -189,7 +198,7 @@ export function deptBars(el, depts) {
   svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5).tickSizeOuter(0)).call(axisStyle)
   const g = svg.append('g').selectAll('g').data(depts).join('g')
   g.append('text').attr('x', m.l - 8).attr('y', (d) => y(d.name) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--viz-ink)').style('font-size', '12px').text((d) => d.name)
-  g.append('rect').attr('x', x(0)).attr('y', (d) => y(d.name)).attr('height', y.bandwidth()).attr('width', (d) => Math.max(2, x(d.value) - x(0))).attr('rx', 4).attr('fill', 'var(--viz-s1-soft)')
+  g.append('rect').attr('x', x(0)).attr('y', (d) => y(d.name)).attr('height', y.bandwidth()).attr('width', (d) => Math.max(2, x(d.value) - x(0))).attr('rx', 4).attr('fill', 'var(--viz-box)')
   const dots = g.selectAll('circle').data((d) => d.courses.map((c) => ({ ...c, dept: d }))).join('circle')
     .attr('cx', (c) => x(c.value)).attr('cy', (c) => y(c.dept.name) + y.bandwidth() / 2).attr('r', 6)
     .attr('fill', (c) => LEVEL_VAR(levelOf(c.value))).attr('stroke', 'var(--viz-surface)').attr('stroke-width', 2)
@@ -209,4 +218,93 @@ export function itemMatrix(el, parts) {
   cells.append('span').attr('class', 'im-id').text((it) => it.id)
   cells.append('span').attr('class', 'im-v').text((it) => (it.value == null ? '—' : it.value.toFixed(1)))
   hover(cells, (it) => `<b>${it.id} · ${it.title}</b><br>Mean level ${it.value == null ? '—' : it.value.toFixed(1)} (${it.value == null ? '—' : LEVEL_NAMES[Math.round(it.value) - 1]})<br><i>Target:</i> ${it.target}${it.value != null && it.value < 3 ? `<br><i>Next step:</i> ${it.next}` : ''}`)
+}
+
+// ---- generic horizontal bars ----------------------------------------------------
+export function hbars(el, rows, { max, unit = '', color = () => 'var(--viz-s1)', labelW = 220, format = fmt, label = 'Bar chart', tip } = {}) {
+  const w = widthOf(el), rowH = 26, m = { t: 6, r: 56, b: 26, l: labelW }
+  const h = m.t + m.b + rows.length * rowH
+  const svg = svgIn(el, w, h).attr('aria-label', label)
+  const x = d3.scaleLinear().domain([0, max ?? (d3.max(rows, (r) => r.value) || 1)]).nice().range([m.l, w - m.r])
+  const y = d3.scaleBand().domain(rows.map((r, i) => i)).range([m.t, h - m.b]).padding(0.28)
+  svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(Math.min(5, Math.floor((w - m.l - m.r) / 60))).tickSizeOuter(0)).call(axisStyle)
+  const g = svg.append('g').selectAll('g').data(rows).join('g')
+  g.append('text').attr('x', m.l - 8).attr('y', (r, i) => y(i) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--viz-ink)').style('font-size', '12px').text((r) => fit(r.label, m.l - 12))
+  g.append('rect').attr('x', x(0)).attr('y', (r, i) => y(i)).attr('height', y.bandwidth()).attr('width', (r) => Math.max(2, x(r.value ?? 0) - x(0))).attr('rx', 4).attr('fill', color)
+  g.append('text').attr('x', (r) => x(r.value ?? 0) + 6).attr('y', (r, i) => y(i) + y.bandwidth() / 2).attr('dy', '0.35em').attr('fill', 'var(--viz-ink2)').style('font-size', '12px').style('font-variant-numeric', 'tabular-nums').text((r) => `${format(r.value)}${unit}`)
+  hover(g, tip || ((r) => `<b>${r.label}</b><br>${format(r.value)}${unit}${r.note ? `<br>${r.note}` : ''}`))
+}
+
+// ---- 100% stacked bars: share of answers at each level ---------------------------
+export function stacked100(el, rows, { onPick } = {}) {
+  const w = widthOf(el), rowH = 26, m = { t: 6, r: 12, b: 26, l: 170 }
+  const h = m.t + m.b + rows.length * rowH
+  const svg = svgIn(el, w, h).attr('aria-label', 'Share of answers at each maturity level')
+  const x = d3.scaleLinear().domain([0, 100]).range([m.l, w - m.r])
+  const y = d3.scaleBand().domain(rows.map((r) => r.id)).range([m.t, h - m.b]).padding(0.25)
+  svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(5).tickFormat((t) => `${t}%`).tickSizeOuter(0)).call(axisStyle)
+  const row = svg.append('g').selectAll('g').data(rows).join('g').attr('cursor', onPick ? 'pointer' : null).on('click', (e, r) => onPick && onPick(r.id))
+  row.append('text').attr('x', m.l - 8).attr('y', (r) => y(r.id) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--viz-ink)').style('font-size', '12px').text((r) => r.label)
+  const segs = row.selectAll('g.seg').data((r) => {
+    const total = r.counts.reduce((a, b) => a + b, 0) || 1
+    let acc = 0
+    return r.counts.map((c, i) => { const s = { r, level: i + 1, pct: (c / total) * 100, from: acc, n: c }; acc += s.pct; return s })
+  }).join('g').attr('class', 'seg')
+  segs.append('rect').attr('x', (s) => x(s.from) + 1).attr('y', (s) => y(s.r.id)).attr('height', y.bandwidth()).attr('width', (s) => Math.max(0, x(s.from + s.pct) - x(s.from) - 2)).attr('rx', 3).attr('fill', (s) => LEVEL_VAR(s.level))
+  segs.filter((s) => s.pct >= 9).append('text').attr('x', (s) => x(s.from + s.pct / 2)).attr('y', (s) => y(s.r.id) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'middle')
+    .attr('fill', (s) => LEVEL_INK(s.level)).style('font-size', '10px').text((s) => `${Math.round(s.pct)}%`)
+  hover(segs, (s) => `<b>${s.r.label}</b><br>Level ${s.level} (${LEVEL_NAMES[s.level - 1]}): ${Math.round(s.pct)}% of answers (${s.n})`)
+}
+
+// ---- histogram of 0–100 values, bins coloured by level ---------------------------
+export function histogram(el, values, { step = 5, label = 'Histogram' } = {}) {
+  const w = widthOf(el, 420), h = 260, m = { t: 12, r: 12, b: 40, l: 40 }
+  const svg = svgIn(el, w, h).attr('aria-label', label)
+  const bins = d3.bin().domain([0, 100]).thresholds(d3.range(0, 100 + step, step))(values.filter((v) => v != null))
+  const x = d3.scaleLinear().domain([0, 100]).range([m.l, w - m.r])
+  const y = d3.scaleLinear().domain([0, d3.max(bins, (b) => b.length) || 1]).nice().range([h - m.b, m.t])
+  svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(10)).call(axisStyle)
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(w - m.l - m.r))).call(axisStyle)
+    .call((g) => g.selectAll('.tick line').attr('stroke', 'var(--viz-grid)')).call((g) => g.select('.domain').remove())
+  svg.append('text').attr('x', (m.l + w - m.r) / 2).attr('y', h - 6).attr('text-anchor', 'middle').attr('fill', 'var(--viz-muted)').style('font-size', '12px').text('Course benchmark (0–100)')
+  const g = svg.append('g').selectAll('rect').data(bins).join('rect').attr('x', (b) => x(b.x0) + 1).attr('width', (b) => Math.max(0, x(b.x1) - x(b.x0) - 2))
+    .attr('y', (b) => y(b.length)).attr('height', (b) => y(0) - y(b.length)).attr('rx', 3).attr('fill', (b) => LEVEL_VAR(levelOf((b.x0 + b.x1) / 2)))
+  hover(g, (b) => `<b>${b.x0}–${b.x1}</b><br>${b.length} courses · level ${levelOf((b.x0 + b.x1) / 2)}`)
+}
+
+// ---- diverging bars: difference from the group average ---------------------------
+export function diverging(el, rows, { label = 'Difference from the average' } = {}) {
+  const w = widthOf(el), rowH = 28, m = { t: 6, r: 40, b: 26, l: 220 }
+  const h = m.t + m.b + rows.length * rowH
+  const svg = svgIn(el, w, h).attr('aria-label', label)
+  const lim = Math.max(10, d3.max(rows, (r) => Math.abs(r.diff)) || 10)
+  const x = d3.scaleLinear().domain([-lim, lim]).nice().range([m.l, w - m.r])
+  const y = d3.scaleBand().domain(rows.map((r) => r.label)).range([m.t, h - m.b]).padding(0.3)
+  svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x).ticks(6).tickFormat((t) => (t > 0 ? `+${t}` : t)).tickSizeOuter(0)).call(axisStyle)
+  svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', m.t).attr('y2', h - m.b).attr('stroke', 'var(--viz-axis)')
+  const g = svg.append('g').selectAll('g').data(rows).join('g')
+  g.append('text').attr('x', m.l - 8).attr('y', (r) => y(r.label) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--viz-ink)').style('font-size', '12px').text((r) => fit(r.label, m.l - 12))
+  g.append('rect').attr('x', (r) => x(Math.min(0, r.diff))).attr('width', (r) => Math.max(2, Math.abs(x(r.diff) - x(0)))).attr('y', (r) => y(r.label)).attr('height', y.bandwidth()).attr('rx', 4)
+    .attr('fill', (r) => (r.diff >= 0 ? 'var(--viz-up)' : 'var(--viz-down)'))
+  g.append('text').attr('x', (r) => x(r.diff) + (r.diff >= 0 ? 6 : -6)).attr('text-anchor', (r) => (r.diff >= 0 ? 'start' : 'end')).attr('y', (r) => y(r.label) + y.bandwidth() / 2).attr('dy', '0.35em')
+    .attr('fill', 'var(--viz-ink2)').style('font-size', '12px').text((r) => `${r.diff >= 0 ? '+' : '−'}${Math.abs(Math.round(r.diff))}`)
+  hover(g, (r) => `<b>${r.label}</b><br>This university ${fmt(r.value)} · average ${fmt(r.avg)}<br>${r.diff >= 0 ? 'Above' : 'Below'} average by ${Math.abs(Math.round(r.diff))}`)
+}
+
+// ---- grouped bars: two series per category (e.g. self-rating vs computed) ----------
+export function grouped(el, cats, names, { label = 'Grouped bars' } = {}) {
+  const w = widthOf(el), h = 300, m = { t: 12, r: 12, b: 70, l: 40 }
+  const svg = svgIn(el, w, h).attr('aria-label', label)
+  const x0 = d3.scaleBand().domain(cats.map((c) => c.label)).range([m.l, w - m.r]).padding(0.25)
+  const x1 = d3.scaleBand().domain([0, 1]).range([0, x0.bandwidth()]).padding(0.12)
+  const y = d3.scaleLinear().domain([0, 100]).range([h - m.b, m.t])
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(w - m.l - m.r))).call(axisStyle)
+    .call((g) => g.selectAll('.tick line').attr('stroke', 'var(--viz-grid)')).call((g) => g.select('.domain').remove())
+  svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(d3.axisBottom(x0).tickSizeOuter(0)).call(axisStyle)
+    .selectAll('text').attr('transform', 'rotate(-25)').attr('text-anchor', 'end').attr('dx', '-0.3em').attr('dy', '0.5em')
+  const colors = ['var(--viz-s1)', 'var(--viz-s2)']
+  const g = svg.append('g').selectAll('g').data(cats).join('g').attr('transform', (c) => `translate(${x0(c.label)},0)`)
+  const bars = g.selectAll('rect').data((c) => [c.a, c.b].map((v, i) => ({ c, v, i }))).join('rect')
+    .attr('x', (d) => x1(d.i)).attr('width', x1.bandwidth()).attr('y', (d) => y(d.v ?? 0)).attr('height', (d) => y(0) - y(d.v ?? 0)).attr('rx', 3).attr('fill', (d) => colors[d.i])
+  hover(bars, (d) => `<b>${d.c.label}</b><br>${names[d.i]}: ${fmt(d.v)}`)
 }

@@ -162,13 +162,15 @@ th, td { padding: 8px; border-bottom: 1px solid var(--border); text-align: left;
 
 /* ---- data visualisation (Results page) ---- */
 .viz {
-  --viz-l1: #86b6ef; --viz-l2: #5598e7; --viz-l3: #2a78d6; --viz-l4: #184f95;
+  --viz-l1: #b2182b; --viz-l2: #f46d43; --viz-l3: #9fd264; --viz-l4: #1a9850;
+  --viz-up: #1a9850; --viz-down: #b2182b;
   --viz-s1: #2a78d6; --viz-s1-soft: rgba(42, 120, 214, .16); --viz-s2: #eb6834;
   --viz-ink: #0b0b0b; --viz-ink2: #52514e; --viz-muted: #898781;
   --viz-grid: #e1e0d9; --viz-axis: #c3c2b7; --viz-surface: var(--surface);
 }
 @media (prefers-color-scheme: dark) {
   .viz {
+    --viz-l1: #d73027; --viz-down: #d73027;
     --viz-s1: #3987e5; --viz-s1-soft: rgba(57, 135, 229, .22); --viz-s2: #d95926;
     --viz-ink: #f0efec; --viz-ink2: #c3c2b7; --viz-muted: #898781;
     --viz-grid: #2c2c2a; --viz-axis: #383835;
@@ -188,3 +190,4 @@ th, td { padding: 8px; border-bottom: 1px solid var(--border); text-align: left;
 /* Keep the question title below the separator line (not drawn inside the fieldset border) */
 .question legend { float: left; width: 100%; }
 .question legend ~ * { clear: both; }
+.viz { --viz-box: rgba(137, 135, 129, .16); }

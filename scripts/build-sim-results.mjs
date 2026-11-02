@@ -47,6 +47,7 @@ function makeCourse(base, domainOffset, deptOffset, code, dept) {
     const p = (lvl - 1) / 3 + normal(0.15)
     answers[`${g}_${r.v}`] = String(p > 0.66 ? 2 : p > 0.33 ? 1 : 0)
   }
+  for (const r of q('E03').rows) answers[`E03_${r.v}`] = String(Math.max(0, Math.round((lvl - 1) * rand() * 2.2 + normal(0.6))))
   for (const r of q('E02').rows) answers[`E02_${r.v}`] = String(Math.max(0, Math.round((lvl - 1) * (2 + rand() * 4) + normal(1))))
   for (const r of q('H01').rows) answers[`H01_${r.v}`] = String(Math.max(0, Math.round((lvl - 1) * rand() * 3 + normal(0.5))))
   answers.C02 = String(Math.max(0, Math.round((lvl - 1) * 2 + normal(1))))

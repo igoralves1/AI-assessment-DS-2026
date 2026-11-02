@@ -34,10 +34,20 @@ export function scoreCourse(answers) {
   for (const a of HI_AREAS) area[a.key] = mean(a.domains.map((d) => domain[d]))
   const item = {}
   for (const q of SCORED) item[q.id] = val(answers, q.id)
+  // Raw figures (per course): teaching hours per year, equipment, people, self-ratings.
+  const terms = val(answers, 'B05') || 2
+  const rows = (prefix) => Object.fromEntries(Object.keys(answers).filter((k) => k.startsWith(prefix)).map((k) => [k.slice(prefix.length), val(answers, k)]))
+  const perYear = (m) => Object.fromEntries(Object.entries(m).map(([k, v]) => [k, v == null ? null : v * terms]))
+  const format = perYear(rows('E02_'))
+  const topic = perYear(rows('E03_'))
+  const equip = rows('H01_')
+  const sum = (m) => { const v = Object.values(m).filter((x) => x != null); return v.length ? v.reduce((a, b) => a + b, 0) : null }
+  const self = Object.fromEntries(['M01', 'M02', 'M03', 'M04', 'M12', 'M13'].map((k) => [k, val(answers, k)]))
   return {
     benchmark: mean(Object.values(domain)),
     funding: mean(FOUNDATIONS.domains.map((d) => domain[d])),
-    domain, part, area, item,
+    domain, part, area, item, format, topic, equip, self,
+    metric: { aiHours: sum(format), equipment: sum(equip), gpu: val(answers, 'C02'), facultyAI: val(answers, 'D02'), enrollment: val(answers, 'B01') },
   }
 }
 
@@ -46,15 +56,9 @@ export function averageScores(list) {
   const pick = (f) => mean(list.map(f))
   const keys = (f) => Object.keys(f(list[0]))
   const avgMap = (f) => Object.fromEntries(keys(f).map((k) => [k, pick((x) => f(x)[k])]))
-  return {
-    benchmark: pick((x) => x.benchmark),
-    funding: pick((x) => x.funding),
-    domain: avgMap((x) => x.domain),
-    part: avgMap((x) => x.part),
-    area: avgMap((x) => x.area),
-    item: avgMap((x) => x.item),
-    n: list.length,
-  }
+  const out = { benchmark: pick((x) => x.benchmark), funding: pick((x) => x.funding), n: list.length }
+  for (const k of ['domain', 'part', 'area', 'item', 'format', 'topic', 'equip', 'self', 'metric']) out[k] = avgMap((x) => x[k] || {})
+  return out
 }
 
 // Full picture for one university: courses, departments and the school (= mean of its courses,
